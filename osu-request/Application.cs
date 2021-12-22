@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
@@ -25,7 +27,7 @@ namespace osu_request
         public static OsuClient osuClient;
         public static TwitchClientLocal twitchClient;
 
-        private Track currentTrack;
+        private BeatmapsetContainer currentBeatmapset;
 
         private readonly List<Beatmapset> BeatmapsetsToAdd = new();
 
@@ -40,13 +42,18 @@ namespace osu_request
         [BackgroundDependencyLoader]
         private void Load()
         {
-            Child = new SpinBox
+            Children = new Drawable[]
             {
-                Size = new Vector2(150, 150),
-                Colour = Color4.Red,
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre
+                new SpinBox
+                {
+                    Size = new Vector2(150, 150),
+                    Colour = Color4.Red,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre
+                },
+                currentBeatmapset = new BeatmapsetContainer(null)
             };
+
         }
 
         protected override async void LoadAsyncComplete()
@@ -72,35 +79,15 @@ namespace osu_request
 
         private void AddBeatmapsets()
         {
-            foreach (var beatmapset in BeatmapsetsToAdd)
+            if (BeatmapsetsToAdd.Count == 0) return;
+            Remove(currentBeatmapset);
+            currentBeatmapset.Dispose();
+            currentBeatmapset = new BeatmapsetContainer(BeatmapsetsToAdd[0])
             {
-                var backgroundTexture = Textures.Get(beatmapset.Covers.CardAt2X);
-                var background = new Sprite
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    Size = backgroundTexture.Size,
-                    Texture = backgroundTexture,
-                    Colour = new Colour4(1.0f, 1.0f, 1.0f, 0.5f),
-                };
-                Add(background);
-                
-                var textFlowContainer = new TextFlowContainer
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    TextAnchor = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both
-                };
-                textFlowContainer.AddText(beatmapset.Title,
-                    t => { t.Font = new FontUsage("Roboto", weight: "Regular", size: 50); });
-                Add(textFlowContainer);
-                
-                currentTrack = Audio.GetTrackStore().Get(beatmapset.PreviewUrl);
-                currentTrack.Volume.Value = .5;
-                currentTrack.Start();
-                currentTrack.Completed += currentTrack.Restart;
-            }
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+            };
+            Add(currentBeatmapset);
         }
     }
 }
