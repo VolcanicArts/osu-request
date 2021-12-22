@@ -1,22 +1,27 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Net.Http;
+using JetBrains.Annotations;
 using osu.Framework.Logging;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Events;
+using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Twitch
 {
     public class TwitchClientLocal : TwitchClient
     {
-        private const string channelName = "";
-        private const string oAuthToken = "";
         private const string logPrefix = "[TwitchClientLocal]: ";
 
+        private readonly ConnectionCredentials _connectionCredentials;
         private readonly bool _enableVerboseLogging;
 
-        public TwitchClientLocal(bool enableVerboseLogging)
+        public Action<Beatmapset> ScheduleBeatmapAddition;
+
+        public TwitchClientLocal(ConnectionCredentials connectionCredentials, bool enableVerboseLogging)
         {
+            _connectionCredentials = connectionCredentials;
             _enableVerboseLogging = enableVerboseLogging;
         }
 
@@ -29,8 +34,7 @@ namespace osu_request.Twitch
 
         private void InitClient()
         {
-            ConnectionCredentials credentials = new(channelName, oAuthToken);
-            Initialize(credentials, channelName);
+            Initialize(_connectionCredentials, _connectionCredentials.TwitchUsername);
         }
 
         private void InitEvents()
@@ -39,6 +43,7 @@ namespace osu_request.Twitch
             OnConnected += OnConnectedEvent;
             OnDisconnected += OnDisconnectedEvent;
             OnMessageReceived += OnMessageReceivedEvent;
+            OnChatCommandReceived += OnChatCommandReceivedEvent;
         }
 
         private void OnLogEvent([CanBeNull] object sender, OnLogArgs e)
@@ -59,6 +64,43 @@ namespace osu_request.Twitch
         private void OnMessageReceivedEvent([CanBeNull] object sender, OnMessageReceivedArgs e)
         {
             Logger.Log($"{logPrefix}{e.ChatMessage.Username}: {e.ChatMessage.Message}");
+        }
+
+        private void OnChatCommandReceivedEvent([CanBeNull] object sender, OnChatCommandReceivedArgs e)
+        {
+            var command = e.Command.CommandText.ToLower();
+            var argument = e.Command.ArgumentsAsString;
+
+            switch (command)
+            {
+                case "rq":
+                    HandleRequestCommand(argument);
+                    break;
+            }
+        }
+
+        private async void HandleRequestCommand(string beatmapId)
+        {
+            if (string.IsNullOrEmpty(beatmapId))
+            {
+                SendMessage(_connectionCredentials.TwitchUsername, "Please enter a beatmap Id");
+                return;
+            }
+
+            Beatmap beatmap;
+            try
+            {
+                beatmap = await Application.osuClient.GetBeatmapAsync(beatmapId);
+            }
+            catch (HttpRequestException exception)
+            {
+                SendMessage(_connectionCredentials.TwitchUsername, "Invalid beatmap Id provided");
+                return;
+            }
+
+            var beatmapset = await beatmap.GetBeatmapsetAsync();
+            SendMessage(_connectionCredentials.TwitchUsername, $"Requested {beatmapset.Title}");
+            ScheduleBeatmapAddition.Invoke(beatmapset);
         }
     }
 }

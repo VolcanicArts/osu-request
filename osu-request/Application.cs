@@ -1,24 +1,37 @@
-﻿using osu.Framework;
+﻿using System.Collections.Generic;
+using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
+using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Client;
+using volcanicarts.osu.NET.Structures;
 
 namespace osu_request
 {
     public class Application : Game
     {
-        private readonly OsuClient _osuClient;
-        private readonly TwitchClientLocal _twitchClient;
+        private const string twitchChannelName = "";
+        private const string twitchOAuthToken = "";
+        private const string osuClientId = "";
+        private const string osuClientSecret = "";
+        public static OsuClient osuClient;
+        public static TwitchClientLocal twitchClient;
+
+        private readonly List<Beatmapset> BeatmapsetsToAdd = new();
 
         public Application()
         {
-            _twitchClient = new TwitchClientLocal(true);
-            _osuClient = new OsuClientLocal();
+            ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
+            twitchClient = new TwitchClientLocal(twitchCredentials, false);
+            OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
+            osuClient = new OsuClientLocal(osuClientCredentials);
         }
 
         [BackgroundDependencyLoader]
@@ -35,15 +48,40 @@ namespace osu_request
 
         protected override async void LoadAsyncComplete()
         {
-            _twitchClient.Connect();
-            await _osuClient.LoginAsync();
+            twitchClient.Connect();
+            await osuClient.LoginAsync();
+            twitchClient.ScheduleBeatmapAddition += beatmapset => BeatmapsetsToAdd.Add(beatmapset);
             base.LoadAsyncComplete();
+        }
+
+        protected override void Update()
+        {
+            AddBeatmapsets();
+            BeatmapsetsToAdd.Clear();
+            base.Update();
         }
 
         protected override bool OnExiting()
         {
-            _twitchClient.Disconnect();
+            twitchClient.Disconnect();
             return base.OnExiting();
+        }
+
+        private void AddBeatmapsets()
+        {
+            foreach (var beatmapset in BeatmapsetsToAdd)
+            {
+                var textFlowContainer = new TextFlowContainer
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    TextAnchor = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both
+                };
+                textFlowContainer.AddText(beatmapset.Title,
+                    t => { t.Font = new FontUsage("Roboto", weight: "Regular", size: 50); });
+                Add(textFlowContainer);
+            }
         }
     }
 }
