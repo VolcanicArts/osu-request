@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
-using osu.Framework.Audio;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.Shapes;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
@@ -27,9 +23,9 @@ namespace osu_request
         public static OsuClient osuClient;
         public static TwitchClientLocal twitchClient;
 
-        private BeatmapsetContainer currentBeatmapset;
-
         private readonly List<Beatmapset> BeatmapsetsToAdd = new();
+
+        private BeatmapsetContainer currentBeatmapset;
 
         public Application()
         {
@@ -44,6 +40,13 @@ namespace osu_request
         {
             Children = new Drawable[]
             {
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Colour = Color4.Gray
+                },
                 new SpinBox
                 {
                     Size = new Vector2(150, 150),
@@ -53,7 +56,6 @@ namespace osu_request
                 },
                 currentBeatmapset = new BeatmapsetContainer(null)
             };
-
         }
 
         protected override async void LoadAsyncComplete()
@@ -82,11 +84,7 @@ namespace osu_request
             if (BeatmapsetsToAdd.Count == 0) return;
             Remove(currentBeatmapset);
             currentBeatmapset.Dispose();
-            currentBeatmapset = new BeatmapsetContainer(BeatmapsetsToAdd[0])
-            {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-            };
+            currentBeatmapset = new BeatmapsetContainer(BeatmapsetsToAdd[0]);
             Add(currentBeatmapset);
         }
     }
