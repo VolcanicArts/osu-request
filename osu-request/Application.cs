@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -23,6 +24,8 @@ namespace osu_request
         private const string osuClientSecret = "";
         public static OsuClient osuClient;
         public static TwitchClientLocal twitchClient;
+
+        private Track currentTrack;
 
         private readonly List<Beatmapset> BeatmapsetsToAdd = new();
 
@@ -92,6 +95,11 @@ namespace osu_request
                 textFlowContainer.AddText(beatmapset.Title,
                     t => { t.Font = new FontUsage("Roboto", weight: "Regular", size: 50); });
                 Add(textFlowContainer);
+                
+                currentTrack = Audio.GetTrackStore().Get(beatmapset.PreviewUrl);
+                currentTrack.Volume.Value = .5;
+                currentTrack.Start();
+                currentTrack.Completed += currentTrack.Restart;
             }
         }
     }
