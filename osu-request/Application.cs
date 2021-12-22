@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -71,6 +71,17 @@ namespace osu_request
         {
             foreach (var beatmapset in BeatmapsetsToAdd)
             {
+                var backgroundTexture = Textures.Get(beatmapset.Covers.CardAt2X);
+                var background = new Sprite
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Size = backgroundTexture.Size,
+                    Texture = backgroundTexture,
+                    Colour = new Colour4(1.0f, 1.0f, 1.0f, 0.5f),
+                };
+                Add(background);
+                
                 var textFlowContainer = new TextFlowContainer
                 {
                     Anchor = Anchor.Centre,
