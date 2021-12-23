@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Input;
+using osu.Framework.Input.Bindings;
+using osu.Framework.Input.Events;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
@@ -15,7 +19,7 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu_request
 {
-    public class Application : Game
+    public class Application : Game, IKeyBindingHandler<FrameworkAction>
     {
         private const string twitchChannelName = "";
         private const string twitchOAuthToken = "";
@@ -38,9 +42,23 @@ namespace osu_request
             osuClient = new OsuClientLocal(osuClientCredentials);
         }
 
-        [BackgroundDependencyLoader]
-        private void Load()
+        // Override framework bindings to stop the user being able to cycle the frame sync
+        bool IKeyBindingHandler<FrameworkAction>.OnPressed(KeyBindingPressEvent<FrameworkAction> e)
         {
+            switch (e.Action)
+            {
+                case FrameworkAction.CycleFrameSync:
+                    return true;
+                default:
+                    return base.OnPressed(e);
+            }
+        }
+
+        [BackgroundDependencyLoader]
+        private void Load(FrameworkConfigManager frameworkConfig)
+        {
+            SetupDefaults(frameworkConfig);
+
             Children = new Drawable[]
             {
                 new Box
@@ -82,6 +100,11 @@ namespace osu_request
                     }
                 }
             };
+        }
+
+        private void SetupDefaults(FrameworkConfigManager frameworkConfig)
+        {
+            frameworkConfig.GetBindable<FrameSync>(FrameworkSetting.FrameSync).Value = FrameSync.VSync;
         }
 
         protected override async void LoadAsyncComplete()
