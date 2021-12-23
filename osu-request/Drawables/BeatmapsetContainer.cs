@@ -80,8 +80,7 @@ namespace osu_request.Drawables
 
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
-            Size = new Vector2(1.0f, 0.35f);
-            RelativeSizeAxes = Axes.X;
+            Size = new Vector2(500);
             BorderColour = Color4.Black;
             BorderThickness = 5;
             CornerRadius = CORNER_RADIUS;
@@ -140,11 +139,11 @@ namespace osu_request.Drawables
                     }
                 }
             };
-
+        
             beatmapTitle.AddText(_beatmapset.Title,
                 t =>
                 {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 50);
+                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 30);
                     t.Shadow = true;
                     t.ShadowColour = new Color4(0, 0, 0, 0.75f);
                     t.ShadowOffset = new Vector2(0.05f);
@@ -153,7 +152,7 @@ namespace osu_request.Drawables
             beatmapCreator.AddText($"Mapped by {_beatmapset.Creator}",
                 t =>
                 {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 40);
+                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 25);
                     t.Shadow = true;
                     t.ShadowColour = new Color4(0, 0, 0, 0.75f);
                     t.ShadowOffset = new Vector2(0.05f);

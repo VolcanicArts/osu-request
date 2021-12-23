@@ -45,14 +45,23 @@ namespace osu_request.Drawables
                     Size = new Vector2(1.0f),
                     Colour = Color4.Aqua
                 },
-                _fillFlowContainer = new FillFlowContainer
+                new BasicScrollContainer
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     Size = new Vector2(1.0f),
-                    Direction = FillDirection.Vertical,
-                    Padding = new MarginPadding(20.0f)
+                    ClampExtension = 20.0f,
+                    Padding = new MarginPadding(20.0f),
+                    ScrollbarVisible = false,
+                    Child = _fillFlowContainer = new FillFlowContainer
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.X,
+                        AutoSizeAxes = Axes.Y,
+                        Direction = FillDirection.Vertical
+                    }
                 }
             };
         }
