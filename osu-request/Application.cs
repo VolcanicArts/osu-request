@@ -6,7 +6,6 @@ using osu.Framework.Graphics.Shapes;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
-using osuTK;
 using osuTK.Graphics;
 using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Client;
@@ -46,13 +45,6 @@ namespace osu_request
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Colour = Color4.Gray
-                },
-                new SpinBox
-                {
-                    Size = new Vector2(150, 150),
-                    Colour = Color4.Red,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre
                 },
                 beatmapsetListContainer = new BeatmapsetListContainer()
             };
