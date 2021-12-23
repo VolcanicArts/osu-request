@@ -46,7 +46,8 @@ namespace osu_request
                     Origin = Anchor.Centre,
                     Colour = Color4.Gray
                 },
-                beatmapsetListContainer = new BeatmapsetListContainer()
+                beatmapsetListContainer = new BeatmapsetListContainer(),
+                new Toolbar()
             };
         }
 
