@@ -14,10 +14,6 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            Anchor = Anchor.TopCentre;
-            Origin = Anchor.TopCentre;
-            RelativeSizeAxes = Axes.X;
-            Size = new Vector2(1.0f, 60.0f);
             Children = new Drawable[]
             {
                 new Box
@@ -28,12 +24,12 @@ namespace osu_request.Drawables
                     Size = new Vector2(1.0f),
                     Colour = Color4.Firebrick
                 },
-                _items = new FillFlowContainer()
+                _items = new FillFlowContainer
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f),
+                    Size = new Vector2(1.0f)
                 }
             };
 

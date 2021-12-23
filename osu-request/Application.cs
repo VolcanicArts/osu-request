@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
+using osuTK;
 using osuTK.Graphics;
 using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Client;
@@ -23,6 +25,8 @@ namespace osu_request
         public static TwitchClientLocal twitchClient;
 
         private readonly List<Beatmapset> BeatmapsetsToAdd = new();
+
+        private Container _contentContainer;
 
         private BeatmapsetListContainer beatmapsetListContainer;
 
@@ -46,8 +50,37 @@ namespace osu_request
                     Origin = Anchor.Centre,
                     Colour = Color4.Gray
                 },
-                beatmapsetListContainer = new BeatmapsetListContainer(),
-                new Toolbar()
+                new Toolbar
+                {
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                    RelativeSizeAxes = Axes.X,
+                    Height = 60.0f
+                },
+                new FillFlowContainer
+                {
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                    RelativeSizeAxes = Axes.Both,
+                    Size = new Vector2(0.5f, 1.0f),
+                    Direction = FillDirection.Vertical,
+                    Margin = new MarginPadding
+                    {
+                        Top = 60.0f
+                    },
+                    Child = _contentContainer = new Container
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Child = beatmapsetListContainer = new BeatmapsetListContainer
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both
+                        }
+                    }
+                }
             };
         }
 

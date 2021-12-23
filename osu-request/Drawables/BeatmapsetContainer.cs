@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
@@ -139,7 +138,7 @@ namespace osu_request.Drawables
                     }
                 }
             };
-        
+
             beatmapTitle.AddText(_beatmapset.Title,
                 t =>
                 {
