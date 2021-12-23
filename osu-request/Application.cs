@@ -25,7 +25,7 @@ namespace osu_request
 
         private readonly List<Beatmapset> BeatmapsetsToAdd = new();
 
-        private BeatmapsetContainer currentBeatmapset;
+        private BeatmapsetListContainer beatmapsetListContainer;
 
         public Application()
         {
@@ -54,7 +54,7 @@ namespace osu_request
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre
                 },
-                currentBeatmapset = new BeatmapsetContainer(null)
+                beatmapsetListContainer = new BeatmapsetListContainer()
             };
         }
 
@@ -82,10 +82,7 @@ namespace osu_request
         private void AddBeatmapsets()
         {
             if (BeatmapsetsToAdd.Count == 0) return;
-            Remove(currentBeatmapset);
-            currentBeatmapset.Dispose();
-            currentBeatmapset = new BeatmapsetContainer(BeatmapsetsToAdd[0]);
-            Add(currentBeatmapset);
+            beatmapsetListContainer.AddBeatmapset(BeatmapsetsToAdd[0]);
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
@@ -88,6 +88,7 @@ namespace osu_request.Drawables
             BorderThickness = 5;
             CornerRadius = CORNER_RADIUS;
             Masking = true;
+            Margin = new MarginPadding(10.0f);
 
             Children = new Drawable[]
             {
