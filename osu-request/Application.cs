@@ -48,7 +48,7 @@ namespace osu_request
                     RelativeSizeAxes = Axes.Both,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Colour = Color4.Gray
+                    Colour = Color4.DarkGray
                 },
                 new Toolbar
                 {
