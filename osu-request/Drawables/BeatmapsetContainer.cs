@@ -1,11 +1,14 @@
-﻿using osu.Framework.Allocation;
+using System;
+using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 using volcanicarts.osu.NET.Structures;
@@ -14,18 +17,60 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetContainer : Container
     {
-        private const int CORNER_RADIUS = 100;
+        private const int CORNER_RADIUS = 50;
         private readonly Beatmapset _beatmapset;
         private Track _currentTrack;
 
         private Sprite background;
         private TextFlowContainer beatmapCreator;
         private TextFlowContainer beatmapTitle;
+
+        public Action<BeatmapsetContainer> ContainerClicked;
         private Container contentContainer;
 
         public BeatmapsetContainer(Beatmapset beatmapset)
         {
             _beatmapset = beatmapset;
+        }
+
+        protected override bool OnHover(HoverEvent e)
+        {
+            this.ScaleTo(1.1f, 300, Easing.OutBounce);
+            _currentTrack?.Restart();
+            return true;
+        }
+
+        protected override void OnHoverLost(HoverLostEvent e)
+        {
+            this.ScaleTo(1.0f, 300, Easing.OutBounce);
+            _currentTrack?.Stop();
+            base.OnHoverLost(e);
+        }
+
+        protected override bool OnMouseDown(MouseDownEvent e)
+        {
+            this.ScaleTo(0.9f, 200, Easing.InOutQuart);
+            return true;
+        }
+
+        protected override void OnMouseUp(MouseUpEvent e)
+        {
+            this.ScaleTo(1.1f, 200, Easing.InOutQuart);
+            base.OnMouseUp(e);
+        }
+
+        protected override bool OnClick(ClickEvent e)
+        {
+            ContainerClicked.Invoke(this);
+            return true;
+        }
+
+        protected override void UpdateAfterAutoSize()
+        {
+            var cropRectangle = new RectangleF(DrawWidth / 4.0f, DrawHeight / 4.0f, DrawWidth / 2.0f,
+                DrawHeight / 2.0f);
+            background.Texture.Crop(cropRectangle);
+            base.Update();
         }
 
         [BackgroundDependencyLoader]
@@ -35,13 +80,10 @@ namespace osu_request.Drawables
 
             var backgroundTexture = textureStore.Get(_beatmapset.Covers.CardAt2X);
 
-            var size = 750;
-            var sizeRatio = backgroundTexture.Size.Y / backgroundTexture.Size.X;
-            var vec2Size = new Vector2(size, size * sizeRatio);
-
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
-            Size = vec2Size;
+            Size = new Vector2(1.0f, 0.35f);
+            RelativeSizeAxes = Axes.Both;
             BorderColour = Color4.Black;
             BorderThickness = 5;
             CornerRadius = CORNER_RADIUS;
@@ -54,7 +96,7 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Texture = backgroundTexture,
-                    Size = vec2Size,
+                    Size = backgroundTexture.Size,
                     Colour = new Color4(0.75f, 0.75f, 0.75f, 1.0f)
                 },
                 contentContainer = new Container
@@ -63,9 +105,9 @@ namespace osu_request.Drawables
                     Size = new Vector2(0.9f),
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    CornerRadius = CORNER_RADIUS,
+                    CornerRadius = CORNER_RADIUS * 0.9f,
                     BorderColour = Color4.Black,
-                    BorderThickness = 2,
+                    BorderThickness = 3,
                     Masking = true,
 
                     Children = new Drawable[]
@@ -119,7 +161,6 @@ namespace osu_request.Drawables
 
             _currentTrack = audioManager.GetTrackStore().Get(_beatmapset.PreviewUrl);
             _currentTrack.Volume.Value = .5;
-            _currentTrack.Start();
             _currentTrack.Completed += _currentTrack.Restart;
         }
 
