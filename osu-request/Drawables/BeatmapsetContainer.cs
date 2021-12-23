@@ -67,10 +67,8 @@ namespace osu_request.Drawables
 
         protected override void UpdateAfterAutoSize()
         {
-            var cropRectangle = new RectangleF(DrawWidth / 4.0f, DrawHeight / 4.0f, DrawWidth / 2.0f,
-                DrawHeight / 2.0f);
-            background.Texture.Crop(cropRectangle);
-            base.Update();
+            Size = new Vector2(Size.X, DrawWidth * 0.35f);
+            base.UpdateAfterAutoSize();
         }
 
         [BackgroundDependencyLoader]
@@ -83,7 +81,7 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             Size = new Vector2(1.0f, 0.35f);
-            RelativeSizeAxes = Axes.Both;
+            RelativeSizeAxes = Axes.X;
             BorderColour = Color4.Black;
             BorderThickness = 5;
             CornerRadius = CORNER_RADIUS;
@@ -97,7 +95,8 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Texture = backgroundTexture,
-                    Size = backgroundTexture.Size,
+                    Size = new Vector2(1.0f),
+                    RelativeSizeAxes = Axes.Both,
                     Colour = new Color4(0.75f, 0.75f, 0.75f, 1.0f)
                 },
                 contentContainer = new Container
