@@ -25,8 +25,11 @@ namespace osu_request
         private const string twitchOAuthToken = "";
         private const string osuClientId = "";
         private const string osuClientSecret = "";
-        public static OsuClient osuClient;
-        public static TwitchClientLocal twitchClient;
+        
+        private readonly OsuClient osuClient;
+        private readonly TwitchClientLocal twitchClient;
+
+        private DependencyContainer _dependencies;
 
         private readonly List<Beatmapset> BeatmapsetsToAdd = new();
 
@@ -40,7 +43,17 @@ namespace osu_request
             twitchClient = new TwitchClientLocal(twitchCredentials, false);
             OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
             osuClient = new OsuClientLocal(osuClientCredentials);
+            Login();
         }
+
+        private async void Login()
+        {
+            twitchClient.Connect();
+            await osuClient.LoginAsync();
+        }
+        
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) => 
+            _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         // Override framework bindings to stop the user being able to cycle the frame sync
         bool IKeyBindingHandler<FrameworkAction>.OnPressed(KeyBindingPressEvent<FrameworkAction> e)
@@ -58,6 +71,8 @@ namespace osu_request
         private void Load(FrameworkConfigManager frameworkConfig)
         {
             SetupDefaults(frameworkConfig);
+            _dependencies.CacheAs(twitchClient);
+            _dependencies.CacheAs(osuClient);
 
             Children = new Drawable[]
             {
@@ -107,10 +122,8 @@ namespace osu_request
             frameworkConfig.GetBindable<FrameSync>(FrameworkSetting.FrameSync).Value = FrameSync.VSync;
         }
 
-        protected override async void LoadAsyncComplete()
+        protected override void LoadAsyncComplete()
         {
-            twitchClient.Connect();
-            await osuClient.LoginAsync();
             twitchClient.ScheduleBeatmapAddition += beatmapset => BeatmapsetsToAdd.Add(beatmapset);
             base.LoadAsyncComplete();
         }
