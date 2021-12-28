@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Logging;
 using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
@@ -17,6 +19,7 @@ namespace osu_request.Drawables
         private FillFlowContainer _fillFlowContainer;
 
         private OsuClient localOsuClient;
+        private TwitchClient localTwitchClient;
 
         public void AddBeatmapset(Beatmapset beatmapset)
         {
@@ -37,16 +40,24 @@ namespace osu_request.Drawables
             if (message.StartsWith("!rq"))
             {
                 var beatmapId = message.Split(" ")[1];
-                var beatmap = await localOsuClient.GetBeatmapAsync(beatmapId);
-                var beatmapset = await beatmap.GetBeatmapsetAsync();
-                AddBeatmapset(beatmapset);
+                try
+                {
+                    var beatmap = await localOsuClient.GetBeatmapAsync(beatmapId);
+                    var beatmapset = await beatmap.GetBeatmapsetAsync();
+                    AddBeatmapset(beatmapset);
+                }
+                catch (HttpRequestException e)
+                {
+                    Logger.Log("Unavailable beatmap", LoggingTarget.Runtime, LogLevel.Error);
+                }
             }
         }
 
         [BackgroundDependencyLoader]
         private void Load(TwitchClient twitchClient, OsuClient osuClient)
         {
-            twitchClient.OnMessage += HandleTwitchMessage;
+            localTwitchClient = twitchClient;
+            localTwitchClient.OnMessage += HandleTwitchMessage;
             localOsuClient = osuClient;
             Children = new Drawable[]
             {
@@ -77,6 +88,12 @@ namespace osu_request.Drawables
                     }
                 }
             };
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            base.Dispose(isDisposing);
+            localTwitchClient.OnMessage -= HandleTwitchMessage;
         }
     }
 }

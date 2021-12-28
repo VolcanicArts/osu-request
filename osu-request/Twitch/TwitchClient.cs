@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
+using JetBrains.Annotations;
+using osu.Framework.Logging;
 
 namespace osu_request.Twitch
 {
@@ -14,6 +16,7 @@ namespace osu_request.Twitch
         private readonly TcpClient _tcpClient;
         private readonly string _username;
 
+        [CanBeNull]
         public Action<string> OnMessage;
 
         public TwitchClient(string username, string password, string channel, string ip = "irc.chat.twitch.tv",
@@ -46,12 +49,13 @@ namespace osu_request.Twitch
         {
             if (!_tcpClient.GetStream().DataAvailable) return;
             var rawIrcMessage = _inputStream.ReadLine();
-            if (rawIrcMessage != null) ParseRawIrcMessage(rawIrcMessage);
+            if (rawIrcMessage == null) return;
+            Logger.Log(rawIrcMessage, LoggingTarget.Network);
+            ParseRawIrcMessage(rawIrcMessage);
         }
 
         private void ParseRawIrcMessage(string rawIrcMessage)
         {
-            Console.WriteLine(rawIrcMessage);
             if (rawIrcMessage.StartsWith("PING")) SendIrcMessage("PONG :tmi.twitch.tv");
             if (rawIrcMessage.Contains("PRIVMSG")) ParseMessage(rawIrcMessage);
         }
@@ -59,7 +63,7 @@ namespace osu_request.Twitch
         private void ParseMessage(string rawIrcMessage)
         {
             var message = rawIrcMessage.Split(" :")[1];
-            OnMessage.Invoke(message);
+            OnMessage?.Invoke(message);
         }
 
         public void SendChatMessage(string message)
