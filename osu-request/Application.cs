@@ -13,7 +13,6 @@ using osu_request.Osu;
 using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
-using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Client;
 using volcanicarts.osu.NET.Structures;
 
@@ -27,7 +26,7 @@ namespace osu_request
         private const string osuClientSecret = "";
         
         private readonly OsuClient osuClient;
-        private readonly TwitchClientLocal twitchClient;
+        private readonly TwitchClient twitchClient;
 
         private DependencyContainer _dependencies;
 
@@ -39,16 +38,15 @@ namespace osu_request
 
         public Application()
         {
-            ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
-            twitchClient = new TwitchClientLocal(twitchCredentials, false);
             OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
             osuClient = new OsuClientLocal(osuClientCredentials);
+            twitchClient = new TwitchClient(twitchChannelName, twitchOAuthToken, twitchChannelName);
             Login();
         }
 
         private async void Login()
         {
-            twitchClient.Connect();
+            twitchClient.JoinChannel();
             await osuClient.LoginAsync();
         }
         
@@ -65,6 +63,11 @@ namespace osu_request
                 default:
                     return base.OnPressed(e);
             }
+        }
+
+        protected override void UpdateAfterChildren()
+        {
+            twitchClient.ReadMessage();
         }
 
         [BackgroundDependencyLoader]
@@ -122,23 +125,11 @@ namespace osu_request
             frameworkConfig.GetBindable<FrameSync>(FrameworkSetting.FrameSync).Value = FrameSync.VSync;
         }
 
-        protected override void LoadAsyncComplete()
-        {
-            twitchClient.ScheduleBeatmapAddition += beatmapset => BeatmapsetsToAdd.Add(beatmapset);
-            base.LoadAsyncComplete();
-        }
-
         protected override void Update()
         {
             AddBeatmapsets();
             BeatmapsetsToAdd.Clear();
             base.Update();
-        }
-
-        protected override bool OnExiting()
-        {
-            twitchClient.Disconnect();
-            return base.OnExiting();
         }
 
         private void AddBeatmapsets()

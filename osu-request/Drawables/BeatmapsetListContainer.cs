@@ -3,8 +3,10 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
+using volcanicarts.osu.NET.Client;
 using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
@@ -13,6 +15,8 @@ namespace osu_request.Drawables
     {
         private readonly List<BeatmapsetContainer> _containers = new();
         private FillFlowContainer _fillFlowContainer;
+
+        private OsuClient localOsuClient;
 
         public void AddBeatmapset(Beatmapset beatmapset)
         {
@@ -28,9 +32,22 @@ namespace osu_request.Drawables
             _fillFlowContainer.Remove(beatmapsetContainer);
         }
 
-        [BackgroundDependencyLoader]
-        private void Load()
+        private async void HandleTwitchMessage(string message)
         {
+            if (message.StartsWith("!rq"))
+            {
+                var beatmapId = message.Split(" ")[1];
+                var beatmap = await localOsuClient.GetBeatmapAsync(beatmapId);
+                var beatmapset = await beatmap.GetBeatmapsetAsync();
+                AddBeatmapset(beatmapset);
+            }
+        }
+
+        [BackgroundDependencyLoader]
+        private void Load(TwitchClient twitchClient, OsuClient osuClient)
+        {
+            twitchClient.OnMessage += HandleTwitchMessage;
+            localOsuClient = osuClient;
             Children = new Drawable[]
             {
                 new Box
