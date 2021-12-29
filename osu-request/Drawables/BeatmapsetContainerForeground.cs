@@ -15,25 +15,24 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetContainerForeground : Container
     {
-        private Sprite _background;
         private readonly Bindable<Beatmapset> _beatmapset;
+        private Sprite _background;
+        private readonly Texture _backgroundTexture;
         private TextFlowContainer _beatmapsetCreator;
         private TextFlowContainer _beatmapsetTitle;
-        private TextureStore _textureStore;
 
         public Action<HoverEvent> OnHoverAction;
         public Action<HoverLostEvent> OnHoverLostAction;
 
-        public BeatmapsetContainerForeground(Bindable<Beatmapset> beatmapset)
+        public BeatmapsetContainerForeground(Bindable<Beatmapset> beatmapset, Texture backgroundTexture)
         {
             _beatmapset = beatmapset;
+            _backgroundTexture = backgroundTexture;
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore)
+        private void Load()
         {
-            _textureStore = textureStore;
-
             InitSelf();
             InitChildren();
             AddDetails();
@@ -73,7 +72,8 @@ namespace osu_request.Drawables
                     Origin = Anchor.Centre,
                     Size = new Vector2(1.0f),
                     RelativeSizeAxes = Axes.Both,
-                    Colour = new Color4(0.75f, 0.75f, 0.75f, 1.0f)
+                    Colour = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                    Texture = _backgroundTexture
                 },
                 new Container
                 {
@@ -120,9 +120,6 @@ namespace osu_request.Drawables
 
         private void AddDetails()
         {
-            var backgroundTexture = _textureStore.Get(_beatmapset.Value.Covers.CardAt2X);
-            _background.Texture = backgroundTexture;
-
             _beatmapsetTitle.AddText(_beatmapset.Value.Title,
                 t =>
                 {

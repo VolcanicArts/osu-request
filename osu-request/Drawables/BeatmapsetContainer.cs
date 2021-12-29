@@ -1,5 +1,4 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -13,14 +12,15 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetContainer : Container
     {
-        private AudioManager _audioManager;
+        private readonly Texture _backgroundTexture;
         private readonly Bindable<Beatmapset> _beatmapset = new();
+        private readonly Track _previewMp3;
         private BeatmapsetContainerForeground _foreground;
-        private Track _previewMp3;
-        private TextureStore _textureStore;
 
-        public BeatmapsetContainer(Beatmapset beatmapset)
+        public BeatmapsetContainer(Beatmapset beatmapset, Track previewMp3, Texture backgroundTexture)
         {
+            _previewMp3 = previewMp3;
+            _backgroundTexture = backgroundTexture;
             _beatmapset.Value = beatmapset;
         }
 
@@ -43,12 +43,15 @@ namespace osu_request.Drawables
             base.UpdateAfterAutoSize();
         }
 
-        [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, AudioManager audioManager)
+        protected override void LoadComplete()
         {
-            _textureStore = textureStore;
-            _audioManager = audioManager;
+            base.LoadComplete();
+            this.FadeInFromZero(1000, Easing.InQuad);
+        }
 
+        [BackgroundDependencyLoader]
+        private void Load()
+        {
             InitSelf();
             InitChildren();
             InitContent();
@@ -56,6 +59,7 @@ namespace osu_request.Drawables
 
         private void InitSelf()
         {
+            Alpha = 0;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             Size = new Vector2(500);
@@ -68,13 +72,12 @@ namespace osu_request.Drawables
             {
                 new BeatmapsetContainerDownload(),
                 new BeatmapsetContainerDelete(),
-                _foreground = new BeatmapsetContainerForeground(_beatmapset)
+                _foreground = new BeatmapsetContainerForeground(_beatmapset, _backgroundTexture)
             };
         }
 
         private void InitContent()
         {
-            _previewMp3 = _audioManager.GetTrackStore().Get(_beatmapset.Value.PreviewUrl);
             _previewMp3.Volume.Value = .5;
             _previewMp3.Completed += _previewMp3.Restart;
             _foreground.OnHoverAction += OnHover;
