@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
@@ -14,7 +13,6 @@ using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
 using volcanicarts.osu.NET.Client;
-using volcanicarts.osu.NET.Structures;
 
 namespace osu_request
 {
@@ -25,30 +23,28 @@ namespace osu_request
         private const string osuClientId = "";
         private const string osuClientSecret = "";
         
-        private readonly OsuClient osuClient;
-        private readonly TwitchClient twitchClient;
+        private readonly OsuClient _osuClient;
+        private readonly TwitchClient _twitchClient;
 
         private DependencyContainer _dependencies;
 
-        private Container _contentContainer;
-
-        private BeatmapsetListContainer beatmapsetListContainer;
+        private BeatmapsetListContainer _beatmapsetListContainer;
 
         public Application()
         {
             OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
-            osuClient = new OsuClientLocal(osuClientCredentials);
-            twitchClient = new TwitchClient(twitchChannelName, twitchOAuthToken, twitchChannelName);
+            _osuClient = new OsuClientLocal(osuClientCredentials);
+            _twitchClient = new TwitchClient(twitchChannelName, twitchOAuthToken, twitchChannelName);
             Login();
         }
 
         private async void Login()
         {
-            twitchClient.JoinChannel();
-            await osuClient.LoginAsync();
+            _twitchClient.JoinChannel();
+            await _osuClient.LoginAsync();
         }
-        
-        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) => 
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         // Override framework bindings to stop the user being able to cycle the frame sync
@@ -65,15 +61,15 @@ namespace osu_request
 
         protected override void UpdateAfterChildren()
         {
-            twitchClient.ReadMessage();
+            _twitchClient.ReadMessage();
         }
 
         [BackgroundDependencyLoader]
         private void Load(FrameworkConfigManager frameworkConfig)
         {
             SetupDefaults(frameworkConfig);
-            _dependencies.CacheAs(twitchClient);
-            _dependencies.CacheAs(osuClient);
+            _dependencies.CacheAs(_twitchClient);
+            _dependencies.CacheAs(_osuClient);
 
             Children = new Drawable[]
             {
@@ -102,12 +98,12 @@ namespace osu_request
                     {
                         Top = 60.0f
                     },
-                    Child = _contentContainer = new Container
+                    Child = new Container
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Child = beatmapsetListContainer = new BeatmapsetListContainer
+                        Child = _beatmapsetListContainer = new BeatmapsetListContainer
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,

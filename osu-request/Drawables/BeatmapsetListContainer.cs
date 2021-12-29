@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ namespace osu_request.Drawables
     {
         private readonly List<BeatmapsetContainer> _containers = new();
         private FillFlowContainer _fillFlowContainer;
-        private List<Beatmapset> BeatmapsToAdd = new();
+        private readonly List<Beatmapset> BeatmapsToAdd = new();
 
         private OsuClient localOsuClient;
         private TwitchClient localTwitchClient;
@@ -33,15 +32,8 @@ namespace osu_request.Drawables
         private void AddBeatmapset(Beatmapset beatmapset)
         {
             var beatmapsetContainer = new BeatmapsetContainer(beatmapset);
-            beatmapsetContainer.ContainerClicked += RemoveBeatmap;
             _containers.Add(beatmapsetContainer);
             _fillFlowContainer.Add(beatmapsetContainer);
-        }
-
-        private void RemoveBeatmap(BeatmapsetContainer beatmapsetContainer)
-        {
-            _containers.Remove(beatmapsetContainer);
-            _fillFlowContainer.Remove(beatmapsetContainer);
         }
 
         private void HandleTwitchMessage(string message)
