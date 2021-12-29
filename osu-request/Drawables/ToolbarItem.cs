@@ -13,8 +13,8 @@ namespace osu_request.Drawables
     {
         private Box _background;
         private Container _scaleContainer;
+        private bool _selected;
         public Action<ToolbarItem> OnSelected;
-        private bool Selected;
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -59,21 +59,21 @@ namespace osu_request.Drawables
 
         protected override bool OnHover(HoverEvent e)
         {
-            if (!Selected) _scaleContainer.MoveToY(5f, 200, Easing.OutCubic);
+            if (!_selected) _scaleContainer.MoveToY(5f, 200, Easing.OutCubic);
 
             return true;
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            if (!Selected) _scaleContainer.MoveToY(0f, 200, Easing.OutBounce);
+            if (!_selected) _scaleContainer.MoveToY(0f, 200, Easing.OutBounce);
 
             base.OnHoverLost(e);
         }
 
         protected override bool OnClick(ClickEvent e)
         {
-            Selected = true;
+            _selected = true;
             OnSelected.Invoke(this);
             _scaleContainer.MoveToY(10f, 200, Easing.OutCubic);
             _background.FadeColour(Color4.DarkGray, 250, Easing.OutCubic);
@@ -86,7 +86,7 @@ namespace osu_request.Drawables
             _scaleContainer.MoveToY(0f, 500, Easing.OutBounce);
             _background.FadeColour(Color4.Gray, 250, Easing.OutCubic);
             _scaleContainer.BorderThickness = 3;
-            Selected = false;
+            _selected = false;
         }
     }
 }

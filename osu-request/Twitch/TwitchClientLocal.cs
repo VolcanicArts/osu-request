@@ -22,8 +22,8 @@ namespace osu_request.Twitch
 
         private void Init()
         {
-            _twitchClient.OnMessageReceived += (o, args) => _messages.Add(args);
-            _twitchClient.OnLog += (o, args) => Logger.Log($"[TwitchClient]: {args.Data}");
+            _twitchClient.OnMessageReceived += (_, args) => _messages.Add(args);
+            _twitchClient.OnLog += (_, args) => Logger.Log($"[TwitchClient]: {args.Data}");
         }
 
         public void Connect()

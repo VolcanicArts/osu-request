@@ -15,9 +15,8 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetContainerForeground : Container
     {
-        private readonly Bindable<Beatmapset> _beatmapset;
-        private Sprite _background;
         private readonly Texture _backgroundTexture;
+        private readonly Bindable<Beatmapset> _beatmapset;
         private TextFlowContainer _beatmapsetCreator;
         private TextFlowContainer _beatmapsetTitle;
 
@@ -66,7 +65,7 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                _background = new Sprite
+                new Sprite
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,

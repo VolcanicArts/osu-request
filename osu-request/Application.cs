@@ -23,13 +23,11 @@ namespace osu_request
         private const string twitchOAuthToken = "";
         private const string osuClientId = "";
         private const string osuClientSecret = "";
-        
+
         private readonly OsuClient _osuClient;
         private readonly TwitchClientLocal _twitchClient;
 
         private DependencyContainer _dependencies;
-
-        private BeatmapsetListContainer _beatmapsetListContainer;
 
         public Application()
         {
@@ -39,15 +37,6 @@ namespace osu_request
             _twitchClient = new TwitchClientLocal(twitchCredentials);
             Login();
         }
-
-        private async void Login()
-        {
-            _twitchClient.Connect();
-            await _osuClient.LoginAsync();
-        }
-
-        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
-            _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         // Override framework bindings to stop the user being able to cycle the frame sync
         bool IKeyBindingHandler<FrameworkAction>.OnPressed(KeyBindingPressEvent<FrameworkAction> e)
@@ -59,6 +48,17 @@ namespace osu_request
                 default:
                     return base.OnPressed(e);
             }
+        }
+
+        private async void Login()
+        {
+            _twitchClient.Connect();
+            await _osuClient.LoginAsync();
+        }
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
+        {
+            return _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
         }
 
         protected override void UpdateAfterChildren()
@@ -105,7 +105,7 @@ namespace osu_request
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Child = _beatmapsetListContainer = new BeatmapsetListContainer
+                        Child = new BeatmapsetListContainer
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,

@@ -18,18 +18,18 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetListContainer : Container
     {
-        private readonly List<BeatmapsetContainer> BeatmapsetContainersToAdd = new();
+        private readonly List<BeatmapsetContainer> _beatmapsetContainersToAdd = new();
         private AudioManager _audioManager;
         private FillFlowContainer _fillFlowContainer;
+
+        private OsuClient _localOsuClient;
         private TwitchClientLocal _localTwitchClient;
         private TextureStore _textureStore;
 
-        private OsuClient localOsuClient;
-
         private void AddAllBeatmapsets()
         {
-            foreach (var beatmapsetContainer in BeatmapsetContainersToAdd) AddBeatmapset(beatmapsetContainer);
-            BeatmapsetContainersToAdd.Clear();
+            foreach (var beatmapsetContainer in _beatmapsetContainersToAdd) AddBeatmapset(beatmapsetContainer);
+            _beatmapsetContainersToAdd.Clear();
         }
 
         private void AddBeatmapset(BeatmapsetContainer beatmapsetContainer)
@@ -52,7 +52,7 @@ namespace osu_request.Drawables
             {
                 Logger.Log($"Requesting beatmap using Id {beatmapId}");
 
-                var beatmap = await localOsuClient.GetBeatmapAsync(beatmapId);
+                var beatmap = await _localOsuClient.GetBeatmapAsync(beatmapId);
                 var beatmapset = await beatmap.GetBeatmapsetAsync();
 
                 Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
@@ -61,10 +61,10 @@ namespace osu_request.Drawables
                 var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
                 var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
 
-                BeatmapsetContainersToAdd.Add(beatmapsetContainer);
+                _beatmapsetContainersToAdd.Add(beatmapsetContainer);
                 Scheduler.AddOnce(AddAllBeatmapsets);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 Logger.Log($"Unavailable beatmap using Id {beatmapId}", LoggingTarget.Runtime, LogLevel.Error);
             }
@@ -78,7 +78,7 @@ namespace osu_request.Drawables
             _audioManager = audioManager;
             _localTwitchClient = twitchClient;
             _localTwitchClient.OnChatMessage += HandleTwitchMessage;
-            localOsuClient = osuClient;
+            _localOsuClient = osuClient;
             Children = new Drawable[]
             {
                 new Box
