@@ -9,6 +9,7 @@ using osu.Framework.Logging;
 using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
+using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Client;
 using volcanicarts.osu.NET.Structures;
 
@@ -17,11 +18,11 @@ namespace osu_request.Drawables
     public class BeatmapsetListContainer : Container
     {
         private readonly List<BeatmapsetContainer> _containers = new();
-        private FillFlowContainer _fillFlowContainer;
         private readonly List<Beatmapset> BeatmapsToAdd = new();
+        private FillFlowContainer _fillFlowContainer;
+        private TwitchClientLocal _localTwitchClient;
 
         private OsuClient localOsuClient;
-        private TwitchClient localTwitchClient;
 
         private void AddAllBeatmapsets()
         {
@@ -36,11 +37,11 @@ namespace osu_request.Drawables
             _fillFlowContainer.Add(beatmapsetContainer);
         }
 
-        private void HandleTwitchMessage(string message)
+        private void HandleTwitchMessage(ChatMessage message)
         {
-            if (message.StartsWith("!rq"))
+            if (message.Message.StartsWith("!rq"))
             {
-                var beatmapId = message.Split(" ")[1];
+                var beatmapId = message.Message.Split(" ")[1];
                 LoadBeatmap(beatmapId).ConfigureAwait(false);
             }
         }
@@ -63,10 +64,10 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TwitchClient twitchClient, OsuClient osuClient)
+        private void Load(TwitchClientLocal twitchClient, OsuClient osuClient)
         {
-            localTwitchClient = twitchClient;
-            localTwitchClient.OnMessage += HandleTwitchMessage;
+            _localTwitchClient = twitchClient;
+            _localTwitchClient.OnChatMessage += HandleTwitchMessage;
             localOsuClient = osuClient;
             Children = new Drawable[]
             {
@@ -102,7 +103,7 @@ namespace osu_request.Drawables
         protected override void Dispose(bool isDisposing)
         {
             base.Dispose(isDisposing);
-            localTwitchClient.OnMessage -= HandleTwitchMessage;
+            _localTwitchClient.OnChatMessage -= HandleTwitchMessage;
         }
     }
 }

@@ -12,6 +12,7 @@ using osu_request.Osu;
 using osu_request.Twitch;
 using osuTK;
 using osuTK.Graphics;
+using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Client;
 
 namespace osu_request
@@ -24,7 +25,7 @@ namespace osu_request
         private const string osuClientSecret = "";
         
         private readonly OsuClient _osuClient;
-        private readonly TwitchClient _twitchClient;
+        private readonly TwitchClientLocal _twitchClient;
 
         private DependencyContainer _dependencies;
 
@@ -34,13 +35,14 @@ namespace osu_request
         {
             OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
             _osuClient = new OsuClientLocal(osuClientCredentials);
-            _twitchClient = new TwitchClient(twitchChannelName, twitchOAuthToken, twitchChannelName);
+            ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
+            _twitchClient = new TwitchClientLocal(twitchCredentials);
             Login();
         }
 
         private async void Login()
         {
-            _twitchClient.JoinChannel();
+            _twitchClient.Connect();
             await _osuClient.LoginAsync();
         }
 
@@ -61,7 +63,7 @@ namespace osu_request
 
         protected override void UpdateAfterChildren()
         {
-            _twitchClient.ReadMessage();
+            _twitchClient.Update();
         }
 
         [BackgroundDependencyLoader]
