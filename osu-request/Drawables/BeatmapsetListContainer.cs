@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -17,11 +19,18 @@ namespace osu_request.Drawables
     {
         private readonly List<BeatmapsetContainer> _containers = new();
         private FillFlowContainer _fillFlowContainer;
+        private List<Beatmapset> BeatmapsToAdd = new();
 
         private OsuClient localOsuClient;
         private TwitchClient localTwitchClient;
 
-        public void AddBeatmapset(Beatmapset beatmapset)
+        private void AddAllBeatmapsets()
+        {
+            foreach (var beatmapset in BeatmapsToAdd) AddBeatmapset(beatmapset);
+            BeatmapsToAdd.Clear();
+        }
+
+        private void AddBeatmapset(Beatmapset beatmapset)
         {
             var beatmapsetContainer = new BeatmapsetContainer(beatmapset);
             beatmapsetContainer.ContainerClicked += RemoveBeatmap;
@@ -35,21 +44,29 @@ namespace osu_request.Drawables
             _fillFlowContainer.Remove(beatmapsetContainer);
         }
 
-        private async void HandleTwitchMessage(string message)
+        private void HandleTwitchMessage(string message)
         {
             if (message.StartsWith("!rq"))
             {
                 var beatmapId = message.Split(" ")[1];
-                try
-                {
-                    var beatmap = await localOsuClient.GetBeatmapAsync(beatmapId);
-                    var beatmapset = await beatmap.GetBeatmapsetAsync();
-                    AddBeatmapset(beatmapset);
-                }
-                catch (HttpRequestException e)
-                {
-                    Logger.Log("Unavailable beatmap", LoggingTarget.Runtime, LogLevel.Error);
-                }
+                LoadBeatmap(beatmapId).ConfigureAwait(false);
+            }
+        }
+
+        private async Task LoadBeatmap(string beatmapId)
+        {
+            try
+            {
+                Logger.Log($"Requesting beatmap using Id {beatmapId}");
+                var beatmap = await localOsuClient.GetBeatmapAsync(beatmapId);
+                var beatmapset = await beatmap.GetBeatmapsetAsync();
+                Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
+                BeatmapsToAdd.Add(beatmapset);
+                Scheduler.AddOnce(AddAllBeatmapsets);
+            }
+            catch (HttpRequestException e)
+            {
+                Logger.Log($"Unavailable beatmap using Id {beatmapId}", LoggingTarget.Runtime, LogLevel.Error);
             }
         }
 

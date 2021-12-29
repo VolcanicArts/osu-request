@@ -30,8 +30,6 @@ namespace osu_request
 
         private DependencyContainer _dependencies;
 
-        private readonly List<Beatmapset> BeatmapsetsToAdd = new();
-
         private Container _contentContainer;
 
         private BeatmapsetListContainer beatmapsetListContainer;
@@ -123,19 +121,6 @@ namespace osu_request
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)
         {
             frameworkConfig.GetBindable<FrameSync>(FrameworkSetting.FrameSync).Value = FrameSync.VSync;
-        }
-
-        protected override void Update()
-        {
-            AddBeatmapsets();
-            BeatmapsetsToAdd.Clear();
-            base.Update();
-        }
-
-        private void AddBeatmapsets()
-        {
-            if (BeatmapsetsToAdd.Count == 0) return;
-            beatmapsetListContainer.AddBeatmapset(BeatmapsetsToAdd[0]);
         }
     }
 }
