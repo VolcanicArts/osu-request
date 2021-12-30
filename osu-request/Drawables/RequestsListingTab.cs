@@ -9,6 +9,8 @@ namespace osu_request.Drawables
 {
     public class RequestsListingTab : Container
     {
+        private Container _borderContainer;
+        
         [BackgroundDependencyLoader]
         private void Load()
         {
@@ -25,9 +27,15 @@ namespace osu_request.Drawables
             Padding = new MarginPadding(20.0f);
         }
 
+        protected override void UpdateAfterAutoSize()
+        {
+            base.UpdateAfterAutoSize();
+            _borderContainer.CornerRadius = DrawWidth / 10.0f;
+        }
+
         private void InitChildren()
         {
-            Child = new Container
+            Child = _borderContainer = new Container
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
