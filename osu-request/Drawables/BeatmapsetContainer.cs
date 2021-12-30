@@ -29,13 +29,13 @@ namespace osu_request.Drawables
 
         private new void OnHover(HoverEvent e)
         {
-            this.ScaleTo(0.95f, 300, Easing.OutBounce);
+            this.ScaleTo(0.9f, 300, Easing.OutBounce);
             _previewMp3?.Restart();
         }
 
         private new void OnHoverLost(HoverLostEvent e)
         {
-            this.ScaleTo(0.9f, 300, Easing.OutBounce);
+            this.ScaleTo(0.85f, 300, Easing.OutBounce);
             _previewMp3?.Stop();
             base.OnHoverLost(e);
         }
@@ -71,7 +71,7 @@ namespace osu_request.Drawables
 
         private void InitSelf()
         {
-            Scale = new Vector2(0.9f);
+            Scale = new Vector2(0.85f);
             Alpha = 0;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;

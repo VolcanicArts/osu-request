@@ -30,7 +30,7 @@ namespace osu_request.Drawables
         protected override void UpdateAfterAutoSize()
         {
             base.UpdateAfterAutoSize();
-            _borderContainer.CornerRadius = DrawWidth / 10.0f;
+            _borderContainer.CornerRadius = DrawWidth / 20.0f;
         }
 
         private void InitChildren()
@@ -58,7 +58,11 @@ namespace osu_request.Drawables
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Padding = new MarginPadding(6.0f)
+                        Padding = new MarginPadding
+                        {
+                            Vertical = 6.0f,
+                            Horizontal = 20.0f
+                        }
                     }
                 }
             };
