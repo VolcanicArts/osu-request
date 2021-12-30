@@ -29,6 +29,9 @@ namespace osu_request
 
         private DependencyContainer _dependencies;
 
+        private Container _contentContainer;
+        private RequestsListingTab requestListingTab;
+
         public Application()
         {
             OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
@@ -54,6 +57,18 @@ namespace osu_request
         {
             _twitchClient.Connect();
             await _osuClient.LoginAsync();
+        }
+
+        private void InitTabs()
+        {
+            requestListingTab = new RequestsListingTab();
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            InitTabs();
+            _contentContainer.Child = requestListingTab;
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
@@ -82,34 +97,29 @@ namespace osu_request
                     Origin = Anchor.Centre,
                     Colour = Color4.DarkGray
                 },
-                new Toolbar
+                new Container
                 {
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    RelativeSizeAxes = Axes.X,
-                    Height = 60.0f
-                },
-                new FillFlowContainer
-                {
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.5f, 1.0f),
-                    Direction = FillDirection.Vertical,
-                    Margin = new MarginPadding
+                    Children = new Drawable[]
                     {
-                        Top = 60.0f
-                    },
-                    Child = new Container
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Child = new BeatmapsetListContainer
+                        new Toolbar
+                        {
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            RelativeSizeAxes = Axes.X,
+                            Size = new Vector2(1.0f, 60.0f)
+                        },
+                        _contentContainer = new Container
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both
+                            RelativeSizeAxes = Axes.Both,
+                            Padding = new MarginPadding
+                            {
+                                Top = 60.0f
+                            }
                         }
                     }
                 }

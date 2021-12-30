@@ -81,14 +81,6 @@ namespace osu_request.Drawables
             _localOsuClient = osuClient;
             Children = new Drawable[]
             {
-                new Box
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f),
-                    Colour = Color4.Aqua
-                },
                 new BasicScrollContainer
                 {
                     Anchor = Anchor.Centre,
