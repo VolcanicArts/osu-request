@@ -43,8 +43,8 @@ namespace osu_request.Drawables
         {
             CornerRadius = e.NewValue;
             _detailsContainer.CornerRadius = e.NewValue * 0.9f;
-            _beatmapsetTitle.ScaleTo(e.NewValue / 50.0f);
-            _beatmapsetCreator.ScaleTo(e.NewValue / 50.0f);
+            _beatmapsetTitle.ScaleTo(e.NewValue * 0.05f);
+            _beatmapsetCreator.ScaleTo(e.NewValue * 0.04f);
         }
 
         protected override bool OnHover(HoverEvent e)
@@ -110,7 +110,6 @@ namespace osu_request.Drawables
                             RelativeAnchorPosition = new Vector2(0.5f, 0.3f),
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(1.0f, 0.5f),
-                            Padding = new MarginPadding(15)
                         },
                         _beatmapsetCreator = new TextFlowContainer
                         {
@@ -120,7 +119,6 @@ namespace osu_request.Drawables
                             RelativeAnchorPosition = new Vector2(0.5f, 0.7f),
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(1.0f, 0.5f),
-                            Padding = new MarginPadding(10)
                         }
                     }
                 }
@@ -132,7 +130,7 @@ namespace osu_request.Drawables
             _beatmapsetTitle.AddText(_beatmapset.Value.Title,
                 t =>
                 {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 25);
+                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 10);
                     t.Shadow = true;
                     t.ShadowColour = new Color4(0, 0, 0, 0.75f);
                     t.ShadowOffset = new Vector2(0.05f);
@@ -141,7 +139,7 @@ namespace osu_request.Drawables
             _beatmapsetCreator.AddText($"Mapped by {_beatmapset.Value.Creator}",
                 t =>
                 {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 25);
+                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 10);
                     t.Shadow = true;
                     t.ShadowColour = new Color4(0, 0, 0, 0.75f);
                     t.ShadowOffset = new Vector2(0.05f);
