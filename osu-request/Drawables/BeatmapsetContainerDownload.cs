@@ -22,7 +22,6 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
-            CornerRadius = 50;
             Masking = true;
             Size = new Vector2(1f);
             Position = new Vector2(-20, 0);

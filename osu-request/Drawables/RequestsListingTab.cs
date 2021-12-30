@@ -32,7 +32,7 @@ namespace osu_request.Drawables
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
-                BorderThickness = 2,
+                BorderThickness = 6,
                 BorderColour = Color4.Black,
                 Masking = true,
                 CornerRadius = 50,
@@ -50,7 +50,7 @@ namespace osu_request.Drawables
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Padding = new MarginPadding(5.0f)
+                        Padding = new MarginPadding(6.0f)
                     }
                 }
             };

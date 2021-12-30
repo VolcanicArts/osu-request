@@ -15,7 +15,10 @@ namespace osu_request.Drawables
         private readonly Texture _backgroundTexture;
         private readonly Bindable<Beatmapset> _beatmapset = new();
         private readonly Track _previewMp3;
-        private BeatmapsetContainerForeground _foreground;
+        private BeatmapsetContainerForeground _foregroundContainer;
+        private BeatmapsetContainerDownload _downloadContainer;
+        private BeatmapsetContainerDelete _deleteContainer;
+        private readonly Bindable<float> GlobalCornerRadius = new();
 
         public BeatmapsetContainer(Beatmapset beatmapset, Track previewMp3, Texture backgroundTexture)
         {
@@ -26,13 +29,13 @@ namespace osu_request.Drawables
 
         private new void OnHover(HoverEvent e)
         {
-            this.ScaleTo(1.1f, 300, Easing.OutBounce);
+            this.ScaleTo(0.95f, 300, Easing.OutBounce);
             _previewMp3?.Restart();
         }
 
         private new void OnHoverLost(HoverLostEvent e)
         {
-            this.ScaleTo(1.0f, 300, Easing.OutBounce);
+            this.ScaleTo(0.9f, 300, Easing.OutBounce);
             _previewMp3?.Stop();
             base.OnHoverLost(e);
         }
@@ -40,6 +43,7 @@ namespace osu_request.Drawables
         protected override void UpdateAfterAutoSize()
         {
             Size = new Vector2(Size.X, DrawWidth * 0.35f);
+            UpdateAllCorners();
             base.UpdateAfterAutoSize();
         }
 
@@ -47,6 +51,14 @@ namespace osu_request.Drawables
         {
             base.LoadComplete();
             this.FadeInFromZero(1000, Easing.InQuad);
+        }
+
+        private void UpdateAllCorners()
+        {
+            var newCornerRadius = DrawWidth / 10.0f;
+            GlobalCornerRadius.Value = newCornerRadius;
+            _deleteContainer.CornerRadius = newCornerRadius;
+            _downloadContainer.CornerRadius = newCornerRadius;
         }
 
         [BackgroundDependencyLoader]
@@ -59,10 +71,11 @@ namespace osu_request.Drawables
 
         private void InitSelf()
         {
+            Scale = new Vector2(0.9f);
             Alpha = 0;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
-            Size = new Vector2(500);
+            RelativeSizeAxes = Axes.X;
             Margin = new MarginPadding(10.0f);
         }
 
@@ -70,9 +83,9 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new BeatmapsetContainerDownload(),
-                new BeatmapsetContainerDelete(),
-                _foreground = new BeatmapsetContainerForeground(_beatmapset, _backgroundTexture)
+                _downloadContainer = new BeatmapsetContainerDownload(),
+                _deleteContainer = new BeatmapsetContainerDelete(),
+                _foregroundContainer = new BeatmapsetContainerForeground(_beatmapset, _backgroundTexture, GlobalCornerRadius)
             };
         }
 
@@ -80,8 +93,8 @@ namespace osu_request.Drawables
         {
             _previewMp3.Volume.Value = .5;
             _previewMp3.Completed += _previewMp3.Restart;
-            _foreground.OnHoverAction += OnHover;
-            _foreground.OnHoverLostAction += OnHoverLost;
+            _foregroundContainer.OnHoverAction += OnHover;
+            _foregroundContainer.OnHoverLostAction += OnHoverLost;
         }
 
         protected override void Dispose(bool isDisposing)
