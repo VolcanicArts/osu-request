@@ -7,10 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="ppy.osu.Framework" Version="2021.1222.0"/>
-        <PackageReference Include="TwitchLib.Client" Version="3.2.4"/>
-        <PackageReference Include="volcanicarts.osu.NET" Version="2021.1218.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="ppy.osu.Framework" Version="2021.1227.0" />
+        <PackageReference Include="TwitchLib.Client" Version="3.2.4" />
+        <PackageReference Include="volcanicarts.osu.NET" Version="2021.1218.0" />
     </ItemGroup>
 
 </Project>
