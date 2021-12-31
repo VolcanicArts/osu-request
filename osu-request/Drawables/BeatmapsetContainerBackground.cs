@@ -77,7 +77,7 @@ namespace osu_request.Drawables
                             Origin = Anchor.TopLeft,
                             Text = $"Rank Status: {_beatmapset.Value.Ranked}",
                             Shadow = true,
-                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowColour = Color4.Black.Opacity(0.75f),
                             ShadowOffset = new Vector2(0.05f),
                         },
                         _playCount = new SpriteText
@@ -86,7 +86,7 @@ namespace osu_request.Drawables
                             Origin = Anchor.CentreLeft,
                             Text = $"Play Count: {_beatmapset.Value.PlayCount.ToString("N0", new CultureInfo("en-US"))}",
                             Shadow = true,
-                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowColour = Color4.Black.Opacity(0.75f),
                             ShadowOffset = new Vector2(0.05f),
                         },
                     }

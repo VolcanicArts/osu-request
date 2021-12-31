@@ -1,6 +1,7 @@
 ﻿using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -81,7 +82,7 @@ namespace osu_request.Drawables
             Children = new Drawable[]
             {
                 new BackgroundSprite(_backgroundTexture){
-                    Colour = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                    Colour = Color4.White,
                 },
                 _detailsContainer = new Container
                 {
@@ -95,7 +96,7 @@ namespace osu_request.Drawables
 
                     Children = new Drawable[]
                     {
-                        new BackgroundContainer(new Color4(0.5f, 0.5f, 0.5f, 0.5f)),
+                        new BackgroundContainer(Color4.Gray.Opacity(0.5f)),
                         _title = new SpriteText
                         {
                             Anchor = Anchor.TopCentre,
@@ -103,7 +104,7 @@ namespace osu_request.Drawables
                             RelativeAnchorPosition = new Vector2(0.5f, 0.2f),
                             Text = _beatmapset.Value.Title,
                             Shadow = true,
-                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowColour = Color4.Black.Opacity(0.75f),
                             ShadowOffset = new Vector2(0.05f),
                         },
                         _mapper = new SpriteText
@@ -113,7 +114,7 @@ namespace osu_request.Drawables
                             RelativeAnchorPosition = new Vector2(0.5f, 0.7f),
                             Text = _beatmapset.Value.Creator,
                             Shadow = true,
-                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowColour = Color4.Black.Opacity(0.75f),
                             ShadowOffset = new Vector2(0.05f),
                         },
                     }
