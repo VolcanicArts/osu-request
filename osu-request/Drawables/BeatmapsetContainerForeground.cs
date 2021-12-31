@@ -17,8 +17,8 @@ namespace osu_request.Drawables
     {
         private readonly Texture _backgroundTexture;
         private readonly Bindable<Beatmapset> _beatmapset;
-        private TextFlowContainer _beatmapsetCreator;
-        private TextFlowContainer _beatmapsetTitle;
+        private SpriteText _mapper;
+        private SpriteText _title;
         private Container _detailsContainer;
 
         public Action<HoverEvent> OnHoverAction;
@@ -36,15 +36,19 @@ namespace osu_request.Drawables
         {
             InitSelf();
             InitChildren();
-            AddDetails();
         }
 
         private void UpdateSizing(ValueChangedEvent<float> e)
         {
             CornerRadius = e.NewValue;
             _detailsContainer.CornerRadius = e.NewValue * 0.9f;
-            _beatmapsetTitle.ScaleTo(e.NewValue * 0.1f);
-            _beatmapsetCreator.ScaleTo(e.NewValue * 0.08f);
+        }
+
+        protected override void UpdateAfterAutoSize()
+        {
+            base.UpdateAfterAutoSize();
+            _title.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 15.0f);
+            _mapper.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 20.0f);
         }
 
         protected override bool OnHover(HoverEvent e)
@@ -97,55 +101,30 @@ namespace osu_request.Drawables
 
                     Children = new Drawable[]
                     {
-                        new Box
+                        new BackgroundContainer(new Color4(0.5f, 0.5f, 0.5f, 0.5f)),
+                        _title = new SpriteText
                         {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Colour = new Color4(0.5f, 0.5f, 0.5f, 0.5f)
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            RelativeAnchorPosition = new Vector2(0.5f, 0.2f),
+                            Text = _beatmapset.Value.Title,
+                            Shadow = true,
+                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowOffset = new Vector2(0.05f),
                         },
-                        _beatmapsetTitle = new TextFlowContainer
+                        _mapper = new SpriteText
                         {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            TextAnchor = Anchor.Centre,
-                            RelativeAnchorPosition = new Vector2(0.5f, 0.3f),
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f)
-                        },
-                        _beatmapsetCreator = new TextFlowContainer
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            TextAnchor = Anchor.Centre,
+                            Anchor = Anchor.BottomCentre,
+                            Origin = Anchor.BottomCentre,
                             RelativeAnchorPosition = new Vector2(0.5f, 0.7f),
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f)
-                        }
+                            Text = _beatmapset.Value.Creator,
+                            Shadow = true,
+                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowOffset = new Vector2(0.05f),
+                        },
                     }
                 }
             };
-        }
-
-        private void AddDetails()
-        {
-            _beatmapsetTitle.AddText(_beatmapset.Value.Title,
-                t =>
-                {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 10);
-                    t.Shadow = true;
-                    t.ShadowColour = new Color4(0, 0, 0, 0.75f);
-                    t.ShadowOffset = new Vector2(0.05f);
-                });
-
-            _beatmapsetCreator.AddText($"Mapped by {_beatmapset.Value.Creator}",
-                t =>
-                {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 10);
-                    t.Shadow = true;
-                    t.ShadowColour = new Color4(0, 0, 0, 0.75f);
-                    t.ShadowOffset = new Vector2(0.05f);
-                });
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using System.Drawing;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -46,13 +47,7 @@ namespace osu_request.Drawables
                 CornerRadius = 20,
                 Children = new Drawable[]
                 {
-                    new Box
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Colour = Color4.Gray
-                    },
+                    new BackgroundContainer(Color4.Gray),
                     new BeatmapsetListContainer
                     {
                         Anchor = Anchor.Centre,

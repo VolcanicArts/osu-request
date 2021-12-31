@@ -16,9 +16,8 @@ namespace osu_request.Drawables
     {
         private readonly Bindable<Beatmapset> _beatmapset;
         private readonly Bindable<float> _globalCornerRadius;
-        private TextFlowContainer _playCount;
-
-        private TextFlowContainer _ranked;
+        private SpriteText _playCount;
+        private SpriteText _ranked;
 
         public BeatmapsetBackgroundContainer(Bindable<Beatmapset> beatmapset, Bindable<float> GlobalCornerRadius)
         {
@@ -32,12 +31,18 @@ namespace osu_request.Drawables
             CornerRadius = e.NewValue;
         }
 
+        protected override void UpdateAfterAutoSize()
+        {
+            base.UpdateAfterAutoSize();
+            _ranked.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 30.0f);
+            _playCount.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 30.0f);
+        }
+
         [BackgroundDependencyLoader]
         private void Load()
         {
             InitSelf();
             InitChildren();
-            InitContent();
         }
 
         private void InitSelf()
@@ -55,13 +60,7 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new Box
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = Color4.Gray.Lighten(0.25f)
-                },
+                new BackgroundContainer(Color4.Gray.Lighten(0.25f)),
                 new Container
                 {
                     Anchor = Anchor.Centre,
@@ -72,43 +71,27 @@ namespace osu_request.Drawables
                     Padding = new MarginPadding(10.0f),
                     Children = new Drawable[]
                     {
-                        _ranked = new TextFlowContainer
+                        _ranked = new SpriteText
                         {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            TextAnchor = Anchor.TopLeft
+                            Anchor = Anchor.TopLeft,
+                            Origin = Anchor.TopLeft,
+                            Text = $"Rank Status: {_beatmapset.Value.Ranked}",
+                            Shadow = true,
+                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowOffset = new Vector2(0.05f),
                         },
-                        _playCount = new TextFlowContainer
+                        _playCount = new SpriteText
                         {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            TextAnchor = Anchor.CentreLeft
-                        }
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            Text = $"Play Count: {_beatmapset.Value.PlayCount.ToString("N0", new CultureInfo("en-US"))}",
+                            Shadow = true,
+                            ShadowColour = new Color4(0, 0, 0, 0.75f),
+                            ShadowOffset = new Vector2(0.05f),
+                        },
                     }
                 }
             };
-        }
-
-        private void InitContent()
-        {
-            _ranked.AddText($"Rank Status: {_beatmapset.Value.Ranked}",
-                t =>
-                {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 20);
-                    t.Shadow = true;
-                    t.ShadowColour = new Color4(0, 0, 0, 0.75f);
-                    t.ShadowOffset = new Vector2(0.05f);
-                });
-            _playCount.AddText($"Play Count: {_beatmapset.Value.PlayCount.ToString("N0", new CultureInfo("en-US"))}",
-                t =>
-                {
-                    t.Font = new FontUsage("Roboto", weight: "Regular", size: 20);
-                    t.Shadow = true;
-                    t.ShadowColour = new Color4(0, 0, 0, 0.75f);
-                    t.ShadowOffset = new Vector2(0.05f);
-                });
         }
     }
 }
