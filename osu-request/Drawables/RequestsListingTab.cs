@@ -10,7 +10,7 @@ namespace osu_request.Drawables
     public class RequestsListingTab : Container
     {
         private Container _borderContainer;
-        
+
         [BackgroundDependencyLoader]
         private void Load()
         {
@@ -20,10 +20,10 @@ namespace osu_request.Drawables
 
         private void InitSelf()
         {
-            Anchor = Anchor.CentreLeft;
-            Origin = Anchor.CentreLeft;
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(0.5f, 1.0f);
+            Size = new Vector2(0.95f, 1.0f);
             Padding = new MarginPadding(20.0f);
         }
 
@@ -43,7 +43,7 @@ namespace osu_request.Drawables
                 BorderThickness = 6,
                 BorderColour = Color4.Black,
                 Masking = true,
-                CornerRadius = 50,
+                CornerRadius = 20,
                 Children = new Drawable[]
                 {
                     new Box

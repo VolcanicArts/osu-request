@@ -27,9 +27,9 @@ namespace osu_request
         private readonly OsuClient _osuClient;
         private readonly TwitchClientLocal _twitchClient;
 
-        private DependencyContainer _dependencies;
-
         private Container _contentContainer;
+
+        private DependencyContainer _dependencies;
         private RequestsListingTab requestListingTab;
 
         public Application()

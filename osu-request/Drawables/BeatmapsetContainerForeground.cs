@@ -43,28 +43,30 @@ namespace osu_request.Drawables
         {
             CornerRadius = e.NewValue;
             _detailsContainer.CornerRadius = e.NewValue * 0.9f;
-            _beatmapsetTitle.ScaleTo(e.NewValue * 0.05f);
-            _beatmapsetCreator.ScaleTo(e.NewValue * 0.04f);
+            _beatmapsetTitle.ScaleTo(e.NewValue * 0.1f);
+            _beatmapsetCreator.ScaleTo(e.NewValue * 0.08f);
         }
 
         protected override bool OnHover(HoverEvent e)
         {
+            this.ScaleTo(1.1f, 1000, Easing.OutElastic);
             OnHoverAction?.Invoke(e);
             return true;
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
+            this.ScaleTo(1.0f, 1000, Easing.OutElastic);
             OnHoverLostAction.Invoke(e);
             base.OnHoverLost(e);
         }
 
         private void InitSelf()
         {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
+            Anchor = Anchor.CentreLeft;
+            Origin = Anchor.CentreLeft;
             RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(1f);
+            Size = new Vector2(0.5f, 1.0f);
             BorderColour = Color4.Black;
             BorderThickness = 5;
             Masking = true;
@@ -109,7 +111,7 @@ namespace osu_request.Drawables
                             TextAnchor = Anchor.Centre,
                             RelativeAnchorPosition = new Vector2(0.5f, 0.3f),
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f),
+                            Size = new Vector2(1.0f, 0.5f)
                         },
                         _beatmapsetCreator = new TextFlowContainer
                         {
@@ -118,7 +120,7 @@ namespace osu_request.Drawables
                             TextAnchor = Anchor.Centre,
                             RelativeAnchorPosition = new Vector2(0.5f, 0.7f),
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f),
+                            Size = new Vector2(1.0f, 0.5f)
                         }
                     }
                 }
