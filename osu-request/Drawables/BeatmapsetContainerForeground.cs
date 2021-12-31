@@ -80,14 +80,8 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new Sprite
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    Size = new Vector2(1.0f),
-                    RelativeSizeAxes = Axes.Both,
+                new BackgroundSprite(_backgroundTexture){
                     Colour = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                    Texture = _backgroundTexture
                 },
                 _detailsContainer = new Container
                 {
