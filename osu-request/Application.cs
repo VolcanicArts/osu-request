@@ -123,6 +123,7 @@ namespace osu_request
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)
         {
             frameworkConfig.GetBindable<FrameSync>(FrameworkSetting.FrameSync).Value = FrameSync.VSync;
+            frameworkConfig.GetBindable<Size>(FrameworkSetting.WindowedSize).Value = new Size(960, 700);
         }
     }
 }
