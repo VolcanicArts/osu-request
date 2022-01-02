@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using osu.Framework;
 using osu.Framework.Allocation;
@@ -21,11 +22,6 @@ namespace osu_request
 {
     public class Application : Game, IKeyBindingHandler<FrameworkAction>
     {
-        private const string twitchChannelName = "";
-        private const string twitchOAuthToken = "";
-        private const string osuClientId = "";
-        private const string osuClientSecret = "";
-
         private readonly OsuClient _osuClient;
         private readonly TwitchClientLocal _twitchClient;
 
@@ -36,8 +32,13 @@ namespace osu_request
 
         public Application()
         {
+            var osuClientId = Environment.GetEnvironmentVariable("osuClientId");
+            var osuClientSecret = Environment.GetEnvironmentVariable("osuClientSecret");
             OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
             _osuClient = new OsuClientLocal(osuClientCredentials);
+            
+            var twitchChannelName = Environment.GetEnvironmentVariable("twitchChannelName");
+            var twitchOAuthToken = Environment.GetEnvironmentVariable("twitchOAuthToken");
             ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
             _twitchClient = new TwitchClientLocal(twitchCredentials);
             Login();
