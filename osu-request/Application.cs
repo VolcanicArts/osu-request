@@ -46,13 +46,13 @@ namespace osu_request
         // Override framework bindings to stop the user being able to cycle the frame sync
         bool IKeyBindingHandler<FrameworkAction>.OnPressed(KeyBindingPressEvent<FrameworkAction> e)
         {
-            switch (e.Action)
+            return e.Action switch
             {
-                case FrameworkAction.CycleFrameSync:
-                    return true;
-                default:
-                    return base.OnPressed(e);
-            }
+                FrameworkAction.CycleFrameSync => true,
+                FrameworkAction.ToggleFullscreen => true,
+                FrameworkAction.CycleExecutionMode => true,
+                _ => base.OnPressed(e)
+            };
         }
 
         private async void Login()
