@@ -1,3 +1,4 @@
+using System.Drawing;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
@@ -7,6 +8,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
+using osu.Framework.Platform;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
@@ -122,7 +124,7 @@ namespace osu_request
 
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)
         {
-            frameworkConfig.GetBindable<FrameSync>(FrameworkSetting.FrameSync).Value = FrameSync.VSync;
+            frameworkConfig.GetBindable<ExecutionMode>(FrameworkSetting.ExecutionMode).Value = ExecutionMode.SingleThread;
             frameworkConfig.GetBindable<Size>(FrameworkSetting.WindowedSize).Value = new Size(960, 700);
         }
     }
