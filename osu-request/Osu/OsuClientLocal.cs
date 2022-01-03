@@ -6,6 +6,7 @@ namespace osu_request.Osu
 {
     public class OsuClientLocal
     {
+        protected internal bool IsReady { get; private set; }
         protected internal OsuClient OsuClient { get; private set; }
 
         public void SetClientCredentials(OsuClientCredentials clientCredentials)
@@ -18,10 +19,12 @@ namespace osu_request.Osu
             try
             {
                 await OsuClient.LoginAsync();
+                IsReady = true;
                 return true;
             }
             catch (Exception)
             {
+                IsReady = false;
                 return false;
             }
         }

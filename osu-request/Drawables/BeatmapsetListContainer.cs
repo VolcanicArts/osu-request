@@ -49,6 +49,12 @@ namespace osu_request.Drawables
             {
                 Logger.Log($"Requesting beatmap using Id {beatmapId}");
 
+                if (!_localOsuClient.IsReady)
+                {
+                    Logger.Log("Client not ready. Cannot request beatmap");
+                    return;
+                }
+                
                 var beatmap = await _localOsuClient.OsuClient.GetBeatmapAsync(beatmapId);
                 var beatmapset = await beatmap.GetBeatmapsetAsync();
 
