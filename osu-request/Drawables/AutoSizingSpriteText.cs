@@ -24,6 +24,9 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
+            RelativeSizeAxes = Axes.Both;
+            Size = new Vector2(1.0f);
+            
             Child = _spriteText = new SpriteText()
             {
                 Anchor = Anchor.Centre,
@@ -38,12 +41,17 @@ namespace osu_request.Drawables
             Text.BindValueChanged(e => _spriteText.Text = e.NewValue);
         }
 
-        private float CalculatedTextSize => Parent.DrawSize.Y - (Parent.Padding.Top + Parent.Padding.Bottom);
+        private float CalculateTextSize()
+        {
+            return DrawSize.X > DrawSize.Y
+                ? DrawSize.Y - (Padding.Top + Padding.Bottom)
+                : DrawSize.X - (Padding.Top + Padding.Bottom);
+        }
 
         protected override void UpdateAfterAutoSize()
         {
             base.UpdateAfterAutoSize();
-            _spriteText.Font = _spriteText.Font.With(size: CalculatedTextSize);
+            _spriteText.Font = _spriteText.Font.With(size: CalculateTextSize());
         }
     }
 }

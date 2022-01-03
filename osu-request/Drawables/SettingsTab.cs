@@ -47,9 +47,8 @@ namespace osu_request.Drawables
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Y,
-                    AutoSizeAxes = Axes.X,
-                    Height = 0.1f,
+                    RelativeSizeAxes = Axes.Both,
+                    Size = new Vector2(1.0f, 0.1f),
                     RelativeAnchorPosition = new Vector2(0.5f, 0.1f),
                     Child = new AutoSizingSpriteText
                     {
@@ -108,9 +107,8 @@ namespace osu_request.Drawables
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Y,
-                    AutoSizeAxes = Axes.X,
-                    Height = 0.1f,
+                    RelativeSizeAxes = Axes.Both,
+                    Size = new Vector2(1.0f, 0.1f),
                     RelativeAnchorPosition = new Vector2(0.5f, 0.8f),
                     Child = _savedText = new AutoSizingSpriteText
                     {
