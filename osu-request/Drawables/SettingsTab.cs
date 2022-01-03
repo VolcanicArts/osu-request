@@ -1,4 +1,4 @@
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -54,6 +54,17 @@ namespace osu_request.Drawables
                     Font = new FontUsage("Roboto", weight: "Regular"),
                     Shadow = true
                 },
+                new AutoSizingSpriteText
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    Size = new Vector2(1.0f, 0.05f),
+                    RelativeAnchorPosition = new Vector2(0.5f, 0.2f),
+                    Text = { Value = "If you're locked in this tab... Your information is wrong" },
+                    Font = new FontUsage("Roboto", weight: "Regular"),
+                    Shadow = true
+                },
                 new FillFlowContainer
                 {
                     Anchor = Anchor.Centre,
@@ -67,6 +78,7 @@ namespace osu_request.Drawables
                             PlaceholderText = "Enter osu! client Id",
                             Text = _osuRequestConfig.Get<string>(OsuRequestSetting.OsuClientId)
                         },
+                        // TODO Change to a censored text box?
                         _osuClientSecretTextBox = new SettingsTextBox
                         {
                             PlaceholderText = "Enter osu! client secret",
@@ -77,6 +89,7 @@ namespace osu_request.Drawables
                             PlaceholderText = "Enter Twitch channel name",
                             Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchChannelName)
                         },
+                        // TODO Change to a censored text box?
                         _twitchOAuthTokenTextBox = new SettingsTextBox
                         {
                             PlaceholderText = "Enter Twitch OAuth token",
