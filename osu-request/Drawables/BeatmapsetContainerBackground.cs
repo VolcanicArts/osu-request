@@ -16,8 +16,6 @@ namespace osu_request.Drawables
     {
         private readonly Bindable<Beatmapset> _beatmapset;
         private readonly Bindable<float> _globalCornerRadius;
-        private SpriteText _playCount;
-        private SpriteText _ranked;
 
         public BeatmapsetBackgroundContainer(Bindable<Beatmapset> beatmapset, Bindable<float> GlobalCornerRadius)
         {
@@ -29,13 +27,6 @@ namespace osu_request.Drawables
         private void UpdateSizing(ValueChangedEvent<float> e)
         {
             CornerRadius = e.NewValue;
-        }
-
-        protected override void UpdateAfterAutoSize()
-        {
-            base.UpdateAfterAutoSize();
-            _ranked.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 30.0f);
-            _playCount.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 30.0f);
         }
 
         [BackgroundDependencyLoader]
@@ -68,27 +59,57 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.Both,
                     Size = new Vector2(0.5f, 1.0f),
                     RelativeAnchorPosition = new Vector2(0.75f, 0.5f),
-                    Padding = new MarginPadding(10.0f),
                     Children = new Drawable[]
                     {
-                        _ranked = new SpriteText
+                        new Container
                         {
-                            Anchor = Anchor.TopLeft,
-                            Origin = Anchor.TopLeft,
-                            Text = $"Rank Status: {_beatmapset.Value.Ranked}",
-                            Shadow = true,
-                            ShadowColour = Color4.Black.Opacity(0.75f),
-                            ShadowOffset = new Vector2(0.05f),
-                        },
-                        _playCount = new SpriteText
-                        {
-                            Anchor = Anchor.CentreLeft,
-                            Origin = Anchor.CentreLeft,
-                            Text = $"Play Count: {_beatmapset.Value.PlayCount.ToString("N0", new CultureInfo("en-US"))}",
-                            Shadow = true,
-                            ShadowColour = Color4.Black.Opacity(0.75f),
-                            ShadowOffset = new Vector2(0.05f),
-                        },
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            RelativeAnchorPosition = new Vector2(0.5f, 0.25f),
+                            Size = new Vector2(1.0f, 0.25f),
+                            Children = new Drawable[]
+                            {
+                                new Container()
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.CentreRight,
+                                    RelativeSizeAxes = Axes.Both,
+                                    Size = new Vector2(1.0f, 1.0f),
+                                    Margin = new MarginPadding
+                                    {
+                                        Right = 2.5f
+                                    },
+                                    Child = new AutoSizingSpriteText
+                                    {
+                                        Anchor = Anchor.CentreRight,
+                                        Origin = Anchor.CentreRight,
+                                        Text = { Value = "Rank Status:" },
+                                        Font = new FontUsage("Roboto", weight: "Regular"),
+                                        Shadow = true
+                                    }
+                                },
+                                new Container()
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.CentreLeft,
+                                    RelativeSizeAxes = Axes.Both,
+                                    Size = new Vector2(1.0f, 1.0f),
+                                    Margin = new MarginPadding
+                                    {
+                                        Left = 2.5f
+                                    },
+                                    Child = new AutoSizingSpriteText
+                                    {
+                                        Anchor = Anchor.CentreLeft,
+                                        Origin = Anchor.CentreLeft,
+                                        Text = { Value = _beatmapset.Value.Ranked.ToString() },
+                                        Font = new FontUsage("Roboto", weight: "Regular"),
+                                        Shadow = true
+                                    }
+                                },
+                            }
+                        }
                     }
                 }
             };

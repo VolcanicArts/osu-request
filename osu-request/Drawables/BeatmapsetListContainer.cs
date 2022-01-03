@@ -86,7 +86,6 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f),
                     ClampExtension = 20.0f,
                     ScrollbarVisible = false,
                     Child = _fillFlowContainer = new FillFlowContainer

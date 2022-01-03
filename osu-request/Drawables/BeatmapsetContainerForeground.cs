@@ -18,8 +18,6 @@ namespace osu_request.Drawables
     {
         private readonly Texture _backgroundTexture;
         private readonly Bindable<Beatmapset> _beatmapset;
-        private SpriteText _mapper;
-        private SpriteText _title;
         private Container _detailsContainer;
 
         public Action<HoverEvent> OnHoverAction;
@@ -43,13 +41,6 @@ namespace osu_request.Drawables
         {
             CornerRadius = e.NewValue;
             _detailsContainer.CornerRadius = e.NewValue * 0.9f;
-        }
-
-        protected override void UpdateAfterAutoSize()
-        {
-            base.UpdateAfterAutoSize();
-            _title.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 15.0f);
-            _mapper.Font = new FontUsage("Roboto", weight: "Regular", size: DrawWidth / 20.0f);
         }
 
         protected override bool OnHover(HoverEvent e)
@@ -81,7 +72,8 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new BackgroundSprite(_backgroundTexture){
+                new BackgroundSprite(_backgroundTexture)
+                {
                     Colour = Color4.White,
                 },
                 _detailsContainer = new Container
@@ -93,29 +85,40 @@ namespace osu_request.Drawables
                     BorderColour = Color4.Black,
                     BorderThickness = 3,
                     Masking = true,
-
                     Children = new Drawable[]
                     {
                         new BackgroundContainer(Color4.Gray.Opacity(0.5f)),
-                        _title = new SpriteText
+                        new Container()
                         {
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            RelativeAnchorPosition = new Vector2(0.5f, 0.2f),
-                            Text = _beatmapset.Value.Title,
-                            Shadow = true,
-                            ShadowColour = Color4.Black.Opacity(0.75f),
-                            ShadowOffset = new Vector2(0.05f),
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(1.0f, 0.2f),
+                            RelativeAnchorPosition = new Vector2(0.5f, 0.3f),
+                            Child = new AutoSizingSpriteText
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                Text = { Value = _beatmapset.Value.Title },
+                                Font = new FontUsage("Roboto", weight: "Regular"),
+                                Shadow = true
+                            }
                         },
-                        _mapper = new SpriteText
+                        new Container()
                         {
-                            Anchor = Anchor.BottomCentre,
-                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(1.0f, 0.2f),
                             RelativeAnchorPosition = new Vector2(0.5f, 0.7f),
-                            Text = _beatmapset.Value.Creator,
-                            Shadow = true,
-                            ShadowColour = Color4.Black.Opacity(0.75f),
-                            ShadowOffset = new Vector2(0.05f),
+                            Child = new AutoSizingSpriteText
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                Text = { Value = _beatmapset.Value.Creator },
+                                Font = new FontUsage("Roboto", weight: "Regular"),
+                                Shadow = true
+                            }
                         },
                     }
                 }

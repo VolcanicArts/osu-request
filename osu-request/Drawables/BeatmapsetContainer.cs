@@ -63,7 +63,6 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.X;
-            Size = new Vector2(1.0f, 1.0f);
             Margin = new MarginPadding(10.0f);
         }
 
