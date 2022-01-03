@@ -42,9 +42,11 @@ namespace osu_request.Drawables
 
         private float CalculateTextSize()
         {
-            return DrawSize.X > DrawSize.Y
+            var size = DrawSize.X > DrawSize.Y
                 ? DrawSize.Y - (Padding.Top + Padding.Bottom)
                 : DrawSize.X - (Padding.Top + Padding.Bottom);
+            if (size < 0) size = 0;
+            return size;
         }
 
         protected override void UpdateAfterAutoSize()
