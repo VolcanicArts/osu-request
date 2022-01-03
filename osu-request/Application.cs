@@ -29,6 +29,7 @@ namespace osu_request
 
         private DependencyContainer _dependencies;
         private RequestsListingTab requestListingTab;
+        private SettingsTab settingsTab;
 
         public Application()
         {
@@ -65,13 +66,7 @@ namespace osu_request
         private void InitTabs()
         {
             requestListingTab = new RequestsListingTab();
-        }
-
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            InitTabs();
-            _contentContainer.Child = requestListingTab;
+            settingsTab = new SettingsTab();
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
@@ -90,6 +85,7 @@ namespace osu_request
             SetupDefaults(frameworkConfig);
             _dependencies.CacheAs(_twitchClient);
             _dependencies.CacheAs(_osuClient);
+            InitTabs();
 
             Children = new Drawable[]
             {
@@ -116,7 +112,8 @@ namespace osu_request
                             Padding = new MarginPadding
                             {
                                 Top = 60.0f
-                            }
+                            },
+                            Child = settingsTab
                         }
                     }
                 }
