@@ -1,11 +1,9 @@
-﻿using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
-using osu.Framework.Logging;
 using osu_request.Config;
 using osuTK;
 using osuTK.Graphics;
@@ -14,20 +12,22 @@ namespace osu_request.Drawables
 {
     public class SettingsTab : Container
     {
+        private ClientManager _clientManager;
         private BasicTextBox _osuClientIdTextBox;
         private BasicTextBox _osuClientSecretTextBox;
+
+        private OsuRequestConfig _osuRequestConfig;
+
+        private BasicCallbackButton _saveButton;
+        private AutoSizingSpriteText _savedText;
         private BasicTextBox _twitchChannelNameTextBox;
         private BasicTextBox _twitchOAuthTokenTextBox;
 
-        private BasicCallbackButton _saveButton;
-
-        private OsuRequestConfig _osuRequestConfig;
-        private AutoSizingSpriteText _savedText;
-
         [BackgroundDependencyLoader]
-        private void Load(OsuRequestConfig osuRequestConfig)
+        private void Load(OsuRequestConfig osuRequestConfig, ClientManager clientManager)
         {
             _osuRequestConfig = osuRequestConfig;
+            _clientManager = clientManager;
             InitSelf();
             InitChildren();
         }
@@ -122,6 +122,7 @@ namespace osu_request.Drawables
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = _twitchOAuthTokenTextBox.Text;
             var saveComplete = _osuRequestConfig.Save();
             _savedText.Text.Value = saveComplete ? "Save Complete!" : "Save Failed";
+            _clientManager.TryConnectClients(_osuRequestConfig);
         }
     }
 }

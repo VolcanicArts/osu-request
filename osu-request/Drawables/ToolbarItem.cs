@@ -5,6 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
+using osu.Framework.Logging;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
@@ -90,7 +91,7 @@ namespace osu_request.Drawables
         public void Select()
         {
             _selected = true;
-            OnSelected.Invoke(this);
+            OnSelected?.Invoke(this);
             _content.MoveToY(10f, 200, Easing.OutCubic);
             _background.FadeColour(Color4.DarkGray, 250, Easing.OutCubic);
             _content.BorderThickness = 0;

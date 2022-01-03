@@ -6,6 +6,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Drawables;
@@ -19,8 +20,7 @@ namespace osu_request
 {
     public class Application : Game, IKeyBindingHandler<FrameworkAction>
     {
-        private readonly OsuClientLocal _osuClient = new();
-        private readonly TwitchClientLocal _twitchClient = new();
+        private readonly ClientManager _clientManager = new();
         private DependencyContainer _dependencies;
         private OsuRequestConfig _osuRequestConfig;
 
@@ -45,7 +45,7 @@ namespace osu_request
 
         protected override void UpdateAfterChildren()
         {
-            _twitchClient.Update();
+            _clientManager.Update();
         }
 
         [BackgroundDependencyLoader]
@@ -54,8 +54,9 @@ namespace osu_request
             _osuRequestConfig = new OsuRequestConfig(storage);
             SetupDefaults(frameworkConfig);
             _dependencies.CacheAs(_osuRequestConfig);
-            _dependencies.CacheAs(_twitchClient);
-            _dependencies.CacheAs(_osuClient);
+            _dependencies.CacheAs(_clientManager);
+            _dependencies.CacheAs(_clientManager.OsuClient);
+            _dependencies.CacheAs(_clientManager.TwitchClient);
 
             Children = new Drawable[]
             {
@@ -64,20 +65,12 @@ namespace osu_request
             };
         }
 
-        protected override async void LoadComplete()
+        protected override void LoadComplete()
         {
-            var osuClientId = _osuRequestConfig.Get<string>(OsuRequestSetting.OsuClientId);
-            var osuClientSecret = _osuRequestConfig.Get<string>(OsuRequestSetting.OsuClientSecret);
-            OsuClientCredentials osuClientCredentials = new(osuClientId, osuClientSecret);
-            _osuClient.SetClientCredentials(osuClientCredentials);
-            var osuLoggedIn = await _osuClient.LoginAsync();
-
-            var twitchChannelName = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchChannelName);
-            var twitchOAuthToken = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchOAuthToken);
-            ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
-            var twitchLoggedIn = _twitchClient.Init(twitchCredentials);
-
-            if (!osuLoggedIn || !twitchLoggedIn) RedirectToSettings();
+            _clientManager.OnFailedLogin += RedirectToSettings;
+            _clientManager.TwitchClient.SuccessfulLogin += RedirectToRequests;
+            _clientManager.TwitchClient.FailedLogin += RedirectToSettings;
+            _clientManager.TryConnectClients(_osuRequestConfig);
             base.LoadComplete();
         }
 
@@ -85,6 +78,12 @@ namespace osu_request
         {
             TabsContainer.Select(1);
             TabsContainer.Locked.Value = true;
+        }
+
+        private void RedirectToRequests()
+        {
+            TabsContainer.Locked.Value = false;
+            TabsContainer.Select(0);
         }
 
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)
