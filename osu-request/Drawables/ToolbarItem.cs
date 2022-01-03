@@ -29,8 +29,9 @@ namespace osu_request.Drawables
         {
             Anchor = Anchor.TopLeft;
             Origin = Anchor.TopLeft;
-            RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(0.1f, 1.0f);
+            RelativeSizeAxes = Axes.Y;
+            AutoSizeAxes = Axes.X;
+            Height = 1.0f;
         }
 
         private void InitChildren()
@@ -39,7 +40,9 @@ namespace osu_request.Drawables
             {
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
-                RelativeSizeAxes = Axes.Both,
+                RelativeSizeAxes = Axes.Y,
+                AutoSizeAxes = Axes.X,
+                Height = 1.0f,
                 Masking = true,
                 BorderThickness = 3,
                 BorderColour = Color4.Black,
@@ -51,9 +54,11 @@ namespace osu_request.Drawables
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Size = new Vector2(0.5f),
-                        Text = { Value = "Test" },
+                        RelativeSizeAxes = Axes.Y,
+                        AutoSizeAxes = Axes.X,
+                        Height = 1.0f,
+                        Text = { Value = Name },
+                        Padding = new MarginPadding(10.0f),
                         Font = new FontUsage("Roboto", weight: "Regular")
                     }
                 }

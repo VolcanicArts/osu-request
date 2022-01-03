@@ -11,7 +11,7 @@ namespace osu_request.Drawables
 {
     public class Toolbar : Container
     {
-        protected internal int NumberOfItems { get; set; }
+        protected internal string[] ItemNames { get; init; }
         private FillFlowContainer _items;
         public Action<int> NewSelectionEvent;
 
@@ -29,11 +29,12 @@ namespace osu_request.Drawables
                 }
             };
 
-            for (var i = 0; i < NumberOfItems; i++)
+            for (var i = 0; i < ItemNames.Length; i++)
             {
                 var toolbarItem = new ToolbarItem
                 {
                     ID = i,
+                    Name = ItemNames[i]
                 };
                 toolbarItem.OnSelected += ConvertSelection;
                 _items.Add(toolbarItem);
@@ -42,7 +43,7 @@ namespace osu_request.Drawables
             Select(0);
         }
 
-        public void Select(int id)
+        private void Select(int id)
         {
             foreach (var item in _items.Cast<ToolbarItem>()) item.Deselect();
             ((ToolbarItem)_items[id]).Select();
