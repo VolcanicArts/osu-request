@@ -11,9 +11,9 @@ namespace osu_request.Twitch
     {
         private readonly List<OnMessageReceivedArgs> _messages = new();
         private TwitchClient _twitchClient;
-        public Action FailedLogin;
         public Action<ChatMessage> OnChatMessage;
-        public Action SuccessfulLogin;
+        public Action OnFailed;
+        public Action OnSuccess;
 
         public void Init(ConnectionCredentials credentials)
         {
@@ -21,8 +21,8 @@ namespace osu_request.Twitch
             _twitchClient.Initialize(credentials, credentials.TwitchUsername);
             _twitchClient.OnMessageReceived += (_, args) => _messages.Add(args);
             _twitchClient.OnLog += (_, args) => Logger.Log($"[TwitchClient]: {args.Data}");
-            _twitchClient.OnIncorrectLogin += (_, _) => FailedLogin?.Invoke();
-            _twitchClient.OnConnected += (_, _) => SuccessfulLogin?.Invoke();
+            _twitchClient.OnIncorrectLogin += (_, _) => OnFailed?.Invoke();
+            _twitchClient.OnJoinedChannel += (_, _) => OnSuccess?.Invoke();
             _twitchClient.Connect();
         }
 
