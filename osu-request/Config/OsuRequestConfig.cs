@@ -16,8 +16,8 @@ namespace osu_request.Config
         {
             SetDefault(OsuRequestSetting.OsuClientId, string.Empty);
             SetDefault(OsuRequestSetting.OsuClientSecret, string.Empty);
-            SetDefault(OsuRequestSetting.TwitchClientId, string.Empty);
-            SetDefault(OsuRequestSetting.TwitchClientOAuth, string.Empty);
+            SetDefault(OsuRequestSetting.TwitchChannelName, string.Empty);
+            SetDefault(OsuRequestSetting.TwitchOAuthToken, string.Empty);
         }
     }
 
@@ -25,7 +25,7 @@ namespace osu_request.Config
     {
         OsuClientId,
         OsuClientSecret,
-        TwitchClientId,
-        TwitchClientOAuth,
+        TwitchChannelName,
+        TwitchOAuthToken,
     }
 }

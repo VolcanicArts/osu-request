@@ -16,8 +16,8 @@ namespace osu_request.Drawables
     {
         private BasicTextBox _osuClientIdTextBox;
         private BasicTextBox _osuClientSecretTextBox;
-        private BasicTextBox _twitchClientIdTextBox;
-        private BasicTextBox _twitchClientOAuthTextBox;
+        private BasicTextBox _twitchChannelNameTextBox;
+        private BasicTextBox _twitchOAuthTokenTextBox;
 
         private BasicCallbackButton _saveButton;
 
@@ -78,15 +78,15 @@ namespace osu_request.Drawables
                             PlaceholderText = "Enter osu! client secret",
                             Text = _osuRequestConfig.Get<string>(OsuRequestSetting.OsuClientSecret)
                         },
-                        _twitchClientIdTextBox = new SettingsTextBox
+                        _twitchChannelNameTextBox = new SettingsTextBox
                         {
-                            PlaceholderText = "Enter Twitch client Id",
-                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchClientId)
+                            PlaceholderText = "Enter Twitch channel name",
+                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchChannelName)
                         },
-                        _twitchClientOAuthTextBox = new SettingsTextBox
+                        _twitchOAuthTokenTextBox = new SettingsTextBox
                         {
-                            PlaceholderText = "Enter Twitch client OAuth",
-                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchClientOAuth)
+                            PlaceholderText = "Enter Twitch OAuth token",
+                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchOAuthToken)
                         }
                     }
                 },
@@ -130,8 +130,8 @@ namespace osu_request.Drawables
         {
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = _osuClientIdTextBox.Text;
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = _osuClientSecretTextBox.Text;
-            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchClientId).Value = _twitchClientIdTextBox.Text;
-            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchClientOAuth).Value = _twitchClientOAuthTextBox.Text;
+            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = _twitchChannelNameTextBox.Text;
+            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = _twitchOAuthTokenTextBox.Text;
             var saveComplete = _osuRequestConfig.Save();
             _savedText.Text.Value = saveComplete ? "Save Complete!" : "Save Failed";
         }
