@@ -10,6 +10,7 @@ using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
+using osu_request.Config;
 using osu_request.Drawables;
 using osu_request.Osu;
 using osu_request.Twitch;
@@ -28,6 +29,7 @@ namespace osu_request
         private Container _contentContainer;
 
         private DependencyContainer _dependencies;
+        private OsuRequestConfig _osuRequestConfig;
         private RequestsListingTab requestListingTab;
         private SettingsTab settingsTab;
 
@@ -80,9 +82,11 @@ namespace osu_request
         }
 
         [BackgroundDependencyLoader]
-        private void Load(FrameworkConfigManager frameworkConfig)
+        private void Load(FrameworkConfigManager frameworkConfig, Storage storage)
         {
+            _osuRequestConfig = new OsuRequestConfig(storage);
             SetupDefaults(frameworkConfig);
+            _dependencies.CacheAs(_osuRequestConfig);
             _dependencies.CacheAs(_twitchClient);
             _dependencies.CacheAs(_osuClient);
             InitTabs();

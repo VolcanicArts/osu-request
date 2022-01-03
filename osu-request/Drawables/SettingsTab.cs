@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Logging;
+using osu_request.Config;
 using osuTK;
 using osuTK.Graphics;
 
@@ -18,13 +19,15 @@ namespace osu_request.Drawables
         private BasicTextBox _twitchClientIdTextBox;
         private BasicTextBox _twitchClientOAuthTextBox;
 
-        private Container TitleContainer;
-        private AutoSizingSpriteText Title;
         private BasicCallbackButton _saveButton;
 
+        private OsuRequestConfig _osuRequestConfig;
+        private AutoSizingSpriteText _savedText;
+
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(OsuRequestConfig osuRequestConfig)
         {
+            _osuRequestConfig = osuRequestConfig;
             InitSelf();
             InitChildren();
         }
@@ -40,18 +43,19 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                TitleContainer = new Container()
+                new Container()
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.2f, 0.1f),
+                    RelativeSizeAxes = Axes.Y,
+                    AutoSizeAxes = Axes.X,
+                    Height = 0.1f,
                     RelativeAnchorPosition = new Vector2(0.5f, 0.1f),
-                    Child = Title = new AutoSizingSpriteText
+                    Child = new AutoSizingSpriteText
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
-                        Text = "Settings",
+                        Text = { Value = "Settings" },
                         Font = new FontUsage("Roboto", weight: "Regular"),
                         Shadow = true
                     }
@@ -64,10 +68,26 @@ namespace osu_request.Drawables
                     Direction = FillDirection.Vertical,
                     Children = new Drawable[]
                     {
-                        _osuClientIdTextBox = new SettingsTextBox("Enter osu! client Id"),
-                        _osuClientSecretTextBox = new SettingsTextBox("Enter osu! client secret"),
-                        _twitchClientIdTextBox = new SettingsTextBox("Enter Twitch client Id"),
-                        _twitchClientOAuthTextBox = new SettingsTextBox("Enter Twitch client OAuth")
+                        _osuClientIdTextBox = new SettingsTextBox
+                        {
+                            PlaceholderText = "Enter osu! client Id",
+                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.OsuClientId)
+                        },
+                        _osuClientSecretTextBox = new SettingsTextBox
+                        {
+                            PlaceholderText = "Enter osu! client secret",
+                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.OsuClientSecret)
+                        },
+                        _twitchClientIdTextBox = new SettingsTextBox
+                        {
+                            PlaceholderText = "Enter Twitch client Id",
+                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchClientId)
+                        },
+                        _twitchClientOAuthTextBox = new SettingsTextBox
+                        {
+                            PlaceholderText = "Enter Twitch client OAuth",
+                            Text = _osuRequestConfig.Get<string>(OsuRequestSetting.TwitchClientOAuth)
+                        }
                     }
                 },
                 _saveButton = new BasicCallbackButton
@@ -83,15 +103,37 @@ namespace osu_request.Drawables
                     BorderColour = Color4.Black,
                     BorderThickness = 6,
                     Enabled = { Value = true }
-                }
+                },
+                new Container()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Y,
+                    AutoSizeAxes = Axes.X,
+                    Height = 0.1f,
+                    RelativeAnchorPosition = new Vector2(0.5f, 0.8f),
+                    Child = _savedText = new AutoSizingSpriteText
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Font = new FontUsage("Roboto", weight: "Regular"),
+                        Shadow = true
+                    }
+                },
             };
 
             _saveButton.OnButtonClick += SaveButtonClicked;
+            _savedText.Text.BindValueChanged(_ => _savedText.FadeInFromZero(1000).Delay(4000).FadeOutFromOne(1000));
         }
 
         private void SaveButtonClicked(ClickEvent e)
         {
-            
+            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = _osuClientIdTextBox.Text;
+            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = _osuClientSecretTextBox.Text;
+            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchClientId).Value = _twitchClientIdTextBox.Text;
+            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchClientOAuth).Value = _twitchClientOAuthTextBox.Text;
+            var saveComplete = _osuRequestConfig.Save();
+            _savedText.Text.Value = saveComplete ? "Save Complete!" : "Save Failed";
         }
     }
 }

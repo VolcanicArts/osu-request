@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -14,7 +15,7 @@ namespace osu_request.Drawables
     /// </summary>
     public class AutoSizingSpriteText : Container
     {
-        protected internal LocalisableString Text { get; init; }
+        protected internal Bindable<LocalisableString> Text { get; init; } = new();
         protected internal FontUsage Font { get; init; }
         protected internal bool Shadow { get; init; }
 
@@ -27,12 +28,14 @@ namespace osu_request.Drawables
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                Text = Text,
+                Text = Text.Value,
                 Font = Font,
                 Shadow = Shadow,
                 ShadowColour = Color4.Black.Opacity(0.75f),
                 ShadowOffset = new Vector2(0.05f)
             };
+            
+            Text.BindValueChanged(e => _spriteText.Text = e.NewValue);
         }
 
         private float CalculatedTextSize => Parent.DrawSize.Y - (Parent.Padding.Top + Parent.Padding.Bottom);
