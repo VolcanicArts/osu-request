@@ -6,15 +6,10 @@ using osu.Framework.Graphics;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
-using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Drawables;
-using osu_request.Osu;
-using osu_request.Twitch;
 using osuTK.Graphics;
-using TwitchLib.Client.Models;
-using volcanicarts.osu.NET.Client;
 
 namespace osu_request
 {
@@ -67,23 +62,28 @@ namespace osu_request
 
         protected override void LoadComplete()
         {
-            _clientManager.OnFailedLogin += RedirectToSettings;
-            _clientManager.TwitchClient.SuccessfulLogin += RedirectToRequests;
-            _clientManager.TwitchClient.FailedLogin += RedirectToSettings;
+            _clientManager.OnFailed += RedirectToSettings;
+            _clientManager.OnSuccess += RedirectToRequests;
             _clientManager.TryConnectClients(_osuRequestConfig);
             base.LoadComplete();
         }
 
         private void RedirectToSettings()
         {
-            TabsContainer.Select(1);
-            TabsContainer.Locked.Value = true;
+            Scheduler.AddOnce(() =>
+            {
+                TabsContainer.Select(1);
+                TabsContainer.Locked.Value = true;
+            });
         }
 
         private void RedirectToRequests()
         {
-            TabsContainer.Locked.Value = false;
-            TabsContainer.Select(0);
+            Scheduler.AddOnce(() =>
+            {
+                TabsContainer.Locked.Value = false;
+                TabsContainer.Select(0);
+            });
         }
 
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)
