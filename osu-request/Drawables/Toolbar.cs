@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Linq;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osuTK;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
     public class Toolbar : Container
     {
-        protected internal string[] ItemNames { get; init; }
         private FillFlowContainer _items;
+        private BindableBool Locked;
         public Action<int> NewSelectionEvent;
+        protected internal string[] ItemNames { get; init; }
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(BindableBool locked)
         {
+            Locked = locked;
             Children = new Drawable[]
             {
                 new BackgroundContainer(Color4.DarkSlateGray),
@@ -39,18 +40,18 @@ namespace osu_request.Drawables
                 toolbarItem.OnSelected += ConvertSelection;
                 _items.Add(toolbarItem);
             }
-            
-            Select(0);
         }
 
-        private void Select(int id)
+        public void Select(int id)
         {
+            if (Locked.Value) return;
             foreach (var item in _items.Cast<ToolbarItem>()) item.Deselect();
             ((ToolbarItem)_items[id]).Select();
         }
 
         private void ConvertSelection(ToolbarItem selectedItem)
         {
+            if (Locked.Value) return;
             foreach (var item in _items.Cast<ToolbarItem>().Where(item => !item.Equals(selectedItem))) item.Deselect();
             NewSelectionEvent?.Invoke(selectedItem.ID);
         }

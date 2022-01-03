@@ -5,14 +5,11 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Logging;
+using osu_request.Osu;
 using osu_request.Twitch;
-using osuTK;
-using osuTK.Graphics;
 using TwitchLib.Client.Models;
-using volcanicarts.osu.NET.Client;
 
 namespace osu_request.Drawables
 {
@@ -22,7 +19,7 @@ namespace osu_request.Drawables
         private AudioManager _audioManager;
         private FillFlowContainer _fillFlowContainer;
 
-        private OsuClient _localOsuClient;
+        private OsuClientLocal _localOsuClient;
         private TwitchClientLocal _localTwitchClient;
         private TextureStore _textureStore;
 
@@ -52,7 +49,7 @@ namespace osu_request.Drawables
             {
                 Logger.Log($"Requesting beatmap using Id {beatmapId}");
 
-                var beatmap = await _localOsuClient.GetBeatmapAsync(beatmapId);
+                var beatmap = await _localOsuClient.OsuClient.GetBeatmapAsync(beatmapId);
                 var beatmapset = await beatmap.GetBeatmapsetAsync();
 
                 Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
@@ -72,7 +69,7 @@ namespace osu_request.Drawables
 
         [BackgroundDependencyLoader]
         private void Load(TextureStore textureStore, AudioManager audioManager, TwitchClientLocal twitchClient,
-            OsuClient osuClient)
+            OsuClientLocal osuClient)
         {
             _textureStore = textureStore;
             _audioManager = audioManager;

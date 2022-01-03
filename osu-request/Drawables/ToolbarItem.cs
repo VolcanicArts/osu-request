@@ -1,26 +1,27 @@
 ﻿using System;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osuTK;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
     public class ToolbarItem : Container
     {
-        protected internal int ID { get; set; }
         private BackgroundContainer _background;
-        private bool _selected;
-        public Action<ToolbarItem> OnSelected;
         private Container _content;
+        private bool _selected;
+        private BindableBool Locked;
+        public Action<ToolbarItem> OnSelected;
+        protected internal int ID { get; init; }
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(BindableBool locked)
         {
+            Locked = locked;
             InitSelf();
             InitChildren();
         }
@@ -81,6 +82,7 @@ namespace osu_request.Drawables
 
         protected override bool OnClick(ClickEvent e)
         {
+            if (Locked.Value) return false;
             Select();
             return true;
         }

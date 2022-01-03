@@ -10,25 +10,26 @@ namespace osu_request.Twitch
     public class TwitchClientLocal
     {
         private readonly List<OnMessageReceivedArgs> _messages = new();
-        private readonly TwitchClient _twitchClient;
+        private readonly TwitchClient _twitchClient = new();
         public Action<ChatMessage> OnChatMessage;
 
-        public TwitchClientLocal(ConnectionCredentials credentials)
+        public bool Init(ConnectionCredentials credentials)
         {
-            _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(credentials, credentials.TwitchUsername);
-            Init();
-        }
+            try
+            {
+                _twitchClient.Initialize(credentials, credentials.TwitchUsername);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
-        private void Init()
-        {
             _twitchClient.OnMessageReceived += (_, args) => _messages.Add(args);
             _twitchClient.OnLog += (_, args) => Logger.Log($"[TwitchClient]: {args.Data}");
-        }
 
-        public void Connect()
-        {
             _twitchClient.Connect();
+
+            return true;
         }
 
         public void Update()
