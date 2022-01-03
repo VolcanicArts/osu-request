@@ -70,44 +70,36 @@ namespace osu_request.Drawables
                             Size = new Vector2(1.0f, 0.25f),
                             Children = new Drawable[]
                             {
-                                new Container()
+                                new AutoSizingSpriteText
                                 {
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.CentreRight,
+                                    SpriteAnchor = Anchor.CentreRight,
+                                    SpriteOrigin = Anchor.CentreRight,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f, 1.0f),
+                                    Text = { Value = "Rank Status:" },
+                                    Font = new FontUsage("Roboto", weight: "Regular"),
+                                    Shadow = true,
                                     Margin = new MarginPadding
                                     {
                                         Right = 2.5f
                                     },
-                                    Child = new AutoSizingSpriteText
-                                    {
-                                        Anchor = Anchor.CentreRight,
-                                        Origin = Anchor.CentreRight,
-                                        Text = { Value = "Rank Status:" },
-                                        Font = new FontUsage("Roboto", weight: "Regular"),
-                                        Shadow = true
-                                    }
                                 },
-                                new Container()
+                                new AutoSizingSpriteText
                                 {
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.CentreLeft,
+                                    SpriteAnchor = Anchor.CentreLeft,
+                                    SpriteOrigin = Anchor.CentreLeft,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f, 1.0f),
+                                    Text = { Value = _beatmapset.Value.Ranked.ToString() },
+                                    Font = new FontUsage("Roboto", weight: "Regular"),
+                                    Shadow = true,
                                     Margin = new MarginPadding
                                     {
                                         Left = 2.5f
                                     },
-                                    Child = new AutoSizingSpriteText
-                                    {
-                                        Anchor = Anchor.CentreLeft,
-                                        Origin = Anchor.CentreLeft,
-                                        Text = { Value = _beatmapset.Value.Ranked.ToString() },
-                                        Font = new FontUsage("Roboto", weight: "Regular"),
-                                        Shadow = true
-                                    }
-                                },
+                                }
                             }
                         }
                     }

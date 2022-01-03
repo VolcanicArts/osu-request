@@ -47,19 +47,14 @@ namespace osu_request.Drawables
                 Children = new Drawable[]
                 {
                     _background = new BackgroundContainer(Color4.Gray),
-                    new Container()
+                    new AutoSizingSpriteText
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         Size = new Vector2(0.5f),
-                        Child = new AutoSizingSpriteText
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            Text = { Value = "Test" },
-                            Font = new FontUsage("Roboto", weight: "Regular")
-                        }
+                        Text = { Value = "Test" },
+                        Font = new FontUsage("Roboto", weight: "Regular")
                     }
                 }
             };

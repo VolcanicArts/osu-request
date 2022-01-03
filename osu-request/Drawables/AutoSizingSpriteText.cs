@@ -15,6 +15,8 @@ namespace osu_request.Drawables
     /// </summary>
     public class AutoSizingSpriteText : Container
     {
+        protected internal Anchor SpriteAnchor { get; init; } = Anchor.Centre;
+        protected internal Anchor SpriteOrigin { get; init; } = Anchor.Centre;
         protected internal Bindable<LocalisableString> Text { get; init; } = new();
         protected internal FontUsage Font { get; init; }
         protected internal bool Shadow { get; init; }
@@ -24,13 +26,10 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(1.0f);
-            
             Child = _spriteText = new SpriteText()
             {
-                Anchor = Anchor,
-                Origin = Origin,
+                Anchor = SpriteAnchor,
+                Origin = SpriteOrigin,
                 Text = Text.Value,
                 Font = Font,
                 Shadow = Shadow,

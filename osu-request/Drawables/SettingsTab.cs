@@ -43,21 +43,16 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new Container()
+                new AutoSizingSpriteText
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     Size = new Vector2(1.0f, 0.1f),
                     RelativeAnchorPosition = new Vector2(0.5f, 0.1f),
-                    Child = new AutoSizingSpriteText
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Text = { Value = "Settings" },
-                        Font = new FontUsage("Roboto", weight: "Regular"),
-                        Shadow = true
-                    }
+                    Text = { Value = "Settings" },
+                    Font = new FontUsage("Roboto", weight: "Regular"),
+                    Shadow = true
                 },
                 new FillFlowContainer
                 {
@@ -103,21 +98,16 @@ namespace osu_request.Drawables
                     BorderThickness = 6,
                     Enabled = { Value = true }
                 },
-                new Container()
+                _savedText = new AutoSizingSpriteText
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     Size = new Vector2(1.0f, 0.1f),
                     RelativeAnchorPosition = new Vector2(0.5f, 0.8f),
-                    Child = _savedText = new AutoSizingSpriteText
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Font = new FontUsage("Roboto", weight: "Regular"),
-                        Shadow = true
-                    }
-                },
+                    Font = new FontUsage("Roboto", weight: "Regular"),
+                    Shadow = true
+                }
             };
 
             _saveButton.OnButtonClick += SaveButtonClicked;

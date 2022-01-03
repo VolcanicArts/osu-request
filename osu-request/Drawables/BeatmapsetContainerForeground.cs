@@ -88,38 +88,28 @@ namespace osu_request.Drawables
                     Children = new Drawable[]
                     {
                         new BackgroundContainer(Color4.Gray.Opacity(0.5f)),
-                        new Container()
+                        new AutoSizingSpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(1.0f, 0.2f),
                             RelativeAnchorPosition = new Vector2(0.5f, 0.3f),
-                            Child = new AutoSizingSpriteText
-                            {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                Text = { Value = _beatmapset.Value.Title },
-                                Font = new FontUsage("Roboto", weight: "Regular"),
-                                Shadow = true
-                            }
+                            Text = { Value = _beatmapset.Value.Title },
+                            Font = new FontUsage("Roboto", weight: "Regular"),
+                            Shadow = true
                         },
-                        new Container()
+                        new AutoSizingSpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(1.0f, 0.2f),
                             RelativeAnchorPosition = new Vector2(0.5f, 0.7f),
-                            Child = new AutoSizingSpriteText
-                            {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                Text = { Value = _beatmapset.Value.Creator },
-                                Font = new FontUsage("Roboto", weight: "Regular"),
-                                Shadow = true
-                            }
-                        },
+                            Text = { Value = _beatmapset.Value.Creator },
+                            Font = new FontUsage("Roboto", weight: "Regular"),
+                            Shadow = true
+                        }
                     }
                 }
             };
