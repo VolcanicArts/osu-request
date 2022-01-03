@@ -20,20 +20,12 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new Box
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f),
-                    Colour = Color4.DarkSlateGray
-                },
+                new BackgroundContainer(Color4.DarkSlateGray),
                 _items = new FillFlowContainer
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f)
+                    RelativeSizeAxes = Axes.Both
                 }
             };
 
@@ -42,10 +34,6 @@ namespace osu_request.Drawables
                 var toolbarItem = new ToolbarItem
                 {
                     ID = i,
-                    Anchor = Anchor.TopLeft,
-                    Origin = Anchor.TopLeft,
-                    RelativeSizeAxes = Axes.Y,
-                    Size = new Vector2(1.0f)
                 };
                 toolbarItem.OnSelected += ConvertSelection;
                 _items.Add(toolbarItem);
