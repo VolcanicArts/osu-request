@@ -5,7 +5,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osu.Framework.Logging;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
@@ -16,7 +15,7 @@ namespace osu_request.Drawables
         private Container _content;
         private bool _selected;
         private BindableBool Locked;
-        public Action<ToolbarItem> OnSelected;
+        public Action<int> OnSelected;
         protected internal int ID { get; init; }
 
         [BackgroundDependencyLoader]
@@ -83,15 +82,15 @@ namespace osu_request.Drawables
 
         protected override bool OnClick(ClickEvent e)
         {
-            if (Locked.Value) return false;
-            Select();
+            if (Locked.Value) return true;
+            Select(true);
             return true;
         }
 
-        public void Select()
+        public void Select(bool trigger)
         {
             _selected = true;
-            OnSelected?.Invoke(this);
+            if (trigger) OnSelected?.Invoke(ID);
             _content.MoveToY(10f, 200, Easing.OutCubic);
             _background.FadeColour(Color4.DarkGray, 250, Easing.OutCubic);
             _content.BorderThickness = 0;

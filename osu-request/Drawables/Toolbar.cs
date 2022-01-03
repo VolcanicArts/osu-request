@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -10,7 +10,8 @@ namespace osu_request.Drawables
 {
     public class Toolbar : Container
     {
-        private FillFlowContainer _items;
+        private readonly List<ToolbarItem> _items = new();
+        private FillFlowContainer _fillFlowContainer;
         private BindableBool Locked;
         public Action<int> NewSelectionEvent;
         protected internal string[] ItemNames { get; init; }
@@ -22,7 +23,7 @@ namespace osu_request.Drawables
             Children = new Drawable[]
             {
                 new BackgroundContainer(Color4.DarkSlateGray),
-                _items = new FillFlowContainer
+                _fillFlowContainer = new FillFlowContainer
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
@@ -37,7 +38,8 @@ namespace osu_request.Drawables
                     ID = i,
                     Name = ItemNames[i]
                 };
-                toolbarItem.OnSelected += ConvertSelection;
+                toolbarItem.OnSelected += e => NewSelectionEvent?.Invoke(e);
+                _fillFlowContainer.Add(toolbarItem);
                 _items.Add(toolbarItem);
             }
         }
@@ -45,15 +47,8 @@ namespace osu_request.Drawables
         public void Select(int id)
         {
             if (Locked.Value) return;
-            foreach (var item in _items.Cast<ToolbarItem>()) item.Deselect();
-            ((ToolbarItem)_items[id]).Select();
-        }
-
-        private void ConvertSelection(ToolbarItem selectedItem)
-        {
-            if (Locked.Value) return;
-            foreach (var item in _items.Cast<ToolbarItem>().Where(item => !item.Equals(selectedItem))) item.Deselect();
-            NewSelectionEvent?.Invoke(selectedItem.ID);
+            foreach (var item in _items) item.Deselect();
+            _items[id].Select(false);
         }
     }
 }

@@ -67,13 +67,14 @@ namespace osu_request.Drawables
                 }
             };
 
-            _toolbar.NewSelectionEvent += AnimateTabs;
+            _toolbar.NewSelectionEvent += Select;
         }
 
         public void Select(int id)
         {
             if (Locked.Value) return;
             _toolbar.Select(id);
+            AnimateTabs(id);
         }
 
         private void AnimateTabs(int id)
