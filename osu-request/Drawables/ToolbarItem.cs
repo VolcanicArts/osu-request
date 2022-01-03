@@ -11,6 +11,7 @@ namespace osu_request.Drawables
 {
     public class ToolbarItem : Container
     {
+        protected internal int ID { get; set; }
         private Box _background;
         private Container _scaleContainer;
         private bool _selected;
@@ -73,12 +74,17 @@ namespace osu_request.Drawables
 
         protected override bool OnClick(ClickEvent e)
         {
+            Select();
+            return true;
+        }
+
+        public void Select()
+        {
             _selected = true;
             OnSelected.Invoke(this);
             _scaleContainer.MoveToY(10f, 200, Easing.OutCubic);
             _background.FadeColour(Color4.DarkGray, 250, Easing.OutCubic);
             _scaleContainer.BorderThickness = 0;
-            return true;
         }
 
         public void Deselect()

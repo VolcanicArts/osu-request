@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -10,7 +11,9 @@ namespace osu_request.Drawables
 {
     public class Toolbar : Container
     {
+        protected internal int NumberOfItems { get; set; }
         private FillFlowContainer _items;
+        public Action<int> NewSelectionEvent;
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -34,10 +37,11 @@ namespace osu_request.Drawables
                 }
             };
 
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < NumberOfItems; i++)
             {
                 var toolbarItem = new ToolbarItem
                 {
+                    ID = i,
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                     RelativeSizeAxes = Axes.Y,
@@ -46,11 +50,20 @@ namespace osu_request.Drawables
                 toolbarItem.OnSelected += ConvertSelection;
                 _items.Add(toolbarItem);
             }
+            
+            Select(0);
+        }
+
+        public void Select(int id)
+        {
+            foreach (var item in _items.Cast<ToolbarItem>()) item.Deselect();
+            ((ToolbarItem)_items[id]).Select();
         }
 
         private void ConvertSelection(ToolbarItem selectedItem)
         {
             foreach (var item in _items.Cast<ToolbarItem>().Where(item => !item.Equals(selectedItem))) item.Deselect();
+            NewSelectionEvent?.Invoke(selectedItem.ID);
         }
     }
 }

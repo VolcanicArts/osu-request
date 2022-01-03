@@ -25,13 +25,8 @@ namespace osu_request
     {
         private readonly OsuClient _osuClient;
         private readonly TwitchClientLocal _twitchClient;
-
-        private Container _contentContainer;
-
         private DependencyContainer _dependencies;
         private OsuRequestConfig _osuRequestConfig;
-        private RequestsListingTab requestListingTab;
-        private SettingsTab settingsTab;
 
         public Application()
         {
@@ -65,12 +60,6 @@ namespace osu_request
             await _osuClient.LoginAsync();
         }
 
-        private void InitTabs()
-        {
-            requestListingTab = new RequestsListingTab();
-            settingsTab = new SettingsTab();
-        }
-
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
         {
             return _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
@@ -89,38 +78,11 @@ namespace osu_request
             _dependencies.CacheAs(_osuRequestConfig);
             _dependencies.CacheAs(_twitchClient);
             _dependencies.CacheAs(_osuClient);
-            InitTabs();
 
             Children = new Drawable[]
             {
                 new BackgroundContainer(Color4.DarkGray),
-                new Container
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Children = new Drawable[]
-                    {
-                        new Toolbar
-                        {
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            RelativeSizeAxes = Axes.X,
-                            Size = new Vector2(1.0f, 60.0f)
-                        },
-                        _contentContainer = new Container
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Padding = new MarginPadding
-                            {
-                                Top = 60.0f
-                            },
-                            Child = settingsTab
-                        }
-                    }
-                }
+                new TabsContainer()
             };
         }
 
