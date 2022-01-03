@@ -29,8 +29,8 @@ namespace osu_request.Drawables
             
             Child = _spriteText = new SpriteText()
             {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
+                Anchor = Anchor,
+                Origin = Origin,
                 Text = Text.Value,
                 Font = Font,
                 Shadow = Shadow,
