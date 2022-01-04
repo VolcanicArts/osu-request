@@ -47,7 +47,10 @@ namespace osu_request.Drawables
                 CornerRadius = 20,
                 Children = new Drawable[]
                 {
-                    new BackgroundContainer(Color4.Gray),
+                    new BackgroundColour
+                    {
+                        Colour = OsuRequestColour.Gray6
+                    },
                     new BeatmapsetListContainer
                     {
                         Anchor = Anchor.Centre,

@@ -22,7 +22,10 @@ namespace osu_request.Drawables
             Locked = locked;
             Children = new Drawable[]
             {
-                new BackgroundContainer(Color4.DarkSlateGray),
+                new BackgroundColour
+                {
+                    Colour = OsuRequestColour.GreyCyanDark
+                },
                 _fillFlowContainer = new FillFlowContainer
                 {
                     Anchor = Anchor.TopCentre,

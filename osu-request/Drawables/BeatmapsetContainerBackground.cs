@@ -51,7 +51,10 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new BackgroundContainer(Color4.Gray.Lighten(0.25f)),
+                new BackgroundColour
+                {
+                    Colour = OsuRequestColour.Gray7.Lighten(0.25f)
+                },
                 new Container
                 {
                     Anchor = Anchor.Centre,

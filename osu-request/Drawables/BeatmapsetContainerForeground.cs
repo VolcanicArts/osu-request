@@ -87,7 +87,10 @@ namespace osu_request.Drawables
                     Masking = true,
                     Children = new Drawable[]
                     {
-                        new BackgroundContainer(Color4.Gray.Opacity(0.5f)),
+                        new BackgroundColour
+                        {
+                            Colour = OsuRequestColour.Gray7.Opacity(0.5f)
+                        },
                         new AutoSizingSpriteText
                         {
                             Anchor = Anchor.Centre,

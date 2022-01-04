@@ -11,7 +11,7 @@ namespace osu_request.Drawables
 {
     public class ToolbarItem : Container
     {
-        private BackgroundContainer _background;
+        private BackgroundColour _background;
         private Container _content;
         private bool _selected;
         private BindableBool Locked;
@@ -50,7 +50,10 @@ namespace osu_request.Drawables
                 CornerRadius = 10,
                 Children = new Drawable[]
                 {
-                    _background = new BackgroundContainer(Color4.Gray),
+                    _background = new BackgroundColour
+                    {
+                        Colour = OsuRequestColour.GrayA
+                    },
                     new AutoSizingSpriteText
                     {
                         Anchor = Anchor.Centre,
@@ -92,14 +95,14 @@ namespace osu_request.Drawables
             _selected = true;
             if (trigger) OnSelected?.Invoke(ID);
             _content.MoveToY(10f, 200, Easing.OutCubic);
-            _background.FadeColour(Color4.DarkGray, 250, Easing.OutCubic);
+            _background.FadeColour(OsuRequestColour.Gray4, 250, Easing.OutCubic);
             _content.BorderThickness = 0;
         }
 
         public void Deselect()
         {
             _content.MoveToY(0f, 500, Easing.OutBounce);
-            _background.FadeColour(Color4.Gray, 250, Easing.OutCubic);
+            _background.FadeColour(OsuRequestColour.GrayA, 250, Easing.OutCubic);
             _content.BorderThickness = 3;
             _selected = false;
         }

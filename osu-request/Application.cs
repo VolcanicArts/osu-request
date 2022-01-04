@@ -55,7 +55,10 @@ namespace osu_request
 
             Children = new Drawable[]
             {
-                new BackgroundContainer(Color4.DarkGray),
+                new BackgroundContainer
+                {
+                    Colour = OsuRequestColour.Gray4
+                },
                 TabsContainer = new TabsContainer()
             };
         }
