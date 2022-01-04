@@ -9,7 +9,6 @@ using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Drawables;
-using osuTK.Graphics;
 
 namespace osu_request
 {
@@ -55,7 +54,7 @@ namespace osu_request
 
             Children = new Drawable[]
             {
-                new BackgroundContainer
+                new BackgroundColour
                 {
                     Colour = OsuRequestColour.Gray4
                 },

@@ -32,7 +32,7 @@ namespace osu_request.Drawables
         {
             _tabs = new Drawable[]
             {
-                new RequestsListingTab
+                new RequestsTab
                 {
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(0.0f, 0.0f)

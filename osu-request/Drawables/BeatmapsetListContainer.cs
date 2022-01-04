@@ -54,7 +54,7 @@ namespace osu_request.Drawables
                     Logger.Log("Client not ready. Cannot request beatmap");
                     return;
                 }
-                
+
                 var beatmap = await _localOsuClient.OsuClient.GetBeatmapAsync(beatmapId);
                 var beatmapset = await beatmap.GetBeatmapsetAsync();
 
@@ -97,7 +97,8 @@ namespace osu_request.Drawables
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.X,
                         AutoSizeAxes = Axes.Y,
-                        Direction = FillDirection.Vertical
+                        Direction = FillDirection.Vertical,
+                        Padding = new MarginPadding(10.0f)
                     }
                 }
             };
