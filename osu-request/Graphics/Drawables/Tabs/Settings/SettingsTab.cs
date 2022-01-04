@@ -1,8 +1,11 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
 using osu_request.Config;
 using osuTK;
+using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
@@ -15,6 +18,7 @@ namespace osu_request.Drawables
         private SettingContainer OsuClientSecretContainer;
         private SettingContainer TwitchClientChannelNameContainer;
         private SettingContainer TwitchClientOAuthTokenContainer;
+        private Container ErrorContainer;
 
         [BackgroundDependencyLoader]
         private void Load(OsuRequestConfig osuRequestConfig, ClientManager clientManager)
@@ -93,9 +97,67 @@ namespace osu_request.Drawables
                         Size = new Vector2(0.9f),
                         Text = "Save Settings"
                     }
+                },
+                ErrorContainer = new Container
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    RelativePositionAxes = Axes.Both,
+                    Size = new Vector2(0.3f, 0.1f),
+                    Position = new Vector2(1.0f, 0.0f),
+                    Masking = true,
+                    CornerRadius = 10,
+                    Children = new Drawable[]
+                    {
+                        new BackgroundColour
+                        {
+                            Colour = OsuRequestColour.Red.Darken(0.8f)
+                        },
+                        new Container
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Padding = new MarginPadding(5),
+                            Child = new Container
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                Masking = true,
+                                CornerRadius = 10,
+                                Children = new Drawable[]
+                                {
+                                    new BackgroundColour
+                                    {
+                                        Colour = OsuRequestColour.GreyLime
+                                    },
+                                    new Container
+                                    {
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        RelativeSizeAxes = Axes.Both,
+                                        Size = new Vector2(0.9f, 1.0f),
+                                        Child = new AutoSizingSpriteText
+                                        {
+                                            Anchor = Anchor.Centre,
+                                            Origin = Anchor.Centre,
+                                            RelativeSizeAxes = Axes.Both,
+                                            Size = new Vector2(0.1f, 0.5f),
+                                            AutoSizeSpriteTextAxes = Axes.Both,
+                                            Text = { Value = "Incorrect Information!" },
+                                            Font = new FontUsage("Roboto", weight: "Regular")
+                                        },
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             };
 
+            _clientManager.OnFailed += AnimateError;
             _saveButton.OnButtonClicked += SaveButtonClicked;
         }
 
@@ -107,6 +169,15 @@ namespace osu_request.Drawables
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = TwitchClientOAuthTokenContainer.TextBox.Text;
             _osuRequestConfig.Save();
             _clientManager.TryConnectClients(_osuRequestConfig);
+        }
+
+        private void AnimateError()
+        {
+            ErrorContainer.MoveTo(new Vector2(0.0f), 250, Easing.OutCubic)
+                .Delay(2000)
+                .MoveTo(new Vector2(-1.0f, 0.0f), 250, Easing.InCubic)
+                .Then()
+                .MoveTo(new Vector2(1.0f, 0.0f));
         }
     }
 }
