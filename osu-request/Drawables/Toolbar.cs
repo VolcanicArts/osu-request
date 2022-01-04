@@ -30,7 +30,8 @@ namespace osu_request.Drawables
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
-                    RelativeSizeAxes = Axes.Both
+                    RelativeSizeAxes = Axes.Both,
+                    Direction = FillDirection.Horizontal
                 }
             };
 
