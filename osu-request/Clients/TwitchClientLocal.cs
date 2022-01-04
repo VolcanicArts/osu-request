@@ -17,13 +17,41 @@ namespace osu_request.Twitch
 
         public void Init(ConnectionCredentials credentials)
         {
+            if (_twitchClient != null)
+            {
+                _twitchClient.OnMessageReceived -= MessageReceived;
+                _twitchClient.OnLog -= OnLog;
+                _twitchClient.OnIncorrectLogin -= IncorrectLogin;
+                _twitchClient.OnJoinedChannel -= JoinedChannel;
+            }
+
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(credentials, credentials.TwitchUsername);
-            _twitchClient.OnMessageReceived += (_, args) => _messages.Add(args);
-            _twitchClient.OnLog += (_, args) => Logger.Log($"[TwitchClient]: {args.Data}");
-            _twitchClient.OnIncorrectLogin += (_, _) => OnFailed?.Invoke();
-            _twitchClient.OnJoinedChannel += (_, _) => OnSuccess?.Invoke();
+            _twitchClient.OnMessageReceived += MessageReceived;
+            _twitchClient.OnLog += OnLog;
+            _twitchClient.OnIncorrectLogin += IncorrectLogin;
+            _twitchClient.OnJoinedChannel += JoinedChannel;
             _twitchClient.Connect();
+        }
+
+        private void JoinedChannel(object o, OnJoinedChannelArgs onJoinedChannelArgs)
+        {
+            OnSuccess?.Invoke();
+        }
+
+        private void IncorrectLogin(object o, OnIncorrectLoginArgs onIncorrectLoginArgs)
+        {
+            OnFailed?.Invoke();
+        }
+
+        private void OnLog(object o, OnLogArgs args)
+        {
+            Logger.Log($"[TwitchClient]: {args.Data}");
+        }
+
+        private void MessageReceived(object o, OnMessageReceivedArgs args)
+        {
+            _messages.Add(args);
         }
 
         public void Update()
