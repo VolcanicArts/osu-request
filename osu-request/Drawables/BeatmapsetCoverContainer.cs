@@ -33,10 +33,10 @@ namespace osu_request.Drawables
             Colour = Color4.White.Opacity(0.75f);
             EdgeEffect = new EdgeEffectParameters
             {
-                Colour = Color4.Black.Opacity(0.6f),
-                Radius = 0,
+                Colour = Color4.Black.Opacity(0f),
+                Radius = 2.5f,
                 Type = EdgeEffectType.Shadow,
-                Offset = new Vector2(0.0f)
+                Offset = new Vector2(1.5f)
             };
             Child = new BackgroundSprite(_backgroundTexture)
             {
@@ -50,26 +50,16 @@ namespace osu_request.Drawables
         protected override bool OnHover(HoverEvent e)
         {
             _previewMp3.Restart();
-            EdgeEffect = new EdgeEffectParameters
-            {
-                Colour = Color4.Black.Opacity(0.6f),
-                Radius = 2.5f,
-                Type = EdgeEffectType.Shadow,
-                Offset = new Vector2(1.5f, 1.5f)
-            };
+            this.ScaleTo(1.01f, 100, Easing.OutCubic);
+            FadeEdgeEffectTo(Color4.Black.Opacity(0.6f), 100, Easing.OutCubic);
             return true;
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
             _previewMp3.Stop();
-            EdgeEffect = new EdgeEffectParameters
-            {
-                Colour = Color4.Black.Opacity(0.6f),
-                Radius = 0,
-                Type = EdgeEffectType.Shadow,
-                Offset = new Vector2(0.0f)
-            };
+            this.ScaleTo(1.0f, 100, Easing.InCubic);
+            FadeEdgeEffectTo(Color4.Black.Opacity(0f), 100, Easing.InCubic);
         }
     }
 }
