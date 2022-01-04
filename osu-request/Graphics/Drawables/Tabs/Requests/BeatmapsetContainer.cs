@@ -1,13 +1,10 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
-using osuTK.Graphics;
 using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
@@ -55,13 +52,7 @@ namespace osu_request.Drawables
             RelativeSizeAxes = Axes.X;
             Masking = true;
             CornerRadius = 10;
-            EdgeEffect = new EdgeEffectParameters
-            {
-                Colour = Color4.Black.Opacity(0.6f),
-                Radius = 2.5f,
-                Type = EdgeEffectType.Shadow,
-                Offset = new Vector2(1.5f, 1.5f)
-            };
+            EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
         }
 
         private void InitChildren()

@@ -1,14 +1,11 @@
 ﻿using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osuTK;
-using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
@@ -63,13 +60,7 @@ namespace osu_request.Drawables
                         Size = new Vector2(0.9f, 0.75f),
                         Masking = true,
                         CornerRadius = 5,
-                        EdgeEffect = new EdgeEffectParameters
-                        {
-                            Colour = Color4.Black.Opacity(0.6f),
-                            Radius = 2.5f,
-                            Type = EdgeEffectType.Shadow,
-                            Offset = new Vector2(1.2f)
-                        },
+                        EdgeEffect = OsuRequestEdgeEffects.BasicShadowBlack,
                         Children = new Drawable[]
                         {
                             new BackgroundColour
@@ -120,14 +111,14 @@ namespace osu_request.Drawables
             if (trigger) OnSelected?.Invoke(ID);
             _outerContent.MoveToY(7.5f, 100, Easing.InCubic);
             _outerBackground.FadeColour(OsuRequestColour.Gray4, 250, Easing.OutCubic);
-            _innerContent.FadeEdgeEffectTo(0f, 250, Easing.OutCubic);
+            _innerContent.TweenEdgeEffectTo(OsuRequestEdgeEffects.NoShadow, 250, Easing.OutCubic);
         }
 
         public void Deselect()
         {
             _outerContent.MoveToY(0f, 100, Easing.OutCubic);
             _outerBackground.FadeColour(OsuRequestColour.Gray7, 250, Easing.InCubic);
-            _innerContent.FadeEdgeEffectTo(1f, 250, Easing.InCubic);
+            _innerContent.TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadowBlack, 250, Easing.InCubic);
             _selected = false;
         }
     }

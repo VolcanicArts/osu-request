@@ -1,8 +1,6 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
 using osuTK;
 using osuTK.Graphics;
 
@@ -39,13 +37,7 @@ namespace osu_request.Drawables
                     CornerRadius = 10,
                     BorderThickness = 2,
                     BorderColour = Color4.Black,
-                    EdgeEffect = new EdgeEffectParameters
-                    {
-                        Colour = Color4.Black.Opacity(0.3f),
-                        Radius = 5f,
-                        Type = EdgeEffectType.Shadow,
-                        Offset = new Vector2(3, 3)
-                    },
+                    EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                     Children = new Drawable[]
                     {
                         new BackgroundColour

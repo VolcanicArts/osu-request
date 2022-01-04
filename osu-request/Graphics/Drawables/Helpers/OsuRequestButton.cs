@@ -48,7 +48,7 @@ namespace osu_request.Drawables
 
         protected override bool OnMouseDown(MouseDownEvent e)
         {
-            TweenEdgeEffectTo(OsuRequestEdgeEffects.None, 100, Easing.OutCubic);
+            TweenEdgeEffectTo(OsuRequestEdgeEffects.NoShadow, 100, Easing.OutCubic);
             return true;
         }
 
