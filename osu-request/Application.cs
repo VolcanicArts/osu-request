@@ -64,6 +64,7 @@ namespace osu_request
 
         protected override void LoadComplete()
         {
+            TabsContainer.Select(0);
             _clientManager.OnFailed += RedirectToSettings;
             _clientManager.OnSuccess += RedirectToRequests;
             _clientManager.TryConnectClients(_osuRequestConfig);
