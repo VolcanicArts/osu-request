@@ -1,18 +1,22 @@
-using System;
+﻿using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
+using osuTK;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
     public class ToolbarItem : Container
     {
-        private BackgroundColour _background;
-        private Container _content;
+        private Container _innerContent;
+        private BackgroundColour _outerBackground;
+        private Container _outerContent;
         private bool _selected;
         private BindableBool Locked;
         public Action<int> OnSelected;
@@ -37,33 +41,51 @@ namespace osu_request.Drawables
 
         private void InitChildren()
         {
-            Child = _content = new Container
+            Child = _outerContent = new Container
             {
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
                 RelativeSizeAxes = Axes.Y,
-                AutoSizeAxes = Axes.X,
-                Height = 1.0f,
+                Size = new Vector2(200, 1.0f),
                 Masking = true,
-                BorderThickness = 3,
-                BorderColour = Color4.Black,
-                CornerRadius = 10,
+                CornerRadius = 5,
                 Children = new Drawable[]
                 {
-                    _background = new BackgroundColour
+                    _outerBackground = new BackgroundColour
                     {
-                        Colour = OsuRequestColour.GrayA
+                        Colour = OsuRequestColour.Gray7
                     },
-                    new AutoSizingSpriteText
+                    _innerContent = new Container
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Y,
-                        AutoSizeAxes = Axes.X,
-                        Height = 1.0f,
-                        Text = { Value = Name },
-                        Padding = new MarginPadding(10.0f),
-                        Font = new FontUsage("Roboto", weight: "Regular")
+                        RelativeSizeAxes = Axes.Both,
+                        Size = new Vector2(0.9f, 0.75f),
+                        Masking = true,
+                        CornerRadius = 5,
+                        EdgeEffect = new EdgeEffectParameters
+                        {
+                            Colour = Color4.Black.Opacity(0.6f),
+                            Radius = 2.5f,
+                            Type = EdgeEffectType.Shadow,
+                            Offset = new Vector2(1.2f)
+                        },
+                        Children = new Drawable[]
+                        {
+                            new BackgroundColour
+                            {
+                                Colour = OsuRequestColour.GreyLimeDarker
+                            },
+                            new AutoSizingSpriteText
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                Size = new Vector2(0.75f),
+                                Text = { Value = Name },
+                                Font = new FontUsage("Roboto", weight: "Regular")
+                            }
+                        }
                     }
                 }
             };
@@ -71,14 +93,14 @@ namespace osu_request.Drawables
 
         protected override bool OnHover(HoverEvent e)
         {
-            if (!_selected) _content.MoveToY(5f, 200, Easing.OutCubic);
+            if (!_selected) _outerContent.MoveToY(5f, 200, Easing.OutCubic);
 
             return true;
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            if (!_selected) _content.MoveToY(0f, 200, Easing.OutBounce);
+            if (!_selected) _outerContent.MoveToY(0f, 200, Easing.OutCubic);
 
             base.OnHoverLost(e);
         }
@@ -96,16 +118,16 @@ namespace osu_request.Drawables
         {
             _selected = true;
             if (trigger) OnSelected?.Invoke(ID);
-            _content.MoveToY(10f, 200, Easing.OutCubic);
-            _background.FadeColour(OsuRequestColour.Gray4, 250, Easing.OutCubic);
-            _content.BorderThickness = 0;
+            _outerContent.MoveToY(7.5f, 100, Easing.InCubic);
+            _outerBackground.FadeColour(OsuRequestColour.Gray4, 250, Easing.OutCubic);
+            _innerContent.FadeEdgeEffectTo(0f, 250, Easing.OutCubic);
         }
 
         public void Deselect()
         {
-            _content.MoveToY(0f, 500, Easing.OutBounce);
-            _background.FadeColour(OsuRequestColour.GrayA, 250, Easing.OutCubic);
-            _content.BorderThickness = 3;
+            _outerContent.MoveToY(0f, 100, Easing.OutCubic);
+            _outerBackground.FadeColour(OsuRequestColour.Gray7, 250, Easing.InCubic);
+            _innerContent.FadeEdgeEffectTo(1f, 250, Easing.InCubic);
             _selected = false;
         }
     }
