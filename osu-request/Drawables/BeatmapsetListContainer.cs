@@ -9,6 +9,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Logging;
 using osu_request.Osu;
 using osu_request.Twitch;
+using osuTK;
 using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables
@@ -98,6 +99,7 @@ namespace osu_request.Drawables
                         RelativeSizeAxes = Axes.X,
                         AutoSizeAxes = Axes.Y,
                         Direction = FillDirection.Vertical,
+                        Spacing = new Vector2(10),
                         Padding = new MarginPadding(10.0f)
                     }
                 }

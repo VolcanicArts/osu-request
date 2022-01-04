@@ -53,7 +53,6 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.X;
-            Margin = new MarginPadding(10.0f);
             Masking = true;
             CornerRadius = 10;
             EdgeEffect = new EdgeEffectParameters
