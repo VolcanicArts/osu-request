@@ -80,9 +80,14 @@ namespace osu_request.Drawables
         private void AnimateTabs(int id)
         {
             if (Locked.Value) return;
-            var diff = -(id - _selectedTab);
+            for (var i = 0; i < _tabs.Length; i++)
+            {
+                var tab = _tabs[i];
+                var pos = i - id;
+                tab.MoveTo(new Vector2(pos, 0.0f), 200, Easing.InOutQuart);
+            }
+
             _selectedTab = id;
-            foreach (var tab in _tabs) tab.MoveToOffset(new Vector2(diff, 0.0f), 200, Easing.InOutQuart);
         }
     }
 }
