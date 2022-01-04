@@ -51,17 +51,23 @@ namespace osu_request
             var twitchChannelName = osuRequestConfig.Get<string>(OsuRequestSetting.TwitchChannelName);
             var twitchOAuthToken = osuRequestConfig.Get<string>(OsuRequestSetting.TwitchOAuthToken);
             ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
-            TwitchClient.OnSuccess += () =>
-            {
-                Logger.Log("TwitchClient login successful");
-                OnSuccess?.Invoke();
-            };
-            TwitchClient.OnFailed += () =>
-            {
-                Logger.Log("TwitchClient login failed");
-                OnFailed?.Invoke();
-            };
+            TwitchClient.OnSuccess -= OnTwitchClientOnSuccess;
+            TwitchClient.OnFailed -= OnTwitchClientOnFailed;
+            TwitchClient.OnSuccess += OnTwitchClientOnSuccess;
+            TwitchClient.OnFailed += OnTwitchClientOnFailed;
             TwitchClient.Init(twitchCredentials);
+        }
+
+        private void OnTwitchClientOnFailed()
+        {
+            Logger.Log("TwitchClient login failed");
+            OnFailed?.Invoke();
+        }
+
+        private void OnTwitchClientOnSuccess()
+        {
+            Logger.Log("TwitchClient login successful");
+            OnSuccess?.Invoke();
         }
     }
 }
