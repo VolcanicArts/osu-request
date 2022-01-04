@@ -53,7 +53,7 @@ namespace osu_request.Drawables
                     Text = { Value = "Settings" },
                     Font = new FontUsage("Roboto", weight: "Regular"),
                     Shadow = true,
-                    AutoSizeSpriteTextAxes = Axes.Both,
+                    AutoSizeSpriteTextAxes = Axes.Both
                 },
                 new AutoSizingSpriteText
                 {

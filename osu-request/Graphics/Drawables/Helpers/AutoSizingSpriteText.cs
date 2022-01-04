@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
@@ -13,10 +12,11 @@ using osuTK.Graphics;
 namespace osu_request.Drawables
 {
     /// <summary>
-    /// Auto-sizes the text set to the parent of this container 
+    ///     Auto-sizes the text set to the parent of this container
     /// </summary>
     public class AutoSizingSpriteText : Container
     {
+        private SpriteText _spriteText;
         protected internal Anchor SpriteAnchor { get; init; } = Anchor.Centre;
         protected internal Anchor SpriteOrigin { get; init; } = Anchor.Centre;
         protected internal Bindable<LocalisableString> Text { get; init; } = new();
@@ -24,14 +24,12 @@ namespace osu_request.Drawables
         protected internal bool Shadow { get; init; }
         protected internal Axes AutoSizeSpriteTextAxes { get; init; } = Axes.Y;
 
-        private SpriteText _spriteText;
-
         [BackgroundDependencyLoader]
         private void Load()
         {
             Debug.Assert(AutoSizeSpriteTextAxes != Axes.None);
 
-            Child = _spriteText = new SpriteText()
+            Child = _spriteText = new SpriteText
             {
                 Anchor = SpriteAnchor,
                 Origin = SpriteOrigin,

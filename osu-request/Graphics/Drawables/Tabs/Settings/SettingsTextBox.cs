@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.UserInterface;
-using osu.Framework.Localisation;
 using osuTK;
 using osuTK.Graphics;
 

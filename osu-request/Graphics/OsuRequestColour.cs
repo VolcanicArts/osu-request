@@ -79,7 +79,7 @@ namespace osu_request
         public static readonly Color4 GreyCarmine = Color4Extensions.FromHex(@"342b2d");
         public static readonly Color4 GreyCarmineDark = Color4Extensions.FromHex(@"302a2b");
         public static readonly Color4 GreyCarmineDarker = Color4Extensions.FromHex(@"241d1e");
-        
+
         public static readonly Color4 RedLighter = Color4Extensions.FromHex(@"ffeded");
         public static readonly Color4 RedLight = Color4Extensions.FromHex(@"ed7787");
         public static readonly Color4 Red = Color4Extensions.FromHex(@"ed1121");

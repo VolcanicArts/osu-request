@@ -2,7 +2,6 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
-using osuTK;
 
 namespace osu_request.Drawables
 {
@@ -14,7 +13,7 @@ namespace osu_request.Drawables
         {
             _texture = texture;
         }
-        
+
         [BackgroundDependencyLoader]
         private void Load()
         {

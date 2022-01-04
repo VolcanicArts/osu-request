@@ -12,7 +12,9 @@ namespace osu_request.Drawables
         private int _selectedTab;
         private Drawable[] _tabs;
         private Toolbar _toolbar;
-        [Cached] protected internal BindableBool Locked { get; } = new();
+
+        [Cached]
+        protected internal BindableBool Locked { get; } = new();
 
         [BackgroundDependencyLoader]
         private void Load()

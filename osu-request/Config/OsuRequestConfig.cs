@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using osu.Framework.Configuration;
+﻿using osu.Framework.Configuration;
 using osu.Framework.Platform;
 
 namespace osu_request.Config
 {
     public class OsuRequestConfig : IniConfigManager<OsuRequestSetting>
     {
-        protected override string Filename => @"config.ini";
+        public OsuRequestConfig(Storage storage) : base(storage) { }
 
-        public OsuRequestConfig(Storage storage) : base(storage)
-        {
-        }
+        protected override string Filename => @"config.ini";
 
         protected override void InitialiseDefaults()
         {
@@ -26,6 +23,6 @@ namespace osu_request.Config
         OsuClientId,
         OsuClientSecret,
         TwitchChannelName,
-        TwitchOAuthToken,
+        TwitchOAuthToken
     }
 }
