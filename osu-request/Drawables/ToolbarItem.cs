@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -89,6 +89,8 @@ namespace osu_request.Drawables
             Select(true);
             return true;
         }
+
+        protected override bool OnDoubleClick(DoubleClickEvent e) => true;
 
         public void Select(bool trigger)
         {
