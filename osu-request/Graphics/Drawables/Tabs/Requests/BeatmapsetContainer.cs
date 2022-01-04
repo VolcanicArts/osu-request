@@ -28,6 +28,7 @@ namespace osu_request.Drawables
         protected override void UpdateAfterAutoSize()
         {
             Size = new Vector2(Size.X, DrawWidth * 0.35f * 0.5f);
+            
             base.UpdateAfterAutoSize();
         }
 
@@ -104,31 +105,47 @@ namespace osu_request.Drawables
                             {
                                 Colour = OsuRequestColour.GreyLimeDarker
                             },
-                            new AutoSizingSpriteText
+                            new Container()
                             {
                                 Anchor = Anchor.TopLeft,
                                 Origin = Anchor.TopLeft,
-                                SpriteAnchor = Anchor.TopLeft,
-                                SpriteOrigin = Anchor.TopLeft,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(1.0f, 0.2f),
-                                RelativeAnchorPosition = new Vector2(0f),
-                                Text = { Value = _beatmapset.Title },
-                                Font = new FontUsage("Roboto", weight: "Regular"),
-                                Margin = new MarginPadding(10)
-                            },
-                            new AutoSizingSpriteText
-                            {
-                                Anchor = Anchor.TopLeft,
-                                Origin = Anchor.TopLeft,
-                                SpriteAnchor = Anchor.TopLeft,
-                                SpriteOrigin = Anchor.TopLeft,
-                                RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(1.0f, 0.15f),
-                                RelativeAnchorPosition = new Vector2(0.0f, 0.2f),
-                                Text = { Value = $"Mapped by {_beatmapset.Creator}" },
-                                Font = new FontUsage("Roboto", weight: "Regular"),
-                                Margin = new MarginPadding(10)
+                                RelativePositionAxes = Axes.Both,
+                                RelativeAnchorPosition = new Vector2(0.01f, 0.025f),
+                                Child = new FillFlowContainer
+                                {
+                                    Anchor = Anchor.TopLeft,
+                                    Origin = Anchor.TopLeft,
+                                    RelativeSizeAxes = Axes.Both,
+                                    Size = new Vector2(0.5f, 1.0f),
+                                    Spacing = new Vector2(0, 2),
+                                    Direction = FillDirection.Vertical,
+                                    Children = new Drawable[]
+                                    {
+                                        new AutoSizingSpriteText
+                                        {
+                                            Anchor = Anchor.TopLeft,
+                                            Origin = Anchor.TopLeft,
+                                            SpriteAnchor = Anchor.TopLeft,
+                                            SpriteOrigin = Anchor.TopLeft,
+                                            Size = new Vector2(1.0f, 0.25f),
+                                            RelativeSizeAxes = Axes.Both,
+                                            Text = { Value = _beatmapset.Title },
+                                            Font = new FontUsage("Roboto", weight: "Regular"),
+                                        },
+                                        new AutoSizingSpriteText
+                                        {
+                                            Anchor = Anchor.TopLeft,
+                                            Origin = Anchor.TopLeft,
+                                            SpriteAnchor = Anchor.TopLeft,
+                                            SpriteOrigin = Anchor.TopLeft,
+                                            RelativeSizeAxes = Axes.Both,
+                                            Size = new Vector2(1.0f, 0.2f),
+                                            Text = { Value = $"Mapped by {_beatmapset.Creator}" },
+                                            Font = new FontUsage("Roboto", weight: "Regular"),
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
