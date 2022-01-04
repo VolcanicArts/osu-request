@@ -157,7 +157,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _clientManager.OnFailed += AnimateError;
+            _clientManager.OnFailed += () => Scheduler.AddOnce(AnimateError);
             _saveButton.OnButtonClicked += SaveButtonClicked;
         }
 
