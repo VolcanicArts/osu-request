@@ -48,22 +48,24 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f, 0.1f),
+                    Size = new Vector2(0.1f),
                     RelativeAnchorPosition = new Vector2(0.5f, 0.1f),
                     Text = { Value = "Settings" },
                     Font = new FontUsage("Roboto", weight: "Regular"),
-                    Shadow = true
+                    Shadow = true,
+                    AutoSizeSpriteTextAxes = Axes.Both,
                 },
                 new AutoSizingSpriteText
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f, 0.05f),
+                    Size = new Vector2(0.04f),
                     RelativeAnchorPosition = new Vector2(0.5f, 0.2f),
                     Text = { Value = "If you're locked in this tab... Your information is wrong" },
                     Font = new FontUsage("Roboto", weight: "Regular"),
-                    Shadow = true
+                    Shadow = true,
+                    AutoSizeSpriteTextAxes = Axes.X
                 },
                 new FillFlowContainer
                 {
