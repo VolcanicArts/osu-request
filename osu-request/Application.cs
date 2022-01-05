@@ -64,29 +64,11 @@ namespace osu_request
 
         protected override void LoadComplete()
         {
-            TabsContainer.Select(0);
-            _clientManager.OnFailed += RedirectToSettings;
-            _clientManager.OnSuccess += RedirectToRequests;
+            TabsContainer.Select(Tabs.Requests);
+            _clientManager.OnFailed += () => Scheduler.AddOnce(() => TabsContainer.Override(Tabs.Settings));
+            _clientManager.OnSuccess += () => Scheduler.AddOnce(() => TabsContainer.ReleaseAndSelect(Tabs.Requests));
             _clientManager.TryConnectClients(_osuRequestConfig);
             base.LoadComplete();
-        }
-
-        private void RedirectToSettings()
-        {
-            Scheduler.AddOnce(() =>
-            {
-                TabsContainer.Select(1);
-                TabsContainer.Locked.Value = true;
-            });
-        }
-
-        private void RedirectToRequests()
-        {
-            Scheduler.AddOnce(() =>
-            {
-                TabsContainer.Locked.Value = false;
-                TabsContainer.Select(0);
-            });
         }
 
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)

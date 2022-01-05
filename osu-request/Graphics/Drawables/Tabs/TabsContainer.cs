@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -8,13 +9,13 @@ namespace osu_request.Drawables
 {
     public class TabsContainer : Container
     {
-        private Container _content;
-        private int _selectedTab;
+        [Cached]
+        private readonly BindableBool Locked = new();
+
         private Drawable[] _tabs;
         private Toolbar _toolbar;
 
-        [Cached]
-        protected internal BindableBool Locked { get; } = new();
+        private Tabs CurrentTab;
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -56,7 +57,7 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.X,
                     Size = new Vector2(1.0f, 60.0f)
                 },
-                _content = new Container
+                new Container
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -69,27 +70,51 @@ namespace osu_request.Drawables
                 }
             };
 
-            _toolbar.NewSelectionEvent += Select;
+            _toolbar.NewSelectionEvent += (id) => Select((Tabs) id);
         }
 
-        public void Select(int id)
+        public void Override(Tabs tab)
+        {
+            Locked.Value = false;
+            Select(tab, true);
+            Locked.Value = true;
+        }
+
+        public void Release()
+        {
+            Locked.Value = false;
+            Select(CurrentTab, false);
+        }
+
+        public void ReleaseAndSelect(Tabs tab)
+        {
+            Locked.Value = false;
+            Select(tab, false);
+        }
+
+        public void Select(Tabs tab)
+        {
+            Select(tab, false);
+        }
+
+        private void Select(Tabs tab, bool overriding)
         {
             if (Locked.Value) return;
+            if (!overriding) CurrentTab = tab;
+            
+            var id = Convert.ToInt32(tab);
             _toolbar.Select(id);
             AnimateTabs(id);
         }
 
         private void AnimateTabs(int id)
         {
-            if (Locked.Value) return;
             for (var i = 0; i < _tabs.Length; i++)
             {
                 var tab = _tabs[i];
                 var pos = i - id;
                 tab.MoveTo(new Vector2(pos, 0.0f), 200, Easing.InOutQuart);
             }
-
-            _selectedTab = id;
         }
     }
 }
