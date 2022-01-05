@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
@@ -36,7 +37,8 @@ namespace osu_request.Drawables
             TextFlow?.Children.Cast<Container>().ForEach(container =>
             {
                 var character = (SpriteText)container.Child;
-                character.Font = character.Font.With(size: CalculatedTextSize);
+                var localSize = MathF.Max(CalculatedTextSize, 0);
+                character.Font = character.Font.With(size: localSize);
             });
             KillFocus();
         }
