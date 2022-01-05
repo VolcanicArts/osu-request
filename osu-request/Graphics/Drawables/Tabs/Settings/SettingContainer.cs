@@ -22,7 +22,7 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(1.0f, 0.45f);
+            Size = new Vector2(1.0f, 0.2f);
             Masking = true;
             CornerRadius = 10;
             BorderColour = Color4.Black;
@@ -48,12 +48,14 @@ namespace osu_request.Drawables
                             Origin = Anchor.TopCentre,
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(1.0f, 0.5f),
+                            RelativePositionAxes = Axes.Y,
+                            Y = -0.05f,
                             Child = new AutoSizingSpriteText
                             {
-                                Anchor = Anchor.CentreLeft,
-                                Origin = Anchor.CentreLeft,
-                                SpriteAnchor = Anchor.CentreLeft,
-                                SpriteOrigin = Anchor.CentreLeft,
+                                Anchor = Anchor.TopLeft,
+                                Origin = Anchor.TopLeft,
+                                SpriteAnchor = Anchor.TopLeft,
+                                SpriteOrigin = Anchor.TopLeft,
                                 RelativeSizeAxes = Axes.Both,
                                 Size = new Vector2(0.075f, 1.0f),
                                 AutoSizeSpriteTextAxes = Axes.Both,

@@ -45,7 +45,7 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.8f, 0.4f),
+                    Size = new Vector2(0.8f, 0.8f),
                     Margin = new MarginPadding
                     {
                         Bottom = 50
@@ -62,22 +62,22 @@ namespace osu_request.Drawables
                             OsuClientIDContainer = new SettingContainer
                             {
                                 Setting = OsuRequestSetting.OsuClientId,
-                                Prompt = "Enter your osu! client ID"
+                                Prompt = "osu! client ID"
                             },
                             OsuClientSecretContainer = new SecretSettingContainer
                             {
                                 Setting = OsuRequestSetting.OsuClientSecret,
-                                Prompt = "Enter your osu! client secret"
+                                Prompt = "osu! client secret"
                             },
                             TwitchClientChannelNameContainer = new SettingContainer
                             {
                                 Setting = OsuRequestSetting.TwitchChannelName,
-                                Prompt = "Enter your Twitch channel name"
+                                Prompt = "Twitch channel name"
                             },
                             TwitchClientOAuthTokenContainer = new SecretSettingContainer
                             {
                                 Setting = OsuRequestSetting.TwitchOAuthToken,
-                                Prompt = "Enter your Twitch OAuth code"
+                                Prompt = "Twitch OAuth code"
                             }
                         }
                     }

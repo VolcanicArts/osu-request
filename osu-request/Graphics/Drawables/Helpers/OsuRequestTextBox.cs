@@ -22,7 +22,7 @@ namespace osu_request.Drawables
             BorderThickness = 2;
             CornerRadius = 5;
             BackgroundFocused = OsuRequestColour.Gray6;
-            BackgroundUnfocused = OsuRequestColour.GreyLimeDark;
+            BackgroundUnfocused = OsuRequestColour.GreyLime;
         }
 
         protected override SpriteText CreatePlaceholder()
