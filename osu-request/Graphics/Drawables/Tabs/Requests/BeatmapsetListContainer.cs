@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using osu.Framework.Allocation;
@@ -16,24 +15,12 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetListContainer : Container
     {
-        private readonly List<BeatmapsetContainer> _beatmapsetContainersToAdd = new();
         private AudioManager _audioManager;
         private FillFlowContainer _fillFlowContainer;
 
         private OsuClientLocal _localOsuClient;
         private TwitchClientLocal _localTwitchClient;
         private TextureStore _textureStore;
-
-        private void AddAllBeatmapsets()
-        {
-            foreach (var beatmapsetContainer in _beatmapsetContainersToAdd) AddBeatmapset(beatmapsetContainer);
-            _beatmapsetContainersToAdd.Clear();
-        }
-
-        private void AddBeatmapset(BeatmapsetContainer beatmapsetContainer)
-        {
-            _fillFlowContainer.Add(beatmapsetContainer);
-        }
 
         private void HandleTwitchMessage(ChatMessage message)
         {
@@ -65,8 +52,7 @@ namespace osu_request.Drawables
                 var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
                 var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
 
-                _beatmapsetContainersToAdd.Add(beatmapsetContainer);
-                Scheduler.AddOnce(AddAllBeatmapsets);
+                Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
             }
             catch (HttpRequestException)
             {
