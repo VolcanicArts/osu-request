@@ -6,6 +6,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using osuTK;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
@@ -16,8 +17,8 @@ namespace osu_request.Drawables
         {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.X;
-            Height = 40.0f;
+            RelativeSizeAxes = Axes.Both;
+            Size = new Vector2(1.0f);
             BorderColour = Color4.Black;
             BorderThickness = 2;
             CornerRadius = 5;

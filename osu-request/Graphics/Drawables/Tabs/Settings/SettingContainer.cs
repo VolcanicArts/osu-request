@@ -81,8 +81,6 @@ namespace osu_request.Drawables
             {
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
-                RelativeSizeAxes = Axes.Both,
-                Size = new Vector2(1.0f),
                 Text = text
             };
         }
