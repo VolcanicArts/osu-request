@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
+using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Platform;
 using osuTK;
 using osuTK.Graphics;
 
@@ -25,6 +27,12 @@ namespace osu_request.Drawables
             BackgroundFocused = OsuRequestColour.Gray6;
             BackgroundUnfocused = OsuRequestColour.GreyLime;
         }
+        
+        [BackgroundDependencyLoader]
+        private void Load(GameHost host)
+        {
+            host.Window.Resized += () => Scheduler.AddOnce(RecalculateSize);
+        }
 
         protected override SpriteText CreatePlaceholder()
         {
@@ -33,7 +41,7 @@ namespace osu_request.Drawables
             return fadingPlaceholderText;
         }
 
-        public void RecalculateSize()
+        private void RecalculateSize()
         {
             var localSize = MathF.Max(CalculatedTextSize, 0);
             TextFlow?.Children.Cast<Container>().ForEach(container =>

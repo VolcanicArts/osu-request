@@ -15,10 +15,8 @@ namespace osu_request.Drawables
         protected internal OsuRequestSetting Setting { get; init; }
 
         [BackgroundDependencyLoader]
-        private void Load(OsuRequestConfig osuRequestConfig, GameHost host)
+        private void Load(OsuRequestConfig osuRequestConfig)
         {
-            host.Window.Resized += () => Scheduler.AddOnce(() => TextBox.RecalculateSize());
-
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
