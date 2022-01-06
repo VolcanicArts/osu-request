@@ -3,6 +3,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu_request.Drawables.Bans;
 using osuTK;
 
 namespace osu_request.Drawables
@@ -44,6 +45,10 @@ namespace osu_request.Drawables
                 {
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(1.0f, 0.0f)
+                },
+                new BansTab{
+                    RelativePositionAxes = Axes.Both,
+                    Position = new Vector2(2.0f, 0.0f)
                 }
             };
 
