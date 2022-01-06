@@ -35,12 +35,13 @@ namespace osu_request.Drawables
 
         public void RecalculateSize()
         {
+            var localSize = MathF.Max(CalculatedTextSize, 0);
             TextFlow?.Children.Cast<Container>().ForEach(container =>
             {
                 var character = (SpriteText)container.Child;
-                var localSize = MathF.Max(CalculatedTextSize, 0);
                 character.Font = character.Font.With(size: localSize);
             });
+            Placeholder.Font = Placeholder.Font.With(size: localSize);
             KillFocus();
         }
     }
