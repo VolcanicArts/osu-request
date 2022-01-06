@@ -12,6 +12,7 @@ namespace osu_request.Drawables
     {
         public Action OnButtonClicked;
         protected internal string Text { get; init; }
+        protected internal Vector2 TextSize { get; init; }
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -33,8 +34,8 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.15f),
-                    AutoSizeSpriteTextAxes = Axes.X,
+                    Size = TextSize,
+                    AutoSizeSpriteTextAxes = Axes.Both,
                     Text = { Value = Text }
                 }
             };

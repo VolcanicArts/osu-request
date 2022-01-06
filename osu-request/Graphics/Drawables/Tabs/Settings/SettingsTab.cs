@@ -95,7 +95,8 @@ namespace osu_request.Drawables
                         Origin = Anchor.BottomRight,
                         RelativeSizeAxes = Axes.Both,
                         Size = new Vector2(0.9f),
-                        Text = "Save Settings"
+                        Text = "Save Settings",
+                        TextSize = new Vector2(0.15f, 0.6f)
                     }
                 },
                 ErrorContainer = new Container
