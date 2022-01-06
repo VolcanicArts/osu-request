@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -13,7 +14,6 @@ namespace osu_request.Drawables
         private FillFlowContainer _fillFlowContainer;
         private BindableBool Locked;
         public Action<int> NewSelectionEvent;
-        protected internal string[] ItemNames { get; init; }
 
         [BackgroundDependencyLoader]
         private void Load(BindableBool locked)
@@ -34,7 +34,9 @@ namespace osu_request.Drawables
                 }
             };
 
-            for (var i = 0; i < ItemNames.Length; i++)
+            var ItemNames = Enum.GetValues<Tabs>().Select(v => v.ToString()).ToList();
+
+            for (var i = 0; i < ItemNames.Count; i++)
             {
                 var toolbarItem = new ToolbarItem
                 {

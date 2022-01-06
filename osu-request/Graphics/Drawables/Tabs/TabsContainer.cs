@@ -51,7 +51,6 @@ namespace osu_request.Drawables
             {
                 _toolbar = new Toolbar
                 {
-                    ItemNames = new[] { "Requests", "Settings" },
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     RelativeSizeAxes = Axes.X,
