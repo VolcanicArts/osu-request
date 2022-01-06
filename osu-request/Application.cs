@@ -43,8 +43,9 @@ namespace osu_request
         }
 
         [BackgroundDependencyLoader]
-        private void Load(FrameworkConfigManager frameworkConfig, Storage storage)
+        private void Load(FrameworkConfigManager frameworkConfig, Storage storage, GameHost host)
         {
+            host.Window.Title = @"osu!request";
             _osuRequestConfig = new OsuRequestConfig(storage);
             SetupDefaults(frameworkConfig);
             _dependencies.CacheAs(_osuRequestConfig);
