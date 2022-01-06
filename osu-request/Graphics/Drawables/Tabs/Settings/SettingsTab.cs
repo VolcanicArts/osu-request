@@ -105,7 +105,7 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.Both,
                     RelativePositionAxes = Axes.Both,
                     Size = new Vector2(0.3f, 0.1f),
-                    Position = new Vector2(1.0f, 0.0f),
+                    Position = new Vector2(0.0f, -1.0f),
                     Masking = true,
                     CornerRadius = 10,
                     Children = new Drawable[]
@@ -175,9 +175,9 @@ namespace osu_request.Drawables
         {
             ErrorContainer.MoveTo(new Vector2(0.0f), 250, Easing.OutCubic)
                 .Delay(2000)
-                .MoveTo(new Vector2(-1.0f, 0.0f), 250, Easing.InCubic)
+                .MoveTo(new Vector2(0.0f, 1.0f), 250, Easing.InCubic)
                 .Then()
-                .MoveTo(new Vector2(1.0f, 0.0f));
+                .MoveTo(new Vector2(0.0f, -1.0f));
         }
     }
 }
