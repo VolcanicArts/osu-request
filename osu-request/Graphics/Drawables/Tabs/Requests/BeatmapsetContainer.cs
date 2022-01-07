@@ -4,6 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Platform;
 using osuTK;
 using osuTK.Graphics;
 using volcanicarts.osu.NET.Structures;
@@ -16,6 +17,7 @@ namespace osu_request.Drawables
         private readonly Beatmapset _beatmapset;
         private readonly Track _previewMp3;
         private TextureStore _textureStore;
+        private GameHost _host;
 
         public BeatmapsetContainer(Beatmapset beatmapset, Track previewMp3, Texture backgroundTexture)
         {
@@ -34,9 +36,10 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore)
+        private void Load(TextureStore textureStore, GameHost host)
         {
             _textureStore = textureStore;
+            _host = host;
             InitSelf();
             InitChildren();
         }
@@ -56,7 +59,8 @@ namespace osu_request.Drawables
         private void InitChildren()
         {
             TextFlowContainer _text;
-
+            SpriteButton _openExternally;
+            
             Children = new Drawable[]
             {
                 new BackgroundColour
@@ -98,7 +102,7 @@ namespace osu_request.Drawables
                             Anchor = Anchor.CentreLeft,
                             Origin = Anchor.CentreLeft,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.745f, 1.0f),
+                            Size = new Vector2(0.795f, 1.0f),
                             Masking = true,
                             CornerRadius = 10,
                             Children = new Drawable[]
@@ -132,7 +136,7 @@ namespace osu_request.Drawables
                             Anchor = Anchor.CentreRight,
                             Origin = Anchor.CentreRight,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.245f, 1.0f),
+                            Size = new Vector2(0.195f, 1.0f),
                             Masking = true,
                             CornerRadius = 10,
                             Children = new Drawable[]
@@ -149,23 +153,14 @@ namespace osu_request.Drawables
                                     Padding = new MarginPadding(5),
                                     Children = new Drawable[]
                                     {
-                                        new SpriteButton
+                                        _openExternally = new SpriteButton
                                         {
                                             Anchor = Anchor.TopCentre,
                                             Origin = Anchor.TopCentre,
                                             RelativeSizeAxes = Axes.Both,
                                             Size = new Vector2(1.0f, 0.49f),
-                                            BackgroundColour = OsuRequestColour.GreenDark,
-                                            Texture = _textureStore.Get("download")
-                                        },
-                                        new SpriteButton
-                                        {
-                                            Anchor = Anchor.BottomLeft,
-                                            Origin = Anchor.BottomLeft,
-                                            RelativeSizeAxes = Axes.Both,
-                                            Size = new Vector2(0.49f),
-                                            BackgroundColour = OsuRequestColour.RedDark,
-                                            Texture = _textureStore.Get("ban")
+                                            BackgroundColour = OsuRequestColour.BlueDark,
+                                            Texture = _textureStore.Get("open-externally")
                                         },
                                         new SpriteButton
                                         {
@@ -174,7 +169,16 @@ namespace osu_request.Drawables
                                             RelativeSizeAxes = Axes.Both,
                                             Size = new Vector2(0.49f),
                                             BackgroundColour = OsuRequestColour.RedDark,
-                                            Texture = _textureStore.Get("bin")
+                                            Texture = _textureStore.Get("ban")
+                                        },
+                                        new SpriteButton
+                                        {
+                                            Anchor = Anchor.BottomLeft,
+                                            Origin = Anchor.BottomLeft,
+                                            RelativeSizeAxes = Axes.Both,
+                                            Size = new Vector2(0.49f),
+                                            BackgroundColour = OsuRequestColour.GreenDark,
+                                            Texture = _textureStore.Get("check")
                                         },
                                     }
                                 }
@@ -183,6 +187,8 @@ namespace osu_request.Drawables
                     }
                 }
             };
+
+            _openExternally.OnButtonClicked += () => _host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{_beatmapset.Id}");
 
             _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
             _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
