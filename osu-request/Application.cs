@@ -3,17 +3,21 @@ using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Drawables;
+using osuTK;
 
 namespace osu_request
 {
     public class Application : Game, IKeyBindingHandler<FrameworkAction>
     {
+        private static readonly Size InitialWindowSize = new(960, 700);
+        
         private readonly ClientManager _clientManager = new();
         private DependencyContainer _dependencies;
         private OsuRequestConfig _osuRequestConfig;
@@ -55,11 +59,19 @@ namespace osu_request
 
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new DrawSizePreservingFillContainer
                 {
-                    Colour = OsuRequestColour.Gray4
-                },
-                TabsContainer = new TabsContainer()
+                    Strategy = DrawSizePreservationStrategy.Minimum,
+                    TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height),
+                    Children = new Drawable[]
+                    {
+                        new BackgroundColour
+                        {
+                            Colour = OsuRequestColour.Gray4
+                        },
+                        TabsContainer = new TabsContainer()
+                    }
+                }
             };
         }
 
@@ -75,7 +87,7 @@ namespace osu_request
         private void SetupDefaults(FrameworkConfigManager frameworkConfig)
         {
             frameworkConfig.GetBindable<ExecutionMode>(FrameworkSetting.ExecutionMode).Value = ExecutionMode.SingleThread;
-            frameworkConfig.GetBindable<Size>(FrameworkSetting.WindowedSize).Value = new Size(960, 700);
+            frameworkConfig.GetBindable<Size>(FrameworkSetting.WindowedSize).Value = InitialWindowSize;
         }
     }
 }
