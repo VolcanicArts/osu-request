@@ -9,7 +9,7 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
-    public class BeatmapsetContainer : RelativeSizedContainer
+    public class BeatmapsetContainer : Container
     {
         private readonly Texture _backgroundTexture;
         private readonly Beatmapset _beatmapset;
@@ -43,10 +43,11 @@ namespace osu_request.Drawables
             Alpha = 0;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
+            RelativeSizeAxes = Axes.X;
+            Size = new Vector2(1.0f, 120.0f);
             Masking = true;
             CornerRadius = 10;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
-            ScaleFactor = 0.15f;
         }
 
         private void InitChildren()
@@ -104,7 +105,10 @@ namespace osu_request.Drawables
                                 Origin = Anchor.TopLeft,
                                 RelativeSizeAxes = Axes.Both,
                                 RelativePositionAxes = Axes.Both,
-                                RelativeAnchorPosition = new Vector2(0.01f, 0.025f),
+                                Padding = new MarginPadding
+                                {
+                                    Left = 5
+                                },
                                 Child = new FillFlowContainer
                                 {
                                     Anchor = Anchor.TopLeft,
