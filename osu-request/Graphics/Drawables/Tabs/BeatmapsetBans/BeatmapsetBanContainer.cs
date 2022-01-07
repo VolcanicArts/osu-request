@@ -1,9 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Logging;
 using osu_request.Osu;
 using osuTK;
@@ -18,17 +20,27 @@ namespace osu_request.Drawables.Bans
         private OsuClientLocal _localOsuClient;
         private OsuRequestButton _banButton;
         private OsuRequestTextBox _textBox;
+        private AudioManager _audioManager;
+        private TextureStore _textureStore;
 
-        private void BeatmapsetLoaded(Beatmapset beatmapset)
+        private async void BeatmapsetLoaded(Beatmapset beatmapset)
         {
-            var beatmapsetBanEntry = new BeatmapsetBanEntry(beatmapset);
-            Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetBanEntry));
+            var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
+            var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
+            var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture)
+            {
+                Size = new Vector2(0.49f, 1.0f)
+            };
+
+            Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }
 
         [BackgroundDependencyLoader]
-        private void Load(OsuClientLocal localOsuClient)
+        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore)
         {
             _localOsuClient = localOsuClient;
+            _audioManager = audioManager;
+            _textureStore = textureStore;
             InitSelf();
             InitChildren();
 
