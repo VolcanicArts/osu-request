@@ -67,10 +67,10 @@ namespace osu_request.Drawables
                     Size = new Vector2(0.25f, 1.0f),
                     Padding = new MarginPadding
                     {
-                        Left = 5,
-                        Right = 2.5f,
-                        Top = 5,
-                        Bottom = 5
+                        Left = 5 * Size.X,
+                        Right = 2.5f * Size.X,
+                        Top = 5 * Size.X,
+                        Bottom = 5 * Size.X
                     },
                     Child = new BeatmapsetCoverContainer(_backgroundTexture, _previewMp3, 10 * Size.X)
                 },
@@ -82,10 +82,10 @@ namespace osu_request.Drawables
                     Size = new Vector2(0.75f, 1.0f),
                     Padding = new MarginPadding
                     {
-                        Left = 2.5f,
-                        Right = 5f,
-                        Top = 5,
-                        Bottom = 5
+                        Left = 2.5f * Size.X,
+                        Right = 5f * Size.X,
+                        Top = 5 * Size.X,
+                        Bottom = 5 * Size.X
                     },
                     Child = new Container
                     {
