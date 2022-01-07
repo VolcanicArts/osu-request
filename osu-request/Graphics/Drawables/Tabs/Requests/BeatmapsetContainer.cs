@@ -44,9 +44,8 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.X;
-            Size = new Vector2(1.0f, 120.0f);
             Masking = true;
-            CornerRadius = 10;
+            CornerRadius = 10 * Size.X;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
         }
 
@@ -73,7 +72,7 @@ namespace osu_request.Drawables
                         Top = 5,
                         Bottom = 5
                     },
-                    Child = new BeatmapsetCoverContainer(_backgroundTexture, _previewMp3)
+                    Child = new BeatmapsetCoverContainer(_backgroundTexture, _previewMp3, 10 * Size.X)
                 },
                 new Container
                 {
@@ -94,7 +93,7 @@ namespace osu_request.Drawables
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         Masking = true,
-                        CornerRadius = 10,
+                        CornerRadius = 10 * Size.X,
                         Children = new Drawable[]
                         {
                             new BackgroundColour
@@ -124,8 +123,8 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText($"{_beatmapset.Title}\n", t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30));
-            _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 25));
+            _text.AddText($"{_beatmapset.Title}\n", t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30 * Size.X));
+            _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 25 * Size.X));
         }
 
         protected override void Dispose(bool isDisposing)

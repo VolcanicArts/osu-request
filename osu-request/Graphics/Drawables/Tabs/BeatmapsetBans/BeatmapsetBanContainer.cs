@@ -25,7 +25,7 @@ namespace osu_request.Drawables.Bans
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
             var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture)
             {
-                Size = new Vector2(0.49f, 1.0f)
+                Size = new Vector2(0.49f, 60.0f)
             };
 
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));

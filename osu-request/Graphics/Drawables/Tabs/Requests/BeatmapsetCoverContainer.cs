@@ -14,11 +14,13 @@ namespace osu_request.Drawables
     {
         private readonly Texture _backgroundTexture;
         private readonly Track _previewMp3;
+        private readonly float _cornerRadius;
 
-        public BeatmapsetCoverContainer(Texture backgroundTexture, Track previewMp3)
+        public BeatmapsetCoverContainer(Texture backgroundTexture, Track previewMp3, float cornerRadius)
         {
             _backgroundTexture = backgroundTexture;
             _previewMp3 = previewMp3;
+            _cornerRadius = cornerRadius;
         }
 
         [BackgroundDependencyLoader]
@@ -28,7 +30,7 @@ namespace osu_request.Drawables
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
             Masking = true;
-            CornerRadius = 10;
+            CornerRadius = _cornerRadius;
             Colour = Color4.White.Opacity(0.75f);
             EdgeEffect = OsuRequestEdgeEffects.NoShadow;
             Child = new Sprite
