@@ -1,8 +1,10 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Platform;
 using osu_request.Osu;
 using osuTK;
 using osuTK.Graphics;
@@ -18,6 +20,7 @@ namespace osu_request.Drawables.Bans
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
         private TextureStore _textureStore;
+        private GameHost _host;
 
         private async void BeatmapsetLoaded(Beatmapset beatmapset)
         {
@@ -36,8 +39,10 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore)
+        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore, GameHost host)
         {
+            _host = host;
+            _host.Window.Resized += UpdateSizing;
             _localOsuClient = localOsuClient;
             _audioManager = audioManager;
             _textureStore = textureStore;
@@ -58,6 +63,19 @@ namespace osu_request.Drawables.Bans
             BorderThickness = 2;
             BorderColour = Color4.Black;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
+        }
+
+        private void UpdateSizing()
+        {
+            var width = _host.Window.ClientSize.Width;
+            if (width < 500)
+            {
+                _fillFlowContainer.Children?.ForEach(child => child.Scale = Vector2.One);
+            }
+            else
+            {
+                _fillFlowContainer.Children?.ForEach(child => child.Scale = new Vector2(0.49f));
+            }
         }
 
         private void InitChildren()
