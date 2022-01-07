@@ -2,8 +2,8 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osuTK;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
@@ -12,7 +12,7 @@ namespace osu_request.Drawables
     {
         public Action OnButtonClicked;
         protected internal string Text { get; init; }
-        protected internal Vector2 TextSize { get; init; }
+        protected internal float FontSize { get; init; } = 30;
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -21,22 +21,24 @@ namespace osu_request.Drawables
             BorderColour = Color4.Black;
             EdgeEffect = OsuRequestEdgeEffects.NoShadow;
 
+            TextFlowContainer _text;
+
             Children = new Drawable[]
             {
                 new BackgroundColour
                 {
                     Colour = OsuRequestColour.GreyLime
                 },
-                new AutoSizingSpriteText
+                _text = new TextFlowContainer
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = TextSize,
-                    AutoSizeSpriteTextAxes = Axes.Both,
-                    Text = { Value = Text }
+                    TextAnchor = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both
                 }
             };
+
+            _text.AddText(Text, t => t.Font = new FontUsage("Roboto", weight: "Regular", size: FontSize));
         }
 
         protected override bool OnClick(ClickEvent e)

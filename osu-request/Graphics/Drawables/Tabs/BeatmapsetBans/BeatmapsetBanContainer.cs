@@ -1,12 +1,8 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Logging;
 using osu_request.Osu;
 using osuTK;
 using osuTK.Graphics;
@@ -16,11 +12,11 @@ namespace osu_request.Drawables.Bans
 {
     public class BeatmapsetBanContainer : Container
     {
+        private AudioManager _audioManager;
+        private OsuRequestButton _banButton;
         private FillFlowContainer _fillFlowContainer;
         private OsuClientLocal _localOsuClient;
-        private OsuRequestButton _banButton;
         private OsuRequestTextBox _textBox;
-        private AudioManager _audioManager;
         private TextureStore _textureStore;
 
         private async void BeatmapsetLoaded(Beatmapset beatmapset)
@@ -137,7 +133,7 @@ namespace osu_request.Drawables.Bans
                                                     RelativeSizeAxes = Axes.Both,
                                                     Size = new Vector2(1.0f),
                                                     Text = "Ban",
-                                                    TextSize = new Vector2(0.5f, 0.75f),
+                                                    FontSize = 40,
                                                     CornerRadius = 10,
                                                     BorderThickness = 2
                                                 }

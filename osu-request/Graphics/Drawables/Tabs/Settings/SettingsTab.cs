@@ -5,7 +5,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu_request.Config;
 using osuTK;
-using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
@@ -14,11 +13,11 @@ namespace osu_request.Drawables
         private ClientManager _clientManager;
         private OsuRequestConfig _osuRequestConfig;
         private OsuRequestButton _saveButton;
+        private Container ErrorContainer;
         private SettingContainer OsuClientIDContainer;
         private SettingContainer OsuClientSecretContainer;
         private SettingContainer TwitchClientChannelNameContainer;
         private SettingContainer TwitchClientOAuthTokenContainer;
-        private Container ErrorContainer;
 
         [BackgroundDependencyLoader]
         private void Load(OsuRequestConfig osuRequestConfig, ClientManager clientManager)
@@ -96,7 +95,7 @@ namespace osu_request.Drawables
                         RelativeSizeAxes = Axes.Both,
                         Size = new Vector2(0.9f),
                         Text = "Save Settings",
-                        TextSize = new Vector2(0.15f, 0.6f),
+                        FontSize = 30,
                         CornerRadius = 5,
                         BorderThickness = 2
                     }
@@ -142,16 +141,15 @@ namespace osu_request.Drawables
                                         Origin = Anchor.Centre,
                                         RelativeSizeAxes = Axes.Both,
                                         Size = new Vector2(0.9f, 1.0f),
-                                        Child = new AutoSizingSpriteText
+                                        Child = new SpriteText
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
                                             RelativeSizeAxes = Axes.Both,
                                             Size = new Vector2(0.1f, 0.5f),
-                                            AutoSizeSpriteTextAxes = Axes.Both,
-                                            Text = { Value = "Incorrect Information!" },
+                                            Text = "Incorrect Information!",
                                             Font = new FontUsage("Roboto", weight: "Regular")
-                                        },
+                                        }
                                     }
                                 }
                             }

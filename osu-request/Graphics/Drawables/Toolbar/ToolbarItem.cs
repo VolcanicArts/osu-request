@@ -38,6 +38,8 @@ namespace osu_request.Drawables
 
         private void InitChildren()
         {
+            TextFlowContainer _text;
+
             Child = _outerContent = new Container
             {
                 Anchor = Anchor.TopCentre,
@@ -67,19 +69,20 @@ namespace osu_request.Drawables
                             {
                                 Colour = OsuRequestColour.GreyLimeDarker
                             },
-                            new AutoSizingSpriteText
+                            _text = new TextFlowContainer
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
+                                TextAnchor = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.65f),
-                                Text = { Value = Name },
-                                Font = new FontUsage("Roboto", weight: "Regular")
+                                Size = new Vector2(1.0f)
                             }
                         }
                     }
                 }
             };
+
+            _text.AddText(Name, t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30));
         }
 
         protected override bool OnHover(HoverEvent e)

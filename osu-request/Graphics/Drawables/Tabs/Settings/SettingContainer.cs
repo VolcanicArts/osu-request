@@ -1,7 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Platform;
+using osu.Framework.Graphics.Sprites;
 using osu_request.Config;
 using osuTK;
 using osuTK.Graphics;
@@ -26,6 +26,9 @@ namespace osu_request.Drawables
             BorderColour = Color4.Black;
             BorderThickness = 2;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
+
+            TextFlowContainer _text;
+
             Children = new Drawable[]
             {
                 new BackgroundColour
@@ -40,25 +43,13 @@ namespace osu_request.Drawables
                     Padding = new MarginPadding(10),
                     Children = new Drawable[]
                     {
-                        new Container
+                        _text = new TextFlowContainer
                         {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
+                            TextAnchor = Anchor.TopLeft,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f),
-                            RelativePositionAxes = Axes.Y,
-                            Y = -0.05f,
-                            Child = new AutoSizingSpriteText
-                            {
-                                Anchor = Anchor.TopLeft,
-                                Origin = Anchor.TopLeft,
-                                SpriteAnchor = Anchor.TopLeft,
-                                SpriteOrigin = Anchor.TopLeft,
-                                RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.075f, 1.0f),
-                                AutoSizeSpriteTextAxes = Axes.Both,
-                                Text = { Value = Prompt }
-                            }
+                            Size = new Vector2(1.0f, 0.5f)
                         },
                         new Container
                         {
@@ -71,6 +62,8 @@ namespace osu_request.Drawables
                     }
                 }
             };
+
+            _text.AddText(Prompt, t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30));
         }
 
         protected virtual OsuRequestTextBox CreateTextBox(string text)
