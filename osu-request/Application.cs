@@ -7,9 +7,11 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
+using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Drawables;
+using osu_request.Resources;
 using osuTK;
 
 namespace osu_request
@@ -50,6 +52,8 @@ namespace osu_request
         private void Load(FrameworkConfigManager frameworkConfig, Storage storage, GameHost host)
         {
             host.Window.Title = @"osu!request";
+            Resources.AddStore(new DllResourceStore(OsuRequestResources.ResourceAssembly));
+            
             _osuRequestConfig = new OsuRequestConfig(storage);
             SetupDefaults(frameworkConfig);
             _dependencies.CacheAs(_osuRequestConfig);
