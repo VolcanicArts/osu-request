@@ -2,7 +2,6 @@
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu_request.Config;
 using osuTK;
 
@@ -37,6 +36,8 @@ namespace osu_request.Drawables
 
         private void InitChildren()
         {
+            TextFlowContainer _text;
+
             Children = new Drawable[]
             {
                 new Container
@@ -141,14 +142,12 @@ namespace osu_request.Drawables
                                         Origin = Anchor.Centre,
                                         RelativeSizeAxes = Axes.Both,
                                         Size = new Vector2(0.9f, 1.0f),
-                                        Child = new SpriteText
+                                        Child = _text = new TextFlowContainer
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
-                                            RelativeSizeAxes = Axes.Both,
-                                            Size = new Vector2(0.1f, 0.5f),
-                                            Text = "Incorrect Information!",
-                                            Font = OsuRequestFonts.Regular
+                                            TextAnchor = Anchor.Centre,
+                                            RelativeSizeAxes = Axes.Both
                                         }
                                     }
                                 }
@@ -157,6 +156,8 @@ namespace osu_request.Drawables
                     }
                 }
             };
+
+            _text.AddText("Incorrect Information!", t => t.Font = OsuRequestFonts.Regular.With(size: 20));
 
             _clientManager.OnFailed += () => Scheduler.AddOnce(AnimateError);
             _saveButton.OnButtonClicked += SaveButtonClicked;
