@@ -23,6 +23,10 @@ namespace osu_request.Drawables.Bans
         {
             var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
+
+            if (previewMp3 == null || backgroundTexture == null) return;
+            _textBox.Text = string.Empty;
+            
             var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture)
             {
                 Size = new Vector2(0.49f, 60.0f)
