@@ -148,7 +148,7 @@ namespace osu_request.Drawables
                                             RelativeSizeAxes = Axes.Both,
                                             Size = new Vector2(0.1f, 0.5f),
                                             Text = "Incorrect Information!",
-                                            Font = new FontUsage("Roboto", weight: "Regular")
+                                            Font = OsuRequestFonts.Regular
                                         }
                                     }
                                 }

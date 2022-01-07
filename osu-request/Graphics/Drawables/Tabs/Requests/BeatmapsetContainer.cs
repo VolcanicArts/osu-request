@@ -123,8 +123,8 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText($"{_beatmapset.Title}\n", t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30 * Size.X));
-            _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 25 * Size.X));
+            _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30 * Size.X));
+            _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25 * Size.X));
         }
 
         protected override void Dispose(bool isDisposing)

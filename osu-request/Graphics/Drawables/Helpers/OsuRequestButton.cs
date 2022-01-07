@@ -38,7 +38,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText(Text, t => t.Font = new FontUsage("Roboto", weight: "Regular", size: FontSize));
+            _text.AddText(Text, t => t.Font = OsuRequestFonts.Regular.With(size: FontSize));
         }
 
         protected override bool OnClick(ClickEvent e)

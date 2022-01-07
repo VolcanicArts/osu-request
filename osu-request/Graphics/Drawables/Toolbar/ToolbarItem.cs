@@ -82,7 +82,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText(Name, t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30));
+            _text.AddText(Name, t => t.Font = OsuRequestFonts.Regular.With(size: 30));
         }
 
         protected override bool OnHover(HoverEvent e)

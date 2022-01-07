@@ -63,7 +63,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText(Prompt, t => t.Font = new FontUsage("Roboto", weight: "Regular", size: 30));
+            _text.AddText(Prompt, t => t.Font = OsuRequestFonts.Regular.With(size: 30));
         }
 
         protected virtual OsuRequestTextBox CreateTextBox(string text)
