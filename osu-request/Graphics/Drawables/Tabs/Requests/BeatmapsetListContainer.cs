@@ -36,10 +36,7 @@ namespace osu_request.Drawables
         {
             var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture)
-            {
-                Size = new Vector2(1.0f, 120.0f)
-            };
+            var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
 
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }

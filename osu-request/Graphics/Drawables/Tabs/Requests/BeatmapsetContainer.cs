@@ -44,8 +44,9 @@ namespace osu_request.Drawables
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.X;
+            Size = new Vector2(1.0f, 120.0f);
             Masking = true;
-            CornerRadius = 10 * Size.X;
+            CornerRadius = 10;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
         }
 
@@ -67,12 +68,12 @@ namespace osu_request.Drawables
                     Size = new Vector2(0.25f, 1.0f),
                     Padding = new MarginPadding
                     {
-                        Left = 5 * Size.X,
-                        Right = 2.5f * Size.X,
-                        Top = 5 * Size.X,
-                        Bottom = 5 * Size.X
+                        Left = 5,
+                        Right = 2.5f,
+                        Top = 5,
+                        Bottom = 5
                     },
-                    Child = new BeatmapsetCoverContainer(_backgroundTexture, _previewMp3, 10 * Size.X)
+                    Child = new BeatmapsetCoverContainer(_backgroundTexture, _previewMp3, 10)
                 },
                 new Container
                 {
@@ -82,10 +83,10 @@ namespace osu_request.Drawables
                     Size = new Vector2(0.75f, 1.0f),
                     Padding = new MarginPadding
                     {
-                        Left = 2.5f * Size.X,
-                        Right = 5f * Size.X,
-                        Top = 5 * Size.X,
-                        Bottom = 5 * Size.X
+                        Left = 2.5f,
+                        Right = 5,
+                        Top = 5,
+                        Bottom = 5
                     },
                     Child = new Container
                     {
@@ -123,8 +124,8 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30 * Size.X));
-            _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25 * Size.X));
+            _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
+            _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
         }
 
         protected override void Dispose(bool isDisposing)

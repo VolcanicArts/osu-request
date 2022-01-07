@@ -26,10 +26,10 @@ namespace osu_request.Drawables.Bans
 
             if (previewMp3 == null || backgroundTexture == null) return;
             _textBox.Text = string.Empty;
-            
+
             var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture)
             {
-                Size = new Vector2(0.49f, 60.0f)
+                Scale = new Vector2(0.49f)
             };
 
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
