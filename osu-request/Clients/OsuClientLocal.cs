@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using osu.Framework.Logging;
@@ -11,8 +12,9 @@ namespace osu_request.Osu
 {
     public class OsuClientLocal
     {
-        protected internal bool IsReady { get; private set; }
-        protected internal OsuClient OsuClient { get; private set; }
+        private bool IsReady;
+        private OsuClient OsuClient;
+        private readonly Dictionary<string, Beatmapset> _beatmapsetCache = new();
 
         public void SetClientCredentials(OsuClientCredentials clientCredentials)
         {
@@ -46,6 +48,12 @@ namespace osu_request.Osu
 
         private async Task requestBeatmapsetFromBeatmapId(string beatmapId, Action<Beatmapset> callback)
         {
+            if (_beatmapsetCache.ContainsKey(beatmapId))
+            {
+                callback?.Invoke(_beatmapsetCache[beatmapId]);
+                return;
+            }
+
             try
             {
                 Logger.Log($"Requesting beatmap using Id {beatmapId}");
@@ -59,8 +67,10 @@ namespace osu_request.Osu
                 var beatmap = await OsuClient.GetBeatmapAsync(beatmapId);
                 var beatmapset = await beatmap.GetBeatmapsetAsync();
 
+                _beatmapsetCache.Add(beatmapId, beatmapset);
+
                 Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
-                
+
                 callback?.Invoke(beatmapset);
             }
             catch (HttpRequestException)
