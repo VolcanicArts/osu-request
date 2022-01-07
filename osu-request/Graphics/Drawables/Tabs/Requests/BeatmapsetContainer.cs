@@ -60,7 +60,8 @@ namespace osu_request.Drawables
         {
             TextFlowContainer _text;
             SpriteButton _openExternally;
-            
+            SpriteButton _check;
+
             Children = new Drawable[]
             {
                 new BackgroundColour
@@ -171,7 +172,7 @@ namespace osu_request.Drawables
                                             BackgroundColour = OsuRequestColour.RedDark,
                                             Texture = _textureStore.Get("ban")
                                         },
-                                        new SpriteButton
+                                        _check = new SpriteButton
                                         {
                                             Anchor = Anchor.BottomLeft,
                                             Origin = Anchor.BottomLeft,
@@ -189,6 +190,7 @@ namespace osu_request.Drawables
             };
 
             _openExternally.OnButtonClicked += () => _host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{_beatmapset.Id}");
+            _check.OnButtonClicked += () => this.FadeOutFromOne(500, Easing.OutQuad).Finally((t) => t.RemoveAndDisposeImmediately());
 
             _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
             _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
