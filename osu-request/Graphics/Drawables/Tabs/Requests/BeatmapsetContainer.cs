@@ -61,7 +61,8 @@ namespace osu_request.Drawables
             TextFlowContainer _text;
             SpriteButton _openExternally;
             SpriteButton _check;
-
+            SpriteButton _openDirect;
+            
             Children = new Drawable[]
             {
                 new BackgroundColour
@@ -156,12 +157,21 @@ namespace osu_request.Drawables
                                     {
                                         _openExternally = new SpriteButton
                                         {
-                                            Anchor = Anchor.TopCentre,
-                                            Origin = Anchor.TopCentre,
+                                            Anchor = Anchor.TopLeft,
+                                            Origin = Anchor.TopLeft,
                                             RelativeSizeAxes = Axes.Both,
-                                            Size = new Vector2(1.0f, 0.49f),
+                                            Size = new Vector2(0.49f),
                                             BackgroundColour = OsuRequestColour.BlueDark,
                                             Texture = _textureStore.Get("open-externally")
+                                        },
+                                        _openDirect = new SpriteButton
+                                        {
+                                            Anchor = Anchor.TopRight,
+                                            Origin = Anchor.TopRight,
+                                            RelativeSizeAxes = Axes.Both,
+                                            Size = new Vector2(0.49f),
+                                            BackgroundColour = OsuRequestColour.BlueDark,
+                                            Texture = _textureStore.Get("download")
                                         },
                                         new SpriteButton
                                         {
@@ -190,6 +200,7 @@ namespace osu_request.Drawables
             };
 
             _openExternally.OnButtonClicked += () => _host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{_beatmapset.Id}");
+            _openDirect.OnButtonClicked += () => _host.OpenUrlExternally($"osu://b/{_beatmapset.Id}");
             _check.OnButtonClicked += () => this.FadeOutFromOne(500, Easing.OutQuad).Finally((t) => t.RemoveAndDisposeImmediately());
 
             _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
