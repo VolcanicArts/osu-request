@@ -79,123 +79,113 @@ namespace osu_request.Drawables.Bans
                     {
                         new Container
                         {
-                            Anchor = Anchor.BottomCentre,
-                            Origin = Anchor.BottomCentre,
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f),
+                            Size = new Vector2(1.0f, 0.14f),
+                            Masking = true,
+                            CornerRadius = 10,
+                            BorderColour = Color4.Black,
+                            BorderThickness = 2,
+                            EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                             Children = new Drawable[]
                             {
+                                new BackgroundColour
+                                {
+                                    Colour = OsuRequestColour.GreyLimeDarker
+                                },
                                 new Container
                                 {
-                                    Anchor = Anchor.TopCentre,
-                                    Origin = Anchor.TopCentre,
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f, 0.14f),
-                                    Masking = true,
-                                    CornerRadius = 10,
-                                    BorderColour = Color4.Black,
-                                    BorderThickness = 2,
-                                    EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
-                                    Children = new Drawable[]
+                                    Size = new Vector2(1.0f),
+                                    Padding = new MarginPadding(10),
+                                    Child = new Container
                                     {
-                                        new BackgroundColour
+                                        Anchor = Anchor.TopCentre,
+                                        Origin = Anchor.TopCentre,
+                                        RelativeSizeAxes = Axes.Both,
+                                        Size = new Vector2(1.0f),
+                                        Children = new Drawable[]
                                         {
-                                            Colour = OsuRequestColour.GreyLimeDarker
-                                        },
-                                        new Container
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            RelativeSizeAxes = Axes.Both,
-                                            Size = new Vector2(1.0f),
-                                            Padding = new MarginPadding(10),
-                                            Child = new Container
+                                            new Container
                                             {
-                                                Anchor = Anchor.TopCentre,
-                                                Origin = Anchor.TopCentre,
+                                                Anchor = Anchor.CentreLeft,
+                                                Origin = Anchor.CentreLeft,
                                                 RelativeSizeAxes = Axes.Both,
-                                                Size = new Vector2(1.0f),
-                                                Children = new Drawable[]
+                                                Size = new Vector2(0.795f, 1.0f),
+                                                Child = _textBox = new OsuRequestTextBox
                                                 {
-                                                    new Container
-                                                    {
-                                                        Anchor = Anchor.CentreLeft,
-                                                        Origin = Anchor.CentreLeft,
-                                                        RelativeSizeAxes = Axes.Both,
-                                                        Size = new Vector2(0.795f, 1.0f),
-                                                        Child = _textBox = new OsuRequestTextBox
-                                                        {
-                                                            Anchor = Anchor.Centre,
-                                                            Origin = Anchor.Centre,
-                                                            PlaceholderText = "Beatmap ID",
-                                                            CornerRadius = 10,
-                                                            BorderThickness = 2
-                                                        }
-                                                    },
-                                                    new Container
-                                                    {
-                                                        Anchor = Anchor.CentreRight,
-                                                        Origin = Anchor.CentreRight,
-                                                        RelativeSizeAxes = Axes.Both,
-                                                        Size = new Vector2(0.195f, 1.0f),
-                                                        Child = _banButton = new OsuRequestButton
-                                                        {
-                                                            Anchor = Anchor.BottomRight,
-                                                            Origin = Anchor.BottomRight,
-                                                            RelativeSizeAxes = Axes.Both,
-                                                            Size = new Vector2(1.0f),
-                                                            Text = "Ban",
-                                                            TextSize = new Vector2(0.5f, 0.75f),
-                                                            CornerRadius = 10,
-                                                            BorderThickness = 2
-                                                        }
-                                                    }
+                                                    Anchor = Anchor.Centre,
+                                                    Origin = Anchor.Centre,
+                                                    PlaceholderText = "Beatmap ID",
+                                                    CornerRadius = 10,
+                                                    BorderThickness = 2
+                                                }
+                                            },
+                                            new Container
+                                            {
+                                                Anchor = Anchor.CentreRight,
+                                                Origin = Anchor.CentreRight,
+                                                RelativeSizeAxes = Axes.Both,
+                                                Size = new Vector2(0.195f, 1.0f),
+                                                Child = _banButton = new OsuRequestButton
+                                                {
+                                                    Anchor = Anchor.BottomRight,
+                                                    Origin = Anchor.BottomRight,
+                                                    RelativeSizeAxes = Axes.Both,
+                                                    Size = new Vector2(1.0f),
+                                                    Text = "Ban",
+                                                    TextSize = new Vector2(0.5f, 0.75f),
+                                                    CornerRadius = 10,
+                                                    BorderThickness = 2
                                                 }
                                             }
                                         }
                                     }
+                                }
+                            }
+                        },
+                        new Container
+                        {
+                            Anchor = Anchor.BottomCentre,
+                            Origin = Anchor.BottomCentre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(1.0f, 0.84f),
+                            Masking = true,
+                            CornerRadius = 10,
+                            BorderColour = Color4.Black,
+                            BorderThickness = 2,
+                            EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
+                            Children = new Drawable[]
+                            {
+                                new BackgroundColour
+                                {
+                                    Colour = OsuRequestColour.GreyLimeDarker
                                 },
                                 new Container
                                 {
-                                    Anchor = Anchor.BottomCentre,
-                                    Origin = Anchor.BottomCentre,
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f, 0.84f),
-                                    Masking = true,
-                                    CornerRadius = 10,
-                                    BorderColour = Color4.Black,
-                                    BorderThickness = 2,
-                                    EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
-                                    Children = new Drawable[]
+                                    Padding = new MarginPadding(5),
+                                    Child = new BasicScrollContainer
                                     {
-                                        new BackgroundColour
-                                        {
-                                            Colour = OsuRequestColour.GreyLimeDarker
-                                        },
-                                        new Container
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        RelativeSizeAxes = Axes.Both,
+                                        ClampExtension = 20.0f,
+                                        ScrollbarVisible = false,
+                                        Child = _fillFlowContainer = new FillFlowContainer
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
-                                            RelativeSizeAxes = Axes.Both,
-                                            Padding = new MarginPadding(5),
-                                            Child = new BasicScrollContainer
-                                            {
-                                                Anchor = Anchor.Centre,
-                                                Origin = Anchor.Centre,
-                                                RelativeSizeAxes = Axes.Both,
-                                                ClampExtension = 20.0f,
-                                                ScrollbarVisible = false,
-                                                Child = _fillFlowContainer = new FillFlowContainer
-                                                {
-                                                    Anchor = Anchor.Centre,
-                                                    Origin = Anchor.Centre,
-                                                    RelativeSizeAxes = Axes.X,
-                                                    AutoSizeAxes = Axes.Y,
-                                                    Direction = FillDirection.Full,
-                                                    Spacing = new Vector2(10),
-                                                    Padding = new MarginPadding(10.0f)
-                                                }
-                                            }
+                                            RelativeSizeAxes = Axes.X,
+                                            AutoSizeAxes = Axes.Y,
+                                            Direction = FillDirection.Full,
+                                            Spacing = new Vector2(10),
+                                            Padding = new MarginPadding(10.0f)
                                         }
                                     }
                                 }
