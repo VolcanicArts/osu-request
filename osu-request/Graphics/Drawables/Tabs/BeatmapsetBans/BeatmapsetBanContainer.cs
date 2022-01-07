@@ -8,6 +8,7 @@ using osu.Framework.Logging;
 using osu_request.Osu;
 using osuTK;
 using osuTK.Graphics;
+using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables.Bans
 {
@@ -18,30 +19,10 @@ namespace osu_request.Drawables.Bans
         private OsuRequestButton _banButton;
         private OsuRequestTextBox _textBox;
 
-        private async Task LoadBeatmap(string beatmapId)
+        private void BeatmapsetLoaded(Beatmapset beatmapset)
         {
-            try
-            {
-                Logger.Log($"Requesting beatmap using Id {beatmapId}");
-
-                if (!_localOsuClient.IsReady)
-                {
-                    Logger.Log("Client not ready. Cannot request beatmap");
-                    return;
-                }
-
-                var beatmap = await _localOsuClient.OsuClient.GetBeatmapAsync(beatmapId);
-                var beatmapset = await beatmap.GetBeatmapsetAsync();
-
-                Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
-
-                var beatmapsetBanEntry = new BeatmapsetBanEntry(beatmapset);
-                Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetBanEntry));
-            }
-            catch (HttpRequestException)
-            {
-                Logger.Log($"Unavailable beatmap using Id {beatmapId}", LoggingTarget.Runtime, LogLevel.Error);
-            }
+            var beatmapsetBanEntry = new BeatmapsetBanEntry(beatmapset);
+            Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetBanEntry));
         }
 
         [BackgroundDependencyLoader]
@@ -51,7 +32,7 @@ namespace osu_request.Drawables.Bans
             InitSelf();
             InitChildren();
 
-            _banButton.OnButtonClicked += () => LoadBeatmap(_textBox.Text).ConfigureAwait(false);
+            _banButton.OnButtonClicked += () => _localOsuClient.RequestBeatmapsetFromBeatmapId(_textBox.Text, BeatmapsetLoaded);
         }
 
         private void InitSelf()

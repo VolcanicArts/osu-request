@@ -10,6 +10,7 @@ using osu_request.Osu;
 using osu_request.Twitch;
 using osuTK;
 using TwitchLib.Client.Models;
+using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
@@ -27,37 +28,17 @@ namespace osu_request.Drawables
             if (message.Message.StartsWith("!rq"))
             {
                 var beatmapId = message.Message.Split(" ")[1];
-                LoadBeatmap(beatmapId).ConfigureAwait(false);
+                _localOsuClient.RequestBeatmapsetFromBeatmapId(beatmapId, BeatmapsetLoaded);
             }
         }
 
-        private async Task LoadBeatmap(string beatmapId)
+        private async void BeatmapsetLoaded(Beatmapset beatmapset)
         {
-            try
-            {
-                Logger.Log($"Requesting beatmap using Id {beatmapId}");
+            var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
+            var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
+            var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
 
-                if (!_localOsuClient.IsReady)
-                {
-                    Logger.Log("Client not ready. Cannot request beatmap");
-                    return;
-                }
-
-                var beatmap = await _localOsuClient.OsuClient.GetBeatmapAsync(beatmapId);
-                var beatmapset = await beatmap.GetBeatmapsetAsync();
-
-                Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
-
-                var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
-                var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
-                var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
-
-                Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
-            }
-            catch (HttpRequestException)
-            {
-                Logger.Log($"Unavailable beatmap using Id {beatmapId}", LoggingTarget.Runtime, LogLevel.Error);
-            }
+            Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }
 
         [BackgroundDependencyLoader]
