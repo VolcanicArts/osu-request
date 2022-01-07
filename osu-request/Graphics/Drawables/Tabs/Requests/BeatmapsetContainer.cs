@@ -27,8 +27,7 @@ namespace osu_request.Drawables
 
         protected override void UpdateAfterAutoSize()
         {
-            Size = new Vector2(Size.X, DrawWidth * 0.35f * 0.5f);
-            
+            Size = new Vector2(Size.X, DrawWidth * 0.15f);
             base.UpdateAfterAutoSize();
         }
 

@@ -6,7 +6,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
-using osuTK;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
@@ -36,6 +35,9 @@ namespace osu_request.Drawables
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fill,
+                FillAspectRatio = _backgroundTexture.Width / (float)_backgroundTexture.Height,
                 Texture = _backgroundTexture
             };
         }
