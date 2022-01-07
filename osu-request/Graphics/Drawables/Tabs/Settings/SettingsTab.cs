@@ -96,7 +96,9 @@ namespace osu_request.Drawables
                         RelativeSizeAxes = Axes.Both,
                         Size = new Vector2(0.9f),
                         Text = "Save Settings",
-                        TextSize = new Vector2(0.15f, 0.6f)
+                        TextSize = new Vector2(0.15f, 0.6f),
+                        CornerRadius = 5,
+                        BorderThickness = 2
                     }
                 },
                 ErrorContainer = new Container

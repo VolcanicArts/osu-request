@@ -22,8 +22,6 @@ namespace osu_request.Drawables
             RelativeSizeAxes = Axes.Both;
             Size = new Vector2(1.0f);
             BorderColour = Color4.Black;
-            BorderThickness = 2;
-            CornerRadius = 5;
             BackgroundFocused = OsuRequestColour.Gray6;
             BackgroundUnfocused = OsuRequestColour.GreyLime;
         }

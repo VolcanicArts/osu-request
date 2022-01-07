@@ -18,9 +18,7 @@ namespace osu_request.Drawables
         private void Load()
         {
             Masking = true;
-            CornerRadius = 5;
             BorderColour = Color4.Black;
-            BorderThickness = 2;
             EdgeEffect = OsuRequestEdgeEffects.NoShadow;
 
             Children = new Drawable[]
