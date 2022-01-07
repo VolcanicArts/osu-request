@@ -72,7 +72,7 @@ namespace osu_request.Drawables
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.75f),
+                                Size = new Vector2(0.65f),
                                 Text = { Value = Name },
                                 Font = new FontUsage("Roboto", weight: "Regular")
                             }

@@ -41,14 +41,14 @@ namespace osu_request.Drawables
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(0.0f, 0.0f)
                 },
+                new BansTab{
+                    RelativePositionAxes = Axes.Both,
+                    Position = new Vector2(2.0f, 0.0f)
+                },
                 new SettingsTab
                 {
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(1.0f, 0.0f)
-                },
-                new BansTab{
-                    RelativePositionAxes = Axes.Both,
-                    Position = new Vector2(2.0f, 0.0f)
                 }
             };
 

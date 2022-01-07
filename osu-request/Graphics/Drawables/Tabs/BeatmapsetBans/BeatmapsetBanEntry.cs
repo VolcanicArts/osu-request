@@ -43,7 +43,7 @@ namespace osu_request.Drawables.Bans
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.X;
-            Size = new Vector2(1.0f);
+            Size = new Vector2(0.49f);
             Masking = true;
             CornerRadius = 10;
             BorderThickness = 2;

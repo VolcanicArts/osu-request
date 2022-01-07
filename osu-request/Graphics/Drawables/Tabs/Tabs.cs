@@ -3,7 +3,7 @@
     public enum Tabs
     {
         Requests = 0,
-        Settings = 1,
-        Bans = 2,
+        Beatmap_Bans = 1,
+        Settings = 2,
     }
 }

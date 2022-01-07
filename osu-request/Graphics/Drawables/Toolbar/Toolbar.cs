@@ -41,7 +41,7 @@ namespace osu_request.Drawables
                 var toolbarItem = new ToolbarItem
                 {
                     ID = i,
-                    Name = ItemNames[i]
+                    Name = ItemNames[i].Replace("_", " ")
                 };
                 toolbarItem.OnSelected += e => NewSelectionEvent?.Invoke(e);
                 _fillFlowContainer.Add(toolbarItem);

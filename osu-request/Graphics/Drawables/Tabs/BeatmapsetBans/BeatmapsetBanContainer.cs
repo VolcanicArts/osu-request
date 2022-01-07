@@ -59,7 +59,7 @@ namespace osu_request.Drawables.Bans
             Anchor = Anchor.CentreLeft;
             Origin = Anchor.CentreLeft;
             RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(0.49f, 1.0f);
+            Size = new Vector2(1.0f);
             Masking = true;
             CornerRadius = 10;
             BorderThickness = 2;
@@ -86,29 +86,10 @@ namespace osu_request.Drawables.Bans
                     {
                         new Container
                         {
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.05f),
-                            Child = new AutoSizingSpriteText
-                            {
-                                Anchor = Anchor.TopCentre,
-                                Origin = Anchor.TopCentre,
-                                SpriteAnchor = Anchor.TopCentre,
-                                SpriteOrigin = Anchor.TopCentre,
-                                RelativeSizeAxes = Axes.Both,
-                                AutoSizeSpriteTextAxes = Axes.Both,
-                                Size = new Vector2(0.2f, 0.75f),
-                                Text = { Value = "Beatmap Bans" },
-                                Font = new FontUsage("Roboto", weight: "Regular")
-                            }
-                        },
-                        new Container
-                        {
                             Anchor = Anchor.BottomCentre,
                             Origin = Anchor.BottomCentre,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.95f),
+                            Size = new Vector2(1.0f),
                             Children = new Drawable[]
                             {
                                 new Container
@@ -116,7 +97,7 @@ namespace osu_request.Drawables.Bans
                                     Anchor = Anchor.TopCentre,
                                     Origin = Anchor.TopCentre,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f, 0.09f),
+                                    Size = new Vector2(1.0f, 0.14f),
                                     Masking = true,
                                     CornerRadius = 5,
                                     BorderColour = Color4.Black,
@@ -182,7 +163,7 @@ namespace osu_request.Drawables.Bans
                                     Anchor = Anchor.BottomCentre,
                                     Origin = Anchor.BottomCentre,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f, 0.89f),
+                                    Size = new Vector2(1.0f, 0.84f),
                                     Masking = true,
                                     CornerRadius = 5,
                                     BorderColour = Color4.Black,
@@ -194,22 +175,29 @@ namespace osu_request.Drawables.Bans
                                         {
                                             Colour = OsuRequestColour.GreyLimeDarker
                                         },
-                                        new BasicScrollContainer
+                                        new Container
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
                                             RelativeSizeAxes = Axes.Both,
-                                            ClampExtension = 20.0f,
-                                            ScrollbarVisible = false,
-                                            Child = _fillFlowContainer = new FillFlowContainer
+                                            Padding = new MarginPadding(5),
+                                            Child = new BasicScrollContainer
                                             {
                                                 Anchor = Anchor.Centre,
                                                 Origin = Anchor.Centre,
-                                                RelativeSizeAxes = Axes.X,
-                                                AutoSizeAxes = Axes.Y,
-                                                Direction = FillDirection.Vertical,
-                                                Spacing = new Vector2(10),
-                                                Padding = new MarginPadding(10.0f)
+                                                RelativeSizeAxes = Axes.Both,
+                                                ClampExtension = 20.0f,
+                                                ScrollbarVisible = false,
+                                                Child = _fillFlowContainer = new FillFlowContainer
+                                                {
+                                                    Anchor = Anchor.Centre,
+                                                    Origin = Anchor.Centre,
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Direction = FillDirection.Full,
+                                                    Spacing = new Vector2(10),
+                                                    Padding = new MarginPadding(10.0f)
+                                                }
                                             }
                                         }
                                     }

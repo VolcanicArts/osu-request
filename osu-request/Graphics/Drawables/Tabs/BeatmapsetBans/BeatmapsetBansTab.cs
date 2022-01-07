@@ -27,10 +27,7 @@ namespace osu_request.Drawables.Bans
 
         private void InitChildren()
         {
-            Children = new Drawable[]
-            {
-                new BeatmapsetBanContainer()
-            };
+            Child = new BeatmapsetBanContainer();
         }
     }
 }
