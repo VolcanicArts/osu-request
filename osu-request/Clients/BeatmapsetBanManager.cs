@@ -26,6 +26,7 @@ namespace osu_request.Clients
         public bool Ban(string beatmapsetId)
         {
             if (!int.TryParse(beatmapsetId, out _)) return false;
+            if (IsBanned(beatmapsetId)) return true;
             OnBeatmapsetBan?.Invoke(beatmapsetId);
             _bannedBeatmapsets.Add(beatmapsetId);
             return true;
