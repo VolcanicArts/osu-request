@@ -46,44 +46,72 @@ namespace osu_request.Drawables
                         Anchor = Anchor.TopLeft,
                         Origin = Anchor.TopLeft,
                         RelativeSizeAxes = Axes.Both,
-                        Padding = new MarginPadding(5),
+                        Padding = new MarginPadding(3),
                         Children = new Drawable[]
                         {
-                            _openExternally = new SpriteButton
+                            new Container
                             {
                                 Anchor = Anchor.TopLeft,
                                 Origin = Anchor.TopLeft,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.475f),
-                                BackgroundColour = OsuRequestColour.BlueDark,
-                                Texture = textureStore.Get("open-externally")
+                                Size = new Vector2(0.5f),
+                                Padding = new MarginPadding(2),
+                                Child = _openExternally = new SpriteButton
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    BackgroundColour = OsuRequestColour.BlueDark,
+                                    Texture = textureStore.Get("open-externally")
+                                }
                             },
-                            _openDirect = new SpriteButton
+                            new Container
                             {
                                 Anchor = Anchor.TopRight,
                                 Origin = Anchor.TopRight,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.475f),
-                                BackgroundColour = OsuRequestColour.BlueDark,
-                                Texture = textureStore.Get("download")
+                                Size = new Vector2(0.5f),
+                                Padding = new MarginPadding(2),
+                                Child = _openDirect = new SpriteButton
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    BackgroundColour = OsuRequestColour.BlueDark,
+                                    Texture = textureStore.Get("download")
+                                },
                             },
-                            _ban = new SpriteButton
+                            new Container
                             {
                                 Anchor = Anchor.BottomRight,
                                 Origin = Anchor.BottomRight,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.475f),
-                                BackgroundColour = OsuRequestColour.RedDark,
-                                Texture = textureStore.Get("ban")
+                                Size = new Vector2(0.5f),
+                                Padding = new MarginPadding(2),
+                                Child = _ban = new SpriteButton
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    BackgroundColour = OsuRequestColour.RedDark,
+                                    Texture = textureStore.Get("ban")
+                                },
                             },
-                            _check = new SpriteButton
+                            new Container
                             {
                                 Anchor = Anchor.BottomLeft,
                                 Origin = Anchor.BottomLeft,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.475f),
-                                BackgroundColour = OsuRequestColour.GreenDark,
-                                Texture = textureStore.Get("check")
+                                Size = new Vector2(0.5f),
+                                Padding = new MarginPadding(2),
+                                Child = _check = new SpriteButton
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    BackgroundColour = OsuRequestColour.GreenDark,
+                                    Texture = textureStore.Get("check")
+                                }
                             }
                         }
                     }
