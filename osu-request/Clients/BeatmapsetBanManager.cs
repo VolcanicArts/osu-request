@@ -20,7 +20,6 @@ namespace osu_request.Clients
         public BeatmapsetBanManager(Storage storage)
         {
             Storage = storage;
-            Load();
         }
 
         public bool Ban(string beatmapsetId)
@@ -43,11 +42,12 @@ namespace osu_request.Clients
             return _bannedBeatmapsets.Contains(beatmapsetId);
         }
 
-        private void Load()
+        public void Load()
         {
             if (!Storage.Exists(FileName)) return;
             var file = LoadFileToString();
             _bannedBeatmapsets = JsonConvert.DeserializeObject<List<string>>(file);
+            _bannedBeatmapsets!.ForEach(beatmapsetId => OnBeatmapsetBan?.Invoke(beatmapsetId));
         }
 
         private string LoadFileToString()

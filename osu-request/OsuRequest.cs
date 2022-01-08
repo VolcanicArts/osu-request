@@ -28,6 +28,7 @@ namespace osu_request
             TabsContainer.Select(Tabs.Requests);
             ClientManager.OnFailed += () => Scheduler.AddOnce(() => TabsContainer.Override(Tabs.Settings));
             ClientManager.OnSuccess += () => Scheduler.AddOnce(() => TabsContainer.ReleaseAndSelect(Tabs.Requests));
+            ClientManager.OnFirstTimeSuccess += () => BeatmapsetBanManager.Load();
             ClientManager.TryConnectClients(OsuRequestConfig);
         }
 
@@ -41,10 +42,10 @@ namespace osu_request
 
         private void CreateConfigsAndManagers(Storage storage)
         {
-            BeatmapsetBanManager = new BeatmapsetBanManager(storage);
             OsuRequestConfig = new OsuRequestConfig(storage);
             ClientManager = new ClientManager(storage);
             ClientManager.OsuClient.LoadCache();
+            BeatmapsetBanManager = new BeatmapsetBanManager(storage);
         }
 
         private void CacheDependencies()

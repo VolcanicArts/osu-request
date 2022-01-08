@@ -28,7 +28,7 @@ namespace osu_request.Drawables
             {
                 var beatmapsetId = message.Message.Split(" ")[1];
                 if (_beatmapsetBanManager.IsBanned(beatmapsetId)) return;
-                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, BeatmapsetLoaded);
+                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, (beatmapset) => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
             }
         }
 

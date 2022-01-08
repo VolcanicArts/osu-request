@@ -5,6 +5,7 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Osu;
@@ -56,13 +57,17 @@ namespace osu_request.Drawables.Bans
             InitSelf();
             InitChildren();
 
-            banManager.OnBeatmapsetBan += (beatmapsetId) => _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, BeatmapsetLoaded);
+            banManager.OnBeatmapsetBan += (beatmapsetId) =>
+            {
+                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId,
+                    (beatmapset) => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
+            };
             banManager.OnBeatmapsetUnBan += (beatmapsetId) =>
             {
                 foreach (var beatmapsetBan in _fillFlowContainer.Where(child => child.BeatmapsetId == beatmapsetId))
                 {
                     beatmapsetBan.DisposeGracefully();
-                };
+                }
             };
 
             _banButton.OnButtonClicked += () =>

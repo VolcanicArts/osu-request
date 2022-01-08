@@ -15,8 +15,11 @@ namespace osu_request
         protected internal readonly OsuClientLocal OsuClient;
         protected internal readonly TwitchClientLocal TwitchClient = new();
 
+        private bool FirstTimeLoad;
+
         public Action OnFailed;
         public Action OnSuccess;
+        public Action OnFirstTimeSuccess;
 
         public ClientManager(Storage storage)
         {
@@ -73,6 +76,12 @@ namespace osu_request
         private void OnTwitchClientOnSuccess()
         {
             Logger.Log("TwitchClient login successful");
+            if (!FirstTimeLoad)
+            {
+                FirstTimeLoad = true;
+                OnFirstTimeSuccess?.Invoke();
+            }
+
             OnSuccess?.Invoke();
         }
     }
