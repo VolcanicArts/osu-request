@@ -41,7 +41,8 @@ namespace osu_request.Drawables
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(0.0f, 0.0f)
                 },
-                new BansTab{
+                new BansTab
+                {
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(2.0f, 0.0f)
                 },
@@ -54,6 +55,10 @@ namespace osu_request.Drawables
 
             Children = new Drawable[]
             {
+                new BackgroundColour
+                {
+                    Colour = OsuRequestColour.Gray4
+                },
                 _toolbar = new Toolbar
                 {
                     Anchor = Anchor.TopCentre,
@@ -74,7 +79,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _toolbar.NewSelectionEvent += (id) => Select((Tabs) id);
+            _toolbar.NewSelectionEvent += id => Select((Tabs)id);
         }
 
         public void Override(Tabs tab)
@@ -105,7 +110,7 @@ namespace osu_request.Drawables
         {
             if (Locked.Value) return;
             if (!overriding) CurrentTab = tab;
-            
+
             var id = Convert.ToInt32(tab);
             _toolbar.Select(id);
             AnimateTabs(id);

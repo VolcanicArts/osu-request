@@ -1,5 +1,4 @@
 using osu.Framework.Allocation;
-using osu.Framework.Graphics;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Config;
@@ -56,14 +55,7 @@ namespace osu_request
 
         private void InitialiseChildren()
         {
-            Children = new Drawable[]
-            {
-                new BackgroundColour
-                {
-                    Colour = OsuRequestColour.Gray4
-                },
-                TabsContainer = new TabsContainer()
-            };
+            InternalChild = TabsContainer = new TabsContainer();
         }
     }
 }
