@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using osu.Framework.Logging;
+using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Osu;
 using osu_request.Twitch;
@@ -11,11 +12,16 @@ namespace osu_request
 {
     public class ClientManager
     {
-        protected internal readonly OsuClientLocal OsuClient = new();
+        protected internal readonly OsuClientLocal OsuClient;
         protected internal readonly TwitchClientLocal TwitchClient = new();
 
         public Action OnFailed;
         public Action OnSuccess;
+
+        public ClientManager(Storage storage)
+        {
+            OsuClient = new OsuClientLocal(storage);
+        }
 
         public void Update()
         {

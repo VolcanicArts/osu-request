@@ -43,7 +43,8 @@ namespace osu_request
         {
             BeatmapsetBanManager = new BeatmapsetBanManager(storage);
             OsuRequestConfig = new OsuRequestConfig(storage);
-            ClientManager = new ClientManager();
+            ClientManager = new ClientManager(storage);
+            ClientManager.OsuClient.LoadCache();
         }
 
         private void CacheDependencies()
@@ -67,6 +68,7 @@ namespace osu_request
         protected override void Dispose(bool isDisposing)
         {
             BeatmapsetBanManager.Save();
+            ClientManager.OsuClient.SaveCache();
             base.Dispose(isDisposing);
         }
     }
