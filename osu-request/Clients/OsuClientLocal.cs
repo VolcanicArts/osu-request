@@ -108,6 +108,7 @@ namespace osu_request.Osu
         public void SaveCache()
         {
             var serialisedData = JsonConvert.SerializeObject(BeatmapsetCache);
+            if (Storage.Exists(FileName)) Storage.Delete(FileName);
             var stream = Storage.GetStream(FileName, FileAccess.Write);
             stream.Write(Encoding.Unicode.GetBytes(serialisedData));
             stream.Close();

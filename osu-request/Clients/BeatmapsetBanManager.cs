@@ -62,6 +62,7 @@ namespace osu_request.Clients
         public void Save()
         {
             var serialisedData = JsonConvert.SerializeObject(_bannedBeatmapsets);
+            if (Storage.Exists(FileName)) Storage.Delete(FileName);
             var stream = Storage.GetStream(FileName, FileAccess.Write);
             stream.Write(Encoding.Unicode.GetBytes(serialisedData));
             stream.Close();
