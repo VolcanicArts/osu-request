@@ -17,7 +17,7 @@ namespace osu_request.Drawables.Bans
     {
         private AudioManager _audioManager;
         private OsuRequestButton _banButton;
-        private FillFlowContainer<BeatmapsetContainer> _fillFlowContainer;
+        private FillFlowContainer<BeatmapsetRequestContainer> _fillFlowContainer;
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
         private TextureStore _textureStore;
@@ -31,7 +31,7 @@ namespace osu_request.Drawables.Bans
             if (previewMp3 == null || backgroundTexture == null) return;
             _textBox.Text = string.Empty;
 
-            var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture)
+            var beatmapsetContainer = new BeatmapsetRequestContainer(beatmapset, previewMp3, backgroundTexture)
             {
                 Scale = new Vector2(0.49f)
             };
@@ -203,7 +203,7 @@ namespace osu_request.Drawables.Bans
                                         RelativeSizeAxes = Axes.Both,
                                         ClampExtension = 20.0f,
                                         ScrollbarVisible = false,
-                                        Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetContainer>
+                                        Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetRequestContainer>
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,

@@ -1,11 +1,8 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Logging;
 using osu_request.Osu;
 using osu_request.Twitch;
 using osuTK;
@@ -36,7 +33,13 @@ namespace osu_request.Drawables
         {
             var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
+            var beatmapsetContainer = new BeatmapsetRequestContainer(beatmapset, previewMp3, backgroundTexture)
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.X,
+                Size = new Vector2(1.0f, 120.0f)
+            };
 
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }
