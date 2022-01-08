@@ -3,6 +3,7 @@ using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
+using osu_request.Clients;
 using osu_request.Osu;
 using osu_request.Twitch;
 using osuTK;
@@ -13,19 +14,21 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetListContainer : Container
     {
-        private AudioManager _audioManager;
         private FillFlowContainer _fillFlowContainer;
 
         private OsuClientLocal _localOsuClient;
         private TwitchClientLocal _localTwitchClient;
         private TextureStore _textureStore;
+        private AudioManager _audioManager;
+        private BeatmapsetBanManager _beatmapsetBanManager;
 
         private void HandleTwitchMessage(ChatMessage message)
         {
             if (message.Message.StartsWith("!rq"))
             {
-                var beatmapId = message.Message.Split(" ")[1];
-                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapId, BeatmapsetLoaded);
+                var beatmapsetId = message.Message.Split(" ")[1];
+                if (_beatmapsetBanManager.IsBanned(beatmapsetId)) return;
+                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, BeatmapsetLoaded);
             }
         }
 
@@ -46,13 +49,14 @@ namespace osu_request.Drawables
 
         [BackgroundDependencyLoader]
         private void Load(TextureStore textureStore, AudioManager audioManager, TwitchClientLocal twitchClient,
-            OsuClientLocal osuClient)
+            OsuClientLocal osuClient, BeatmapsetBanManager beatmapsetBanManager)
         {
             _textureStore = textureStore;
             _audioManager = audioManager;
             _localTwitchClient = twitchClient;
             _localTwitchClient.OnChatMessage += HandleTwitchMessage;
             _localOsuClient = osuClient;
+            _beatmapsetBanManager = beatmapsetBanManager;
             Children = new Drawable[]
             {
                 new BasicScrollContainer

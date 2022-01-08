@@ -36,6 +36,11 @@ namespace osu_request.Clients
             OnBeatmapsetUnBan?.Invoke(beatmapsetId);
             return _bannedBeatmapsets.Remove(beatmapsetId);
         }
+        
+        public bool IsBanned(string beatmapsetId)
+        {
+            return _bannedBeatmapsets.Contains(beatmapsetId);
+        }
 
         private void Load()
         {
