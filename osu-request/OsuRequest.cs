@@ -41,7 +41,7 @@ namespace osu_request
 
         private void CreateConfigsAndManagers(Storage storage)
         {
-            BeatmapsetBanManager = new BeatmapsetBanManager();
+            BeatmapsetBanManager = new BeatmapsetBanManager(storage);
             OsuRequestConfig = new OsuRequestConfig(storage);
             ClientManager = new ClientManager();
         }
@@ -62,6 +62,12 @@ namespace osu_request
                 TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height),
                 Child = TabsContainer = new TabsContainer()
             };
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            BeatmapsetBanManager.Save();
+            base.Dispose(isDisposing);
         }
     }
 }
