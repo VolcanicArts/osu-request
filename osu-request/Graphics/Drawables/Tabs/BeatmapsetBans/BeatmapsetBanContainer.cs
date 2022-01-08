@@ -112,8 +112,8 @@ namespace osu_request.Drawables.Bans
                         {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.14f),
+                            RelativeSizeAxes = Axes.X,
+                            Size = new Vector2(1.0f, 80.0f),
                             Masking = true,
                             CornerRadius = 10,
                             BorderColour = Color4.Black,
@@ -183,45 +183,54 @@ namespace osu_request.Drawables.Bans
                             Anchor = Anchor.BottomCentre,
                             Origin = Anchor.BottomCentre,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.84f),
-                            Masking = true,
-                            CornerRadius = 10,
-                            BorderColour = Color4.Black,
-                            BorderThickness = 2,
-                            EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
-                            Children = new Drawable[]
+                            Padding = new MarginPadding
                             {
-                                new BackgroundColour
+                                Top = 90.0f
+                            },
+                            Child = new Container
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                Masking = true,
+                                CornerRadius = 10,
+                                BorderColour = Color4.Black,
+                                BorderThickness = 2,
+                                EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
+                                Children = new Drawable[]
                                 {
-                                    Colour = OsuRequestColour.GreyLimeDarker
-                                },
-                                new Container
-                                {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding(5),
-                                    Child = new BasicScrollContainer
+                                    new BackgroundColour
+                                    {
+                                        Colour = OsuRequestColour.GreyLimeDarker
+                                    },
+                                    new Container
                                     {
                                         Anchor = Anchor.Centre,
                                         Origin = Anchor.Centre,
                                         RelativeSizeAxes = Axes.Both,
-                                        ClampExtension = 20.0f,
-                                        ScrollbarVisible = false,
-                                        Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetCard>
+                                        Padding = new MarginPadding(5),
+                                        Child = new BasicScrollContainer
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
-                                            RelativeSizeAxes = Axes.X,
-                                            AutoSizeAxes = Axes.Y,
-                                            Direction = FillDirection.Full,
-                                            Spacing = new Vector2(10),
-                                            Padding = new MarginPadding(10.0f)
+                                            RelativeSizeAxes = Axes.Both,
+                                            ClampExtension = 20.0f,
+                                            ScrollbarVisible = false,
+                                            Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetCard>
+                                            {
+                                                Anchor = Anchor.Centre,
+                                                Origin = Anchor.Centre,
+                                                RelativeSizeAxes = Axes.X,
+                                                AutoSizeAxes = Axes.Y,
+                                                Direction = FillDirection.Full,
+                                                Spacing = new Vector2(10),
+                                                Padding = new MarginPadding(10.0f)
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
+                        },
                     }
                 }
             };
