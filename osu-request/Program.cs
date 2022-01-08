@@ -8,7 +8,7 @@ namespace osu_request
         private static void Main(string[] args)
         {
             using GameHost host = Host.GetSuitableHost(@"osu!request");
-            using Game game = new Application();
+            using Game game = new OsuRequest();
             host.Run(game);
         }
     }
