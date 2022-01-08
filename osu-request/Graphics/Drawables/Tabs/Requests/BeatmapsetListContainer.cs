@@ -28,7 +28,7 @@ namespace osu_request.Drawables
             if (message.Message.StartsWith("!rq"))
             {
                 var beatmapId = message.Message.Split(" ")[1];
-                _localOsuClient.RequestBeatmapsetFromBeatmapId(beatmapId, BeatmapsetLoaded);
+                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapId, BeatmapsetLoaded);
             }
         }
 
