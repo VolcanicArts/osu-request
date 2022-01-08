@@ -45,7 +45,7 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.8f, 0.8f),
+                    Size = new Vector2(0.8f),
                     Margin = new MarginPadding
                     {
                         Bottom = 50

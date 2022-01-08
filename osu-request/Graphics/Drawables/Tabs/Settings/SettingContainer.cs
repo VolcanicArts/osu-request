@@ -19,8 +19,8 @@ namespace osu_request.Drawables
         {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(1.0f, 0.2f);
+            RelativeSizeAxes = Axes.X;
+            Size = new Vector2(1.0f, 100.0f);
             Masking = true;
             CornerRadius = 10;
             BorderColour = Color4.Black;
