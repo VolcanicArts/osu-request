@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using System.Linq;
+using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
@@ -17,7 +18,7 @@ namespace osu_request.Drawables.Bans
     {
         private AudioManager _audioManager;
         private OsuRequestButton _banButton;
-        private FillFlowContainer<BeatmapsetCard> _fillFlowContainer;
+        private FillFlowContainer<BeatmapsetBan> _fillFlowContainer;
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
         private TextureStore _textureStore;
@@ -31,7 +32,7 @@ namespace osu_request.Drawables.Bans
             if (previewMp3 == null || backgroundTexture == null) return;
             _textBox.Text = string.Empty;
 
-            var beatmapsetContainer = new BeatmapsetCard(beatmapset, backgroundTexture, previewMp3)
+            var beatmapsetBan = new BeatmapsetBan(beatmapset, backgroundTexture, previewMp3)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -40,7 +41,7 @@ namespace osu_request.Drawables.Bans
                 Scale = new Vector2(0.49f)
             };
 
-            Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
+            Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetBan));
         }
 
         [BackgroundDependencyLoader]
@@ -56,7 +57,13 @@ namespace osu_request.Drawables.Bans
             InitChildren();
 
             banManager.OnBeatmapsetBan += (beatmapsetId) => _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, BeatmapsetLoaded);
-            banManager.OnBeatmapsetUnBan += (beatmapsetId) => _fillFlowContainer.RemoveAll(child => child.BeatmapsetId == beatmapsetId);
+            banManager.OnBeatmapsetUnBan += (beatmapsetId) =>
+            {
+                foreach (var beatmapsetBan in _fillFlowContainer.Where(child => child.BeatmapsetId == beatmapsetId))
+                {
+                    beatmapsetBan.DisposeGracefully();
+                };
+            };
 
             _banButton.OnButtonClicked += () =>
             {
@@ -216,7 +223,7 @@ namespace osu_request.Drawables.Bans
                                             RelativeSizeAxes = Axes.Both,
                                             ClampExtension = 20.0f,
                                             ScrollbarVisible = false,
-                                            Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetCard>
+                                            Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetBan>
                                             {
                                                 Anchor = Anchor.Centre,
                                                 Origin = Anchor.Centre,
