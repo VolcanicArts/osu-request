@@ -5,6 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
+using osu_request.Clients;
 using osu_request.Osu;
 using osuTK;
 using osuTK.Graphics;
@@ -16,7 +17,7 @@ namespace osu_request.Drawables.Bans
     {
         private AudioManager _audioManager;
         private OsuRequestButton _banButton;
-        private FillFlowContainer _fillFlowContainer;
+        private FillFlowContainer<BeatmapsetContainer> _fillFlowContainer;
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
         private TextureStore _textureStore;
@@ -39,7 +40,7 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore, GameHost host)
+        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore, GameHost host, BeatmapsetBanManager banManager)
         {
             _host = host;
             _host.Window.Resized += UpdateSizing;
@@ -48,8 +49,15 @@ namespace osu_request.Drawables.Bans
             _textureStore = textureStore;
             InitSelf();
             InitChildren();
+            
+            banManager.OnBeatmapsetBan += (beatmapsetId) => _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, BeatmapsetLoaded);
+            banManager.OnBeatmapsetUnBan += (beatmapsetId) => _fillFlowContainer.RemoveAll(child => child.BeatmapsetId == beatmapsetId);
 
-            _banButton.OnButtonClicked += () => _localOsuClient.RequestBeatmapsetFromBeatmapId(_textBox.Text, BeatmapsetLoaded);
+            _banButton.OnButtonClicked += () =>
+            {
+                var success = banManager.Ban(_textBox.Text);
+                if (!success) _textBox.Text = string.Empty;
+            };
         }
 
         private void InitSelf()
@@ -195,7 +203,7 @@ namespace osu_request.Drawables.Bans
                                         RelativeSizeAxes = Axes.Both,
                                         ClampExtension = 20.0f,
                                         ScrollbarVisible = false,
-                                        Child = _fillFlowContainer = new FillFlowContainer
+                                        Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetContainer>
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,

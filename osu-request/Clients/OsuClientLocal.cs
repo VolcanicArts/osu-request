@@ -14,7 +14,6 @@ namespace osu_request.Osu
     {
         private bool IsReady;
         private OsuClient OsuClient;
-        private readonly Dictionary<string, Beatmapset> _beatmapsetCache = new();
 
         public void SetClientCredentials(OsuClientCredentials clientCredentials)
         {
@@ -46,13 +45,18 @@ namespace osu_request.Osu
             requestBeatmapsetFromBeatmapId(beatmapId, callback).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Middleman method to make requesting beatmapsets easier
+        /// </summary>
+        /// <param name="beatmapsetId">The beatmapset Id that will be used to get the beatmapset</param>
+        /// <param name="callback">What to do with the resulting beatmapset</param>
+        public void RequestBeatmapsetFromBeatmapsetId(string beatmapsetId, Action<Beatmapset> callback = null)
+        {
+            requestBeatmapsetFromBeatmapsetId(beatmapsetId, callback).ConfigureAwait(false);
+        }
+
         private async Task requestBeatmapsetFromBeatmapId(string beatmapId, Action<Beatmapset> callback)
         {
-            if (_beatmapsetCache.ContainsKey(beatmapId))
-            {
-                callback?.Invoke(_beatmapsetCache[beatmapId]);
-                return;
-            }
 
             try
             {
@@ -67,8 +71,6 @@ namespace osu_request.Osu
                 var beatmap = await OsuClient.GetBeatmapAsync(beatmapId);
                 var beatmapset = await beatmap.GetBeatmapsetAsync();
 
-                _beatmapsetCache.Add(beatmapId, beatmapset);
-
                 Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapId}");
 
                 callback?.Invoke(beatmapset);
@@ -76,6 +78,30 @@ namespace osu_request.Osu
             catch (HttpRequestException)
             {
                 Logger.Log($"Unavailable beatmap using Id {beatmapId}", LoggingTarget.Runtime, LogLevel.Error);
+            }
+        }
+        
+        private async Task requestBeatmapsetFromBeatmapsetId(string beatmapsetId, Action<Beatmapset> callback)
+        {
+            try
+            {
+                Logger.Log($"Requesting beatmapset using Id {beatmapsetId}");
+
+                if (!IsReady)
+                {
+                    Logger.Log("Client not ready. Cannot request beatmapset");
+                    return;
+                }
+
+                var beatmapset = await OsuClient.GetBeatmapsetAsync(beatmapsetId);
+
+                Logger.Log($"Successfully loaded beatmapset from beatmap Id {beatmapsetId}");
+
+                callback?.Invoke(beatmapset);
+            }
+            catch (HttpRequestException)
+            {
+                Logger.Log($"Unavailable beatmapset using Id {beatmapsetId}", LoggingTarget.Runtime, LogLevel.Error);
             }
         }
     }

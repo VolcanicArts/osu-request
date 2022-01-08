@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
+using osu_request.Clients;
 using osuTK;
 using osuTK.Graphics;
 using volcanicarts.osu.NET.Structures;
@@ -13,14 +14,17 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetContainer : Container
     {
+        public string BeatmapsetId { get; private set; }
         private readonly Texture _backgroundTexture;
         private readonly Beatmapset _beatmapset;
         private readonly Track _previewMp3;
         private TextureStore _textureStore;
         private GameHost _host;
+        private BeatmapsetBanManager _banManager;
 
         public BeatmapsetContainer(Beatmapset beatmapset, Track previewMp3, Texture backgroundTexture)
         {
+            BeatmapsetId = beatmapset.Id.ToString();
             _beatmapset = beatmapset;
             _previewMp3 = previewMp3;
             _backgroundTexture = backgroundTexture;
@@ -36,10 +40,11 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, GameHost host)
+        private void Load(TextureStore textureStore, GameHost host, BeatmapsetBanManager banManager)
         {
             _textureStore = textureStore;
             _host = host;
+            _banManager = banManager;
             InitSelf();
             InitChildren();
         }
@@ -62,6 +67,7 @@ namespace osu_request.Drawables
             SpriteButton _openExternally;
             SpriteButton _check;
             SpriteButton _openDirect;
+            SpriteButton _ban;
             
             Children = new Drawable[]
             {
@@ -173,7 +179,7 @@ namespace osu_request.Drawables
                                             BackgroundColour = OsuRequestColour.BlueDark,
                                             Texture = _textureStore.Get("download")
                                         },
-                                        new SpriteButton
+                                        _ban = new SpriteButton
                                         {
                                             Anchor = Anchor.BottomRight,
                                             Origin = Anchor.BottomRight,
@@ -201,10 +207,20 @@ namespace osu_request.Drawables
 
             _openExternally.OnButtonClicked += () => _host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{_beatmapset.Id}");
             _openDirect.OnButtonClicked += () => _host.OpenUrlExternally($"osu://b/{_beatmapset.Id}");
-            _check.OnButtonClicked += () => this.FadeOutFromOne(500, Easing.OutQuad).Finally((t) => t.RemoveAndDisposeImmediately());
+            _check.OnButtonClicked += DisposeGracefully;
+            _ban.OnButtonClicked += () =>
+            {
+                _banManager.Ban(BeatmapsetId);
+                DisposeGracefully();
+            };
 
             _text.AddText($"{_beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
             _text.AddText($"Mapped by {_beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+        }
+
+        private void DisposeGracefully()
+        {
+            this.FadeOutFromOne(500, Easing.OutQuad).Finally((t) => t.RemoveAndDisposeImmediately());
         }
 
         protected override void Dispose(bool isDisposing)
