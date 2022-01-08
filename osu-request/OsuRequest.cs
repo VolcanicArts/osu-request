@@ -1,8 +1,10 @@
 using osu.Framework.Allocation;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Config;
 using osu_request.Drawables;
+using osuTK;
 
 namespace osu_request
 {
@@ -55,7 +57,11 @@ namespace osu_request
 
         private void InitialiseChildren()
         {
-            InternalChild = TabsContainer = new TabsContainer();
+            Child = new DrawSizePreservingFillContainer
+            {
+                TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height),
+                Child = TabsContainer = new TabsContainer()
+            };
         }
     }
 }

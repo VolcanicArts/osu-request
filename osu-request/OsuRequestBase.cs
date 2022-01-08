@@ -2,31 +2,21 @@
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
-using osu.Framework.Graphics.Containers;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osu_request.Resources;
-using osuTK;
 
 namespace osu_request
 {
     public class OsuRequestBase : Game, IKeyBindingHandler<FrameworkAction>
     {
         private const string WindowTitle = @"osu!request";
-        private static readonly Size InitialWindowSize = new(960, 700);
+        protected static readonly Size InitialWindowSize = new(960, 700);
 
         protected new DependencyContainer Dependencies;
-
-        public OsuRequestBase()
-        {
-            base.Content.Add(new DrawSizePreservingFillContainer
-            {
-                TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height)
-            });
-        }
 
         // Override framework bindings
         bool IKeyBindingHandler<FrameworkAction>.OnPressed(KeyBindingPressEvent<FrameworkAction> e)
