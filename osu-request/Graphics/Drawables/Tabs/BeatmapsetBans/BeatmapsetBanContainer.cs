@@ -17,22 +17,26 @@ namespace osu_request.Drawables.Bans
     {
         private AudioManager _audioManager;
         private OsuRequestButton _banButton;
-        private FillFlowContainer<BeatmapsetRequestContainer> _fillFlowContainer;
+        private FillFlowContainer<BeatmapsetCard> _fillFlowContainer;
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
         private TextureStore _textureStore;
         private GameHost _host;
 
-        private async void BeatmapsetLoaded(Beatmapset beatmapset)
+        private void BeatmapsetLoaded(Beatmapset beatmapset)
         {
-            var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
+            var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
 
             if (previewMp3 == null || backgroundTexture == null) return;
             _textBox.Text = string.Empty;
 
-            var beatmapsetContainer = new BeatmapsetRequestContainer(beatmapset, previewMp3, backgroundTexture)
+            var beatmapsetContainer = new BeatmapsetCard(beatmapset, backgroundTexture, previewMp3)
             {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.X,
+                Size = new Vector2(1.0f, 120.0f),
                 Scale = new Vector2(0.49f)
             };
 
@@ -40,7 +44,8 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore, GameHost host, BeatmapsetBanManager banManager)
+        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore, GameHost host,
+            BeatmapsetBanManager banManager)
         {
             _host = host;
             _host.Window.Resized += UpdateSizing;
@@ -49,7 +54,7 @@ namespace osu_request.Drawables.Bans
             _textureStore = textureStore;
             InitSelf();
             InitChildren();
-            
+
             banManager.OnBeatmapsetBan += (beatmapsetId) => _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, BeatmapsetLoaded);
             banManager.OnBeatmapsetUnBan += (beatmapsetId) => _fillFlowContainer.RemoveAll(child => child.BeatmapsetId == beatmapsetId);
 
@@ -203,7 +208,7 @@ namespace osu_request.Drawables.Bans
                                         RelativeSizeAxes = Axes.Both,
                                         ClampExtension = 20.0f,
                                         ScrollbarVisible = false,
-                                        Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetRequestContainer>
+                                        Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetCard>
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,

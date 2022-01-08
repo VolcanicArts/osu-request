@@ -11,12 +11,14 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetCard : Container
     {
+        public readonly string BeatmapsetId;
         private readonly Beatmapset Beatmapset;
         private readonly Texture CoverTexture;
         private readonly Track PreviewMp3;
 
         public BeatmapsetCard(Beatmapset beatmapset, Texture coverTexture, Track previewMp3)
         {
+            BeatmapsetId = beatmapset.Id.ToString();
             Beatmapset = beatmapset;
             CoverTexture = coverTexture;
             PreviewMp3 = previewMp3;
