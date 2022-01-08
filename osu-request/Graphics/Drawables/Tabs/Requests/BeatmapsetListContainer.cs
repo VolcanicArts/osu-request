@@ -32,9 +32,9 @@ namespace osu_request.Drawables
             }
         }
 
-        private async void BeatmapsetLoaded(Beatmapset beatmapset)
+        private void BeatmapsetLoaded(Beatmapset beatmapset)
         {
-            var previewMp3 = await _audioManager.GetTrackStore().GetAsync(beatmapset.PreviewUrl);
+            var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
             var beatmapsetContainer = new BeatmapsetContainer(beatmapset, previewMp3, backgroundTexture);
 
