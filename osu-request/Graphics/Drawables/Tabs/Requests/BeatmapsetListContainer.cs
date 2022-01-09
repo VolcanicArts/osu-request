@@ -14,13 +14,13 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetListContainer : Container
     {
+        private AudioManager _audioManager;
+        private BeatmapsetBanManager _beatmapsetBanManager;
         private FillFlowContainer _fillFlowContainer;
 
         private OsuClientLocal _localOsuClient;
         private TwitchClientLocal _localTwitchClient;
         private TextureStore _textureStore;
-        private AudioManager _audioManager;
-        private BeatmapsetBanManager _beatmapsetBanManager;
 
         private void HandleTwitchMessage(ChatMessage message)
         {
@@ -28,15 +28,16 @@ namespace osu_request.Drawables
             {
                 var beatmapsetId = message.Message.Split(" ")[1];
                 if (_beatmapsetBanManager.IsBanned(beatmapsetId)) return;
-                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, (beatmapset) => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
+                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId,
+                    beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset, message)));
             }
         }
 
-        private void BeatmapsetLoaded(Beatmapset beatmapset)
+        private void BeatmapsetLoaded(Beatmapset beatmapset, ChatMessage message)
         {
             var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetRequestContainer(beatmapset, previewMp3, backgroundTexture)
+            var beatmapsetContainer = new BeatmapsetRequestContainer(beatmapset, previewMp3, backgroundTexture, message)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

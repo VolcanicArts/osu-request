@@ -1,10 +1,11 @@
-﻿using osu.Framework.Allocation;
+using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osuTK;
+using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
@@ -14,14 +15,16 @@ namespace osu_request.Drawables
         public readonly string BeatmapsetId;
         private readonly Beatmapset Beatmapset;
         private readonly Texture CoverTexture;
+        private readonly ChatMessage Message;
         private readonly Track PreviewMp3;
 
-        public BeatmapsetRequestContainer(Beatmapset beatmapset, Track previewMp3, Texture coverTexture)
+        public BeatmapsetRequestContainer(Beatmapset beatmapset, Track previewMp3, Texture coverTexture, ChatMessage message)
         {
             BeatmapsetId = beatmapset.Id.ToString();
             Beatmapset = beatmapset;
             PreviewMp3 = previewMp3;
             CoverTexture = coverTexture;
+            Message = message;
         }
 
         protected override void LoadComplete()
@@ -66,7 +69,7 @@ namespace osu_request.Drawables
                         Top = 5,
                         Bottom = 5
                     },
-                    Child = new BeatmapsetCard(Beatmapset, CoverTexture, PreviewMp3)
+                    Child = new BeatmapsetRequestCard(Beatmapset, CoverTexture, PreviewMp3, Message)
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,

@@ -1,4 +1,4 @@
-﻿using osu.Framework.Allocation;
+using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -30,7 +30,7 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            TextFlowContainer _text;
+            TextFlowContainer TopText;
 
             Masking = true;
             CornerRadius = 10;
@@ -39,7 +39,7 @@ namespace osu_request.Drawables
             Children = new Drawable[]
             {
                 new BeatmapsetCoverContainer(CoverTexture),
-                _text = new TextFlowContainer
+                TopText = new TextFlowContainer
                 {
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
@@ -49,8 +49,8 @@ namespace osu_request.Drawables
                 }
             };
 
-            _text.AddText($"{Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
-            _text.AddText($"Mapped by {Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+            TopText.AddText($"{Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
+            TopText.AddText($"Mapped by {Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
         }
 
         protected override bool OnHover(HoverEvent e)
