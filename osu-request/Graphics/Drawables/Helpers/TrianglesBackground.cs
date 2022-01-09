@@ -9,6 +9,8 @@ namespace osu_request.Drawables
     {
         protected internal Color4 ColourLight { get; init; } = OsuRequestColour.Blue;
         protected internal Color4 ColourDark { get; init; } = OsuRequestColour.BlueDark;
+        protected internal float Velocity { get; init; } = 1.0f;
+        protected internal float TriangleScale { get; init; } = 1.0f;
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -22,7 +24,8 @@ namespace osu_request.Drawables
                 ColourLight = ColourLight,
                 ColourDark = ColourDark,
                 RelativeSizeAxes = Axes.Both,
-                Velocity = 0.5f
+                Velocity = Velocity,
+                TriangleScale = TriangleScale
             };
             AddInternal(backgroundColour);
             AddInternal(triangles);

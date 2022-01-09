@@ -1,5 +1,6 @@
 ﻿using System;
 using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -27,9 +28,15 @@ namespace osu_request.Drawables
 
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new TrianglesBackground
                 {
-                    Colour = BackgroundColour
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    ColourDark = BackgroundColour,
+                    ColourLight = BackgroundColour.Lighten(0.2f),
+                    TriangleScale = 0.5f,
+                    Velocity = 0.2f
                 },
                 new Container
                 {

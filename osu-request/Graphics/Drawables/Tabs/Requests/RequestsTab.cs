@@ -39,9 +39,15 @@ namespace osu_request.Drawables
                     EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                     Children = new Drawable[]
                     {
-                        new BackgroundColour
+                        new TrianglesBackground
                         {
-                            Colour = OsuRequestColour.GreyLimeDarker
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            ColourDark = OsuRequestColour.GreyLimeDarker,
+                            ColourLight = OsuRequestColour.GreyLimeDark,
+                            Velocity = 0.5f,
+                            TriangleScale = 5.0f
                         },
                         new BeatmapsetListContainer
                         {
