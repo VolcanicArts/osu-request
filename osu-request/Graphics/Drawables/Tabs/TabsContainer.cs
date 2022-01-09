@@ -47,7 +47,7 @@ namespace osu_request.Drawables
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(1.0f, 0.0f)
                 },
-                new UsersTab()
+                new UsersTab
                 {
                     RelativePositionAxes = Axes.Both,
                     Position = new Vector2(2.0f, 0.0f)
@@ -61,9 +61,14 @@ namespace osu_request.Drawables
 
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new TrianglesBackground
                 {
-                    Colour = OsuRequestColour.Gray4
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    ColourLight = OsuRequestColour.Gray7,
+                    ColourDark = OsuRequestColour.Gray4,
+                    TriangleScale = 4.0f
                 },
                 _toolbar = new Toolbar
                 {

@@ -6,6 +6,8 @@ namespace osu_request
     // Taken and modified from https://github.com/ppy/osu/blob/master/osu.Game/Graphics/OsuColour.cs
     public static class OsuRequestColour
     {
+        public static readonly Color4 Invisible = new(0, 0, 0, 0);
+
         public static readonly Color4 PurpleLighter = Color4Extensions.FromHex(@"eeeeff");
         public static readonly Color4 PurpleLight = Color4Extensions.FromHex(@"aa88ff");
         public static readonly Color4 PurpleLightAlternative = Color4Extensions.FromHex(@"cba4da");
