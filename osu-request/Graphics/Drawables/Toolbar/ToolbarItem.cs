@@ -62,7 +62,7 @@ namespace osu_request.Drawables
                         Size = new Vector2(0.9f, 0.75f),
                         Masking = true,
                         CornerRadius = 5,
-                        EdgeEffect = OsuRequestEdgeEffects.BasicShadowBlack,
+                        EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                         Children = new Drawable[]
                         {
                             new BackgroundColour
@@ -121,7 +121,7 @@ namespace osu_request.Drawables
         {
             _outerContent.MoveToY(0f, 100, Easing.OutCubic);
             _outerBackground.FadeColour(OsuRequestColour.Gray7, 250, Easing.InCubic);
-            _innerContent.TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadowBlack, 250, Easing.InCubic);
+            _innerContent.TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 250, Easing.InCubic);
             _selected = false;
         }
     }

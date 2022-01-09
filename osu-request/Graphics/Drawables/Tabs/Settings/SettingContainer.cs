@@ -23,8 +23,6 @@ namespace osu_request.Drawables
             Size = new Vector2(1.0f, 100.0f);
             Masking = true;
             CornerRadius = 10;
-            BorderColour = Color4.Black;
-            BorderThickness = 2;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
 
             TextFlowContainer _text;
@@ -73,8 +71,7 @@ namespace osu_request.Drawables
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
                 Text = text,
-                CornerRadius = 5,
-                BorderThickness = 2
+                CornerRadius = 5
             };
         }
     }

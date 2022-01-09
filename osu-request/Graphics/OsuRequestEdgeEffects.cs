@@ -20,15 +20,7 @@ namespace osu_request
             Colour = Color4.Black.Opacity(0.6f),
             Radius = 2.5f,
             Type = EdgeEffectType.Shadow,
-            Offset = new Vector2(1.5f, 1.5f)
-        };
-
-        public static readonly EdgeEffectParameters BasicShadowBlack = new()
-        {
-            Colour = Color4.Black,
-            Radius = 2.5f,
-            Type = EdgeEffectType.Shadow,
-            Offset = new Vector2(1.5f, 1.5f)
+            Offset = new Vector2(0.0f, 1.5f)
         };
     }
 }

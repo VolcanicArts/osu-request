@@ -12,8 +12,7 @@ namespace osu_request.Drawables
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
                 Text = text,
-                CornerRadius = 5,
-                BorderThickness = 2
+                CornerRadius = 5
             };
         }
     }

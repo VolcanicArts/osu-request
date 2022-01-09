@@ -20,7 +20,6 @@ namespace osu_request.Drawables
         private void Load()
         {
             Masking = true;
-            BorderColour = Color4.Black;
             EdgeEffect = OsuRequestEdgeEffects.NoShadow;
 
             TextFlowContainer _text;

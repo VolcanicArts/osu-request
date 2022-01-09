@@ -21,7 +21,6 @@ namespace osu_request.Drawables
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
             Size = new Vector2(1.0f);
-            BorderColour = Color4.Black;
             BackgroundFocused = OsuRequestColour.Gray6;
             BackgroundUnfocused = OsuRequestColour.GreyLime;
         }

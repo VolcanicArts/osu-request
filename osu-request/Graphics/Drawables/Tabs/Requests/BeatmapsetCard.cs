@@ -57,7 +57,7 @@ namespace osu_request.Drawables
         {
             PreviewMp3.Restart();
             this.MoveToY(-1.5f, 100, Easing.OutCubic);
-            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadowBlack, 100, Easing.OutCubic);
+            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 100, Easing.OutCubic);
             return true;
         }
 

@@ -97,8 +97,7 @@ namespace osu_request.Drawables
                         Size = new Vector2(0.9f),
                         Text = "Save Settings",
                         FontSize = 30,
-                        CornerRadius = 5,
-                        BorderThickness = 2
+                        CornerRadius = 5
                     }
                 },
                 ErrorContainer = new Container

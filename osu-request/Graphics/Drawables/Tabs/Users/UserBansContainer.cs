@@ -20,8 +20,6 @@ namespace osu_request.Drawables.Users
 
             Masking = true;
             CornerRadius = 10;
-            BorderThickness = 2;
-            BorderColour = Color4.Black;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
             Children = new Drawable[]
             {

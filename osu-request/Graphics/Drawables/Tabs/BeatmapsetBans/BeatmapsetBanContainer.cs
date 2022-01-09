@@ -85,8 +85,6 @@ namespace osu_request.Drawables.Bans
             Size = new Vector2(1.0f);
             Masking = true;
             CornerRadius = 10;
-            BorderThickness = 2;
-            BorderColour = Color4.Black;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
         }
 
@@ -128,8 +126,6 @@ namespace osu_request.Drawables.Bans
                             Size = new Vector2(1.0f, 80.0f),
                             Masking = true,
                             CornerRadius = 10,
-                            BorderColour = Color4.Black,
-                            BorderThickness = 2,
                             EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                             Children = new Drawable[]
                             {
@@ -142,14 +138,12 @@ namespace osu_request.Drawables.Bans
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.Centre,
                                     RelativeSizeAxes = Axes.Both,
-                                    Size = new Vector2(1.0f),
                                     Padding = new MarginPadding(10),
                                     Child = new Container
                                     {
                                         Anchor = Anchor.TopCentre,
                                         Origin = Anchor.TopCentre,
                                         RelativeSizeAxes = Axes.Both,
-                                        Size = new Vector2(1.0f),
                                         Children = new Drawable[]
                                         {
                                             new Container
@@ -163,8 +157,7 @@ namespace osu_request.Drawables.Bans
                                                     Anchor = Anchor.Centre,
                                                     Origin = Anchor.Centre,
                                                     PlaceholderText = "Beatmapset ID",
-                                                    CornerRadius = 10,
-                                                    BorderThickness = 2
+                                                    CornerRadius = 10
                                                 }
                                             },
                                             new Container
@@ -178,11 +171,9 @@ namespace osu_request.Drawables.Bans
                                                     Anchor = Anchor.BottomRight,
                                                     Origin = Anchor.BottomRight,
                                                     RelativeSizeAxes = Axes.Both,
-                                                    Size = new Vector2(1.0f),
                                                     Text = "Ban",
                                                     FontSize = 40,
-                                                    CornerRadius = 10,
-                                                    BorderThickness = 2
+                                                    CornerRadius = 10
                                                 }
                                             }
                                         }
@@ -206,8 +197,6 @@ namespace osu_request.Drawables.Bans
                                 RelativeSizeAxes = Axes.Both,
                                 Masking = true,
                                 CornerRadius = 10,
-                                BorderColour = Color4.Black,
-                                BorderThickness = 2,
                                 EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                                 Children = new Drawable[]
                                 {

@@ -73,14 +73,14 @@ namespace osu_request.Drawables
         protected override void OnMouseUp(MouseUpEvent e)
         {
             this.MoveToY(-1.5f, 100, Easing.InCubic);
-            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadowBlack, 100, Easing.InCubic);
+            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 100, Easing.InCubic);
             base.OnMouseUp(e);
         }
 
         protected override bool OnHover(HoverEvent e)
         {
             this.MoveToY(-1.5f, 100, Easing.InCubic);
-            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadowBlack, 100, Easing.InCubic);
+            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 100, Easing.InCubic);
             return true;
         }
 
