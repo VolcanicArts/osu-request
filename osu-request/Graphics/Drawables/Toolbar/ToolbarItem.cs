@@ -15,14 +15,16 @@ namespace osu_request.Drawables
         private BackgroundColour _outerBackground;
         private Container _outerContent;
         private bool _selected;
-        private BindableBool Locked;
+
+        [Resolved]
+        private BindableBool Locked { get; init; }
+
         public Action<int> OnSelected;
         protected internal int ID { get; init; }
 
         [BackgroundDependencyLoader]
-        private void Load(BindableBool locked)
+        private void Load()
         {
-            Locked = locked;
             InitSelf();
             InitChildren();
         }

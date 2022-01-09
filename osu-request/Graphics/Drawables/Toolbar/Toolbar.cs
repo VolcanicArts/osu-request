@@ -12,13 +12,13 @@ namespace osu_request.Drawables
     {
         private readonly List<ToolbarItem> _items = new();
         private FillFlowContainer _fillFlowContainer;
-        private BindableBool Locked;
+        [Resolved]
+        private BindableBool Locked { get; init; }
         public Action<int> NewSelectionEvent;
 
         [BackgroundDependencyLoader]
-        private void Load(BindableBool locked)
+        private void Load()
         {
-            Locked = locked;
             Children = new Drawable[]
             {
                 new BackgroundColour
