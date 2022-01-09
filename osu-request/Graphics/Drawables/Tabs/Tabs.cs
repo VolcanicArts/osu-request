@@ -4,6 +4,7 @@
     {
         Requests = 0,
         Beatmap_Bans = 1,
-        Settings = 2,
+        Users = 2,
+        Settings = 3
     }
 }
