@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osuTK.Graphics;
 
 namespace osu_request.Drawables
@@ -15,15 +16,20 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            var backgroundColour = new BackgroundColour
+            var backgroundColour = new Box
             {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
                 Colour = ColourDark
             };
             var triangles = new Triangles
             {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
                 ColourLight = ColourLight,
                 ColourDark = ColourDark,
-                RelativeSizeAxes = Axes.Both,
                 Velocity = Velocity,
                 TriangleScale = TriangleScale
             };
