@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using osu.Framework.Logging;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
@@ -31,7 +32,7 @@ namespace osu_request.Twitch
             _twitchClient.OnLog += OnLog;
             _twitchClient.OnIncorrectLogin += IncorrectLogin;
             _twitchClient.OnJoinedChannel += JoinedChannel;
-            _twitchClient.Connect();
+            Task.Run(() => _twitchClient.Connect());
         }
 
         private void JoinedChannel(object o, OnJoinedChannelArgs onJoinedChannelArgs)
