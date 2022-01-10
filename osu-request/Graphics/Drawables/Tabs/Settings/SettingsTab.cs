@@ -133,7 +133,7 @@ namespace osu_request.Drawables
                                 {
                                     new BackgroundColour
                                     {
-                                        Colour = OsuRequestColour.GreyLime
+                                        Colour = OsuRequestColour.Gray4
                                     },
                                     new Container
                                     {

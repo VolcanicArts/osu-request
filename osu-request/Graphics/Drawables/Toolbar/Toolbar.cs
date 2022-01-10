@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osuTK;
 
 namespace osu_request.Drawables
 {
@@ -31,18 +28,7 @@ namespace osu_request.Drawables
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f, 0.9f),
-                    Colour = OsuRequestColour.GreyLimeDark
-                },
-                new Box
-                {
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f, 0.4f),
-                    RelativePositionAxes = Axes.Both,
-                    Position = new Vector2(0.0f, 0.9f),
-                    Colour = ColourInfo.GradientVertical(OsuRequestColour.GreyLimeDark, OsuRequestColour.GreyLimeDark.Opacity(0.0f))
+                    Colour = OsuRequestColour.Gray3
                 },
                 _fillFlowContainer = new FillFlowContainer
                 {

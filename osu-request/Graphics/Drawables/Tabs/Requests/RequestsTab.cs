@@ -1,8 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osuTK;
-using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
@@ -42,8 +40,8 @@ namespace osu_request.Drawables
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
-                            ColourDark = OsuRequestColour.GreyLimeDarker,
-                            ColourLight = OsuRequestColour.GreyLimeDark,
+                            ColourLight = OsuRequestColour.Gray3,
+                            ColourDark = OsuRequestColour.Gray2,
                             Velocity = 0.5f,
                             TriangleScale = 5.0f
                         },

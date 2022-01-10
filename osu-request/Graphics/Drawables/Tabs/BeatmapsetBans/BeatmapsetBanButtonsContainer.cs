@@ -4,8 +4,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Clients;
-using osu_request.Drawables.Bans;
-using osuTK;
 using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
@@ -37,7 +35,7 @@ namespace osu_request.Drawables
                 {
                     new BackgroundColour
                     {
-                        Colour = OsuRequestColour.GreyLimeDarker
+                        Colour = OsuRequestColour.Gray2
                     },
                     new Container
                     {
@@ -60,7 +58,7 @@ namespace osu_request.Drawables
                                     RelativeSizeAxes = Axes.Both,
                                     BackgroundColour = OsuRequestColour.BlueDark,
                                     Texture = textureStore.Get("undo")
-                                },
+                                }
                             }
                         }
                     }

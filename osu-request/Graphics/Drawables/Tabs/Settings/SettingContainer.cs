@@ -1,10 +1,8 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
 using osu_request.Config;
 using osuTK;
-using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
@@ -31,7 +29,7 @@ namespace osu_request.Drawables
             {
                 new BackgroundColour
                 {
-                    Colour = OsuRequestColour.GreyLimeDarker
+                    Colour = OsuRequestColour.Gray3
                 },
                 new Container
                 {

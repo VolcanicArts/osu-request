@@ -39,7 +39,7 @@ namespace osu_request.Drawables
                 {
                     new BackgroundColour
                     {
-                        Colour = OsuRequestColour.GreyLimeDarker
+                        Colour = OsuRequestColour.Gray2
                     },
                     new Container
                     {
@@ -79,7 +79,7 @@ namespace osu_request.Drawables
                                     RelativeSizeAxes = Axes.Both,
                                     BackgroundColour = OsuRequestColour.BlueDark,
                                     Texture = textureStore.Get("download")
-                                },
+                                }
                             },
                             new Container
                             {
@@ -95,7 +95,7 @@ namespace osu_request.Drawables
                                     RelativeSizeAxes = Axes.Both,
                                     BackgroundColour = OsuRequestColour.RedDark,
                                     Texture = textureStore.Get("ban")
-                                },
+                                }
                             },
                             new Container
                             {

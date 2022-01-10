@@ -4,7 +4,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu_request.Twitch;
 using osuTK;
-using osuTK.Graphics;
 using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables.Users
@@ -23,9 +22,9 @@ namespace osu_request.Drawables.Users
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
             Children = new Drawable[]
             {
-                new BackgroundColour()
+                new BackgroundColour
                 {
-                    Colour = OsuRequestColour.GreyLimeDarker
+                    Colour = OsuRequestColour.Gray3
                 },
                 new BasicScrollContainer
                 {
@@ -51,7 +50,6 @@ namespace osu_request.Drawables.Users
         private void HandleTwitchMessage(ChatMessage message)
         {
             if (message.Message.StartsWith("!rq") && _fillFlowContainer.Children.All(card => card.Username != message.Username))
-            {
                 Scheduler.Add(() => _fillFlowContainer.Add(new UserCard(message.Username)
                     {
                         Anchor = Anchor.TopLeft,
@@ -60,7 +58,6 @@ namespace osu_request.Drawables.Users
                         Size = new Vector2(1.0f, 30.0f)
                     }
                 ));
-            }
         }
     }
 }

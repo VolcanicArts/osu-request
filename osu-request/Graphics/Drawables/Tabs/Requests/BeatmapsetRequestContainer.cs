@@ -12,8 +12,8 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetRequestContainer : Container
     {
-        public readonly string BeatmapsetId;
         private readonly Beatmapset Beatmapset;
+        public readonly string BeatmapsetId;
         private readonly Texture CoverTexture;
         private readonly ChatMessage Message;
         private readonly Track PreviewMp3;
@@ -45,7 +45,6 @@ namespace osu_request.Drawables
             Alpha = 0;
             Masking = true;
             CornerRadius = 10;
-            EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
         }
 
         private void InitChildren()
@@ -54,7 +53,7 @@ namespace osu_request.Drawables
             {
                 new BackgroundColour
                 {
-                    Colour = OsuRequestColour.GreyLime
+                    Colour = OsuRequestColour.Gray4
                 },
                 new Container
                 {

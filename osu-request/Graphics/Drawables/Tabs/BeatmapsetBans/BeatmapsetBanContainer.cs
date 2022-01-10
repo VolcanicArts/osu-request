@@ -5,12 +5,10 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Osu;
 using osuTK;
-using osuTK.Graphics;
 using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables.Bans
@@ -20,10 +18,10 @@ namespace osu_request.Drawables.Bans
         private AudioManager _audioManager;
         private OsuRequestButton _banButton;
         private FillFlowContainer<BeatmapsetBan> _fillFlowContainer;
+        private GameHost _host;
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
         private TextureStore _textureStore;
-        private GameHost _host;
 
         private void BeatmapsetLoaded(Beatmapset beatmapset)
         {
@@ -57,17 +55,15 @@ namespace osu_request.Drawables.Bans
             InitSelf();
             InitChildren();
 
-            banManager.OnBeatmapsetBan += (beatmapsetId) =>
+            banManager.OnBeatmapsetBan += beatmapsetId =>
             {
                 _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId,
-                    (beatmapset) => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
+                    beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
             };
-            banManager.OnBeatmapsetUnBan += (beatmapsetId) =>
+            banManager.OnBeatmapsetUnBan += beatmapsetId =>
             {
                 foreach (var beatmapsetBan in _fillFlowContainer.Where(child => child.BeatmapsetId == beatmapsetId))
-                {
                     beatmapsetBan.DisposeGracefully();
-                }
             };
 
             _banButton.OnButtonClicked += () =>
@@ -92,13 +88,9 @@ namespace osu_request.Drawables.Bans
         {
             var width = _host.Window.ClientSize.Width;
             if (width < 500)
-            {
                 _fillFlowContainer.Children?.ForEach(child => child.Scale = Vector2.One);
-            }
             else
-            {
                 _fillFlowContainer.Children?.ForEach(child => child.Scale = new Vector2(0.49f));
-            }
         }
 
         private void InitChildren()
@@ -107,7 +99,7 @@ namespace osu_request.Drawables.Bans
             {
                 new BackgroundColour
                 {
-                    Colour = OsuRequestColour.GreyLimeDarker
+                    Colour = OsuRequestColour.Gray3
                 },
                 new Container
                 {
@@ -131,7 +123,7 @@ namespace osu_request.Drawables.Bans
                             {
                                 new BackgroundColour
                                 {
-                                    Colour = OsuRequestColour.GreyLimeDarker
+                                    Colour = OsuRequestColour.Gray3
                                 },
                                 new Container
                                 {
@@ -202,7 +194,7 @@ namespace osu_request.Drawables.Bans
                                 {
                                     new BackgroundColour
                                     {
-                                        Colour = OsuRequestColour.GreyLimeDarker
+                                        Colour = OsuRequestColour.Gray3
                                     },
                                     new Container
                                     {
@@ -231,7 +223,7 @@ namespace osu_request.Drawables.Bans
                                     }
                                 }
                             }
-                        },
+                        }
                     }
                 }
             };

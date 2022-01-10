@@ -1,4 +1,4 @@
-﻿using osu.Framework.Allocation;
+using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -25,7 +25,7 @@ namespace osu_request.Drawables.Bans
             PreviewMp3.Volume.Value = 0.25f;
             PreviewMp3.Completed += PreviewMp3.Restart;
         }
-        
+
         protected override void LoadComplete()
         {
             base.LoadComplete();
@@ -38,12 +38,12 @@ namespace osu_request.Drawables.Bans
             Alpha = 0;
             Masking = true;
             CornerRadius = 10;
-            
+
             Children = new Drawable[]
             {
                 new BackgroundColour
                 {
-                    Colour = OsuRequestColour.GreyLime
+                    Colour = OsuRequestColour.Gray4
                 },
                 new Container
                 {
