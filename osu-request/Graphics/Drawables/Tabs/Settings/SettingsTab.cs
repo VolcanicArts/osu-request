@@ -2,6 +2,7 @@
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu_request.Config;
 using osuTK;
 
@@ -112,8 +113,11 @@ namespace osu_request.Drawables
                     CornerRadius = 10,
                     Children = new Drawable[]
                     {
-                        new BackgroundColour
+                        new Box
                         {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
                             Colour = OsuRequestColour.Red.Darken(0.8f)
                         },
                         new Container
@@ -131,8 +135,11 @@ namespace osu_request.Drawables
                                 CornerRadius = 10,
                                 Children = new Drawable[]
                                 {
-                                    new BackgroundColour
+                                    new Box
                                     {
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        RelativeSizeAxes = Axes.Both,
                                         Colour = OsuRequestColour.Gray4
                                     },
                                     new Container

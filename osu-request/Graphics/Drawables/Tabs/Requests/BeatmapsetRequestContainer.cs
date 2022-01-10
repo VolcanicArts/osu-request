@@ -2,6 +2,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osuTK;
@@ -51,8 +52,11 @@ namespace osu_request.Drawables
         {
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new Box
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray4
                 },
                 new Container

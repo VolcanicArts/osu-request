@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu_request.Config;
 using osuTK;
 
@@ -27,8 +28,11 @@ namespace osu_request.Drawables
 
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new Box
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray3
                 },
                 new Container

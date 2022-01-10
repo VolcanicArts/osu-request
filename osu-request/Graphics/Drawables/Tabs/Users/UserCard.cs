@@ -1,12 +1,9 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
-using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu_request.Config;
 using osuTK;
-using osuTK.Graphics;
 
 namespace osu_request.Drawables.Users
 {
@@ -34,11 +31,14 @@ namespace osu_request.Drawables.Users
 
             TextFlowContainer _text;
             SpriteButton _ban;
-            
+
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new Box
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray4
                 },
                 _text = new TextFlowContainer
@@ -68,12 +68,11 @@ namespace osu_request.Drawables.Users
                         Scale = new Vector2(0.5f),
                         BackgroundColour = OsuRequestColour.RedDark,
                         Texture = textureStore.Get("ban")
-                    },
+                    }
                 }
             };
 
             _text.AddText(Username, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
-            
         }
     }
 }

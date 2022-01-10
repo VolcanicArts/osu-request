@@ -2,6 +2,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu_request.Twitch;
 using osuTK;
 using TwitchLib.Client.Models;
@@ -22,8 +23,11 @@ namespace osu_request.Drawables.Users
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new Box
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray3
                 },
                 new BasicScrollContainer

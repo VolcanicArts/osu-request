@@ -4,6 +4,7 @@ using osu.Framework.Audio;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Clients;
@@ -97,8 +98,11 @@ namespace osu_request.Drawables.Bans
         {
             Children = new Drawable[]
             {
-                new BackgroundColour
+                new Box
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray3
                 },
                 new Container
@@ -121,8 +125,11 @@ namespace osu_request.Drawables.Bans
                             EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                             Children = new Drawable[]
                             {
-                                new BackgroundColour
+                                new Box
                                 {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
                                     Colour = OsuRequestColour.Gray3
                                 },
                                 new Container
@@ -192,8 +199,11 @@ namespace osu_request.Drawables.Bans
                                 EdgeEffect = OsuRequestEdgeEffects.BasicShadow,
                                 Children = new Drawable[]
                                 {
-                                    new BackgroundColour
+                                    new Box
                                     {
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        RelativeSizeAxes = Axes.Both,
                                         Colour = OsuRequestColour.Gray3
                                     },
                                     new Container
