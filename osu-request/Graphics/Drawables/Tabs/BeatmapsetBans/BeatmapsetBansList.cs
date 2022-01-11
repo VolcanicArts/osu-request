@@ -15,16 +15,21 @@ namespace osu_request.Drawables.Bans
 {
     public class BeatmapsetBansList : Container
     {
-        private AudioManager _audioManager;
         private FillFlowContainer<BeatmapsetBanEntry> _fillFlowContainer;
-        private GameHost _host;
-        private OsuClientLocal _localOsuClient;
-        private TextureStore _textureStore;
+
+        [Resolved]
+        private AudioManager AudioManager { get; set; }
+
+        [Resolved]
+        private OsuClientLocal OsuClient { get; set; }
+
+        [Resolved]
+        private TextureStore TextureStore { get; set; }
 
         private void BeatmapsetLoaded(Beatmapset beatmapset)
         {
-            var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
-            var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
+            var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
+            var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
             if (previewMp3 == null || backgroundTexture == null) return;
 
             var beatmapsetBan = new BeatmapsetBanEntry(beatmapset, backgroundTexture, previewMp3)
@@ -40,31 +45,27 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(OsuClientLocal localOsuClient, AudioManager audioManager, TextureStore textureStore, GameHost host,
-            BeatmapsetBanManager banManager)
+        private void Load(GameHost host, BeatmapsetBanManager banManager)
         {
-            _host = host;
-            _host.Window.Resized += UpdateSizing;
-            _localOsuClient = localOsuClient;
-            _audioManager = audioManager;
-            _textureStore = textureStore;
+            host.Window.Resized += () => UpdateSizing(host.Window);
+            banManager.OnBeatmapsetBan += OnBeatmapsetBan;
+            banManager.OnBeatmapsetUnBan += OnBeatmapsetUnBan;
             InitChildren();
-
-            banManager.OnBeatmapsetBan += beatmapsetId =>
-            {
-                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId,
-                    beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
-            };
-            banManager.OnBeatmapsetUnBan += beatmapsetId =>
-            {
-                foreach (var beatmapsetBan in _fillFlowContainer.Where(child => child.BeatmapsetId == beatmapsetId))
-                    beatmapsetBan.DisposeGracefully();
-            };
         }
 
-        private void UpdateSizing()
+        private void OnBeatmapsetUnBan(string beatmapsetId)
         {
-            var width = _host.Window.ClientSize.Width;
+            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
+        }
+
+        private void OnBeatmapsetBan(string beatmapsetId)
+        {
+            OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
+        }
+
+        private void UpdateSizing(IWindow window)
+        {
+            var width = window.ClientSize.Width;
             if (width < 500)
                 _fillFlowContainer.Children?.ForEach(child => child.Scale = Vector2.One);
             else
