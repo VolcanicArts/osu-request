@@ -53,15 +53,20 @@ namespace osu_request.Drawables.Users
 
         private void HandleTwitchMessage(ChatMessage message)
         {
-            if (message.Message.StartsWith("!rq") && _fillFlowContainer.Children.All(card => card.Username != message.Username))
-                Scheduler.Add(() => _fillFlowContainer.Add(new UserCard(message)
+            if (!message.Message.StartsWith("!rq")) return;
+
+            Scheduler.Add(() =>
+            {
+                if (_fillFlowContainer.Any(card => card.Username == message.Username)) return;
+                _fillFlowContainer.Add(new UserCard(message)
                     {
                         Anchor = Anchor.TopLeft,
                         Origin = Anchor.TopLeft,
                         RelativeSizeAxes = Axes.X,
                         Size = new Vector2(1.0f, 30.0f)
                     }
-                ));
+                );
+            });
         }
     }
 }
