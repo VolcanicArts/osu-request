@@ -1,9 +1,6 @@
-﻿using System;
-using osu.Framework.Allocation;
-using osu.Framework.Extensions.Color4Extensions;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu_request.Config;
 using osu_request.Drawables.Notifications;
 using osuTK;
@@ -12,24 +9,25 @@ namespace osu_request.Drawables
 {
     public class SettingsTab : GenericTab
     {
-        private ClientManager _clientManager;
-        private OsuRequestConfig _osuRequestConfig;
         private OsuRequestButton _saveButton;
-        private NotificationContainer NotificationContainer;
+
         private SettingContainer OsuClientIDContainer;
         private SettingContainer OsuClientSecretContainer;
         private SettingContainer TwitchClientChannelNameContainer;
         private SettingContainer TwitchClientOAuthTokenContainer;
 
+        [Resolved]
+        private ClientManager ClientManager { get; set; }
+
+        [Resolved]
+        private OsuRequestConfig OsuRequestConfig { get; set; }
+
+        [Resolved]
+        private NotificationContainer NotificationContainer { get; set; }
+
         [BackgroundDependencyLoader]
-        private void Load(OsuRequestConfig osuRequestConfig, ClientManager clientManager, NotificationContainer notificationContainer)
+        private void Load()
         {
-            _osuRequestConfig = osuRequestConfig;
-            _clientManager = clientManager;
-            NotificationContainer = notificationContainer;
-
-            TextFlowContainer _text;
-
             Children = new Drawable[]
             {
                 new Container
@@ -98,29 +96,29 @@ namespace osu_request.Drawables
 
         private void SaveButtonClicked()
         {
-            _clientManager.OnFailed += ClientManagerFail;
-            _clientManager.OnSuccess += ClientManagerSuccess;
+            ClientManager.OnFailed += ClientManagerFail;
+            ClientManager.OnSuccess += ClientManagerSuccess;
 
-            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = OsuClientIDContainer.TextBox.Text;
-            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = OsuClientSecretContainer.TextBox.Text;
-            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = TwitchClientChannelNameContainer.TextBox.Text;
-            _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = TwitchClientOAuthTokenContainer.TextBox.Text;
-            _osuRequestConfig.Save();
-            _clientManager.TryConnectClients(_osuRequestConfig);
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = OsuClientIDContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = OsuClientSecretContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = TwitchClientChannelNameContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = TwitchClientOAuthTokenContainer.TextBox.Text;
+            OsuRequestConfig.Save();
+            ClientManager.TryConnectClients(OsuRequestConfig);
         }
 
         private void ClientManagerFail()
         {
             NotificationContainer.Notify("Invalid Settings", "Please enter valid settings to allow this app to work");
-            _clientManager.OnFailed -= ClientManagerFail;
-            _clientManager.OnSuccess -= ClientManagerSuccess;
+            ClientManager.OnFailed -= ClientManagerFail;
+            ClientManager.OnSuccess -= ClientManagerSuccess;
         }
 
         private void ClientManagerSuccess()
         {
             NotificationContainer.Notify("Valid Settings", "Settings accepted. Requests incoming!");
-            _clientManager.OnFailed -= ClientManagerFail;
-            _clientManager.OnSuccess -= ClientManagerSuccess;
+            ClientManager.OnFailed -= ClientManagerFail;
+            ClientManager.OnSuccess -= ClientManagerSuccess;
         }
     }
 }
