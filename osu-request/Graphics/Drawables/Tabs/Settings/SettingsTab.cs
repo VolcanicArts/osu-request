@@ -91,70 +91,9 @@ namespace osu_request.Drawables
                         FontSize = 30,
                         CornerRadius = 5
                     }
-                },
-                new Container
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    RelativePositionAxes = Axes.Both,
-                    Size = new Vector2(0.3f, 0.1f),
-                    Position = new Vector2(0.0f, -1.0f),
-                    Masking = true,
-                    CornerRadius = 10,
-                    Children = new Drawable[]
-                    {
-                        new Box
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Colour = OsuRequestColour.Red.Darken(0.8f)
-                        },
-                        new Container
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Padding = new MarginPadding(5),
-                            Child = new Container
-                            {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                RelativeSizeAxes = Axes.Both,
-                                Masking = true,
-                                CornerRadius = 10,
-                                Children = new Drawable[]
-                                {
-                                    new Box
-                                    {
-                                        Anchor = Anchor.Centre,
-                                        Origin = Anchor.Centre,
-                                        RelativeSizeAxes = Axes.Both,
-                                        Colour = OsuRequestColour.Gray4
-                                    },
-                                    new Container
-                                    {
-                                        Anchor = Anchor.Centre,
-                                        Origin = Anchor.Centre,
-                                        RelativeSizeAxes = Axes.Both,
-                                        Size = new Vector2(0.9f, 1.0f),
-                                        Child = _text = new TextFlowContainer
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            TextAnchor = Anchor.Centre,
-                                            RelativeSizeAxes = Axes.Both
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             };
-
-            _text.AddText("Incorrect Information!", t => t.Font = OsuRequestFonts.Regular.With(size: 20));
+            
             _saveButton.OnButtonClicked += SaveButtonClicked;
         }
 
