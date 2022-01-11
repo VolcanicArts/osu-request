@@ -1,10 +1,8 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Textures;
+using osu_request.Structures;
 using TwitchLib.Client.Models;
-using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
@@ -12,8 +10,7 @@ namespace osu_request.Drawables
     {
         private readonly ChatMessage Message;
 
-        public BeatmapsetRequestCard(Beatmapset beatmapset, Texture coverTexture, Track previewMp3, ChatMessage message) : base(beatmapset,
-            coverTexture, previewMp3)
+        public BeatmapsetRequestCard(WorkingBeatmapset workingBeatmapset, ChatMessage message) : base(workingBeatmapset)
         {
             Message = message;
         }

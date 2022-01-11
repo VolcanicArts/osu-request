@@ -4,17 +4,17 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu_request.Clients;
-using volcanicarts.osu.NET.Structures;
+using osu_request.Structures;
 
 namespace osu_request.Drawables
 {
     public class BeatmapsetBanButtons : Container
     {
-        private readonly Beatmapset Beatmapset;
+        private readonly WorkingBeatmapset WorkingBeatmapset;
 
-        public BeatmapsetBanButtons(Beatmapset beatmapset)
+        public BeatmapsetBanButtons(WorkingBeatmapset workingBeatmapset)
         {
-            Beatmapset = beatmapset;
+            WorkingBeatmapset = workingBeatmapset;
         }
 
         [BackgroundDependencyLoader]
@@ -51,7 +51,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _unban.OnButtonClicked += () => banManager.UnBan(Beatmapset.Id.ToString());
+            _unban.OnButtonClicked += () => banManager.UnBan(WorkingBeatmapset.Beatmapset.Id.ToString());
         }
     }
 }

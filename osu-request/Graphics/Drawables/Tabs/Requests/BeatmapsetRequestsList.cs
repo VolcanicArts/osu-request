@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu_request.Clients;
 using osu_request.Osu;
+using osu_request.Structures;
 using osu_request.Twitch;
 using osuTK;
 using TwitchLib.Client.Models;
@@ -42,7 +43,7 @@ namespace osu_request.Drawables
         {
             var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetRequestEntry(beatmapset, previewMp3, backgroundTexture, message)
+            var beatmapsetContainer = new BeatmapsetRequestEntry(new WorkingBeatmapset(beatmapset, backgroundTexture, previewMp3), message)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

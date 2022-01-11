@@ -1,31 +1,22 @@
 using osu.Framework.Allocation;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
-using volcanicarts.osu.NET.Structures;
+using osu_request.Structures;
 
 namespace osu_request.Drawables
 {
     public class BeatmapsetCard : Container
     {
-        private readonly Beatmapset Beatmapset;
         public readonly string BeatmapsetId;
-        private readonly Texture CoverTexture;
-        private readonly Track PreviewMp3;
+        private readonly WorkingBeatmapset WorkingBeatmapset;
 
         private double hoverTime = double.MaxValue;
 
-        public BeatmapsetCard(Beatmapset beatmapset, Texture coverTexture, Track previewMp3)
+        public BeatmapsetCard(WorkingBeatmapset workingBeatmapset)
         {
-            BeatmapsetId = beatmapset.Id.ToString();
-            Beatmapset = beatmapset;
-            CoverTexture = coverTexture;
-            PreviewMp3 = previewMp3;
-
-            PreviewMp3.Volume.Value = 0.25f;
-            PreviewMp3.Completed += PreviewMp3.Restart;
+            BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
+            WorkingBeatmapset = workingBeatmapset;
         }
 
         [BackgroundDependencyLoader]
@@ -39,7 +30,7 @@ namespace osu_request.Drawables
 
             Children = new Drawable[]
             {
-                new BeatmapsetCover(CoverTexture)
+                new BeatmapsetCover(WorkingBeatmapset.Cover)
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -54,8 +45,8 @@ namespace osu_request.Drawables
                 }
             };
 
-            TopText.AddText($"{Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
-            TopText.AddText($"Mapped by {Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+            TopText.AddText($"{WorkingBeatmapset.Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
+            TopText.AddText($"Mapped by {WorkingBeatmapset.Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
         }
 
         protected override void Update()
@@ -63,7 +54,7 @@ namespace osu_request.Drawables
             base.Update();
             if (!IsHovered || !(Time.Current - hoverTime > 250.0d)) return;
             hoverTime = double.MaxValue;
-            PreviewMp3.Restart();
+            WorkingBeatmapset.Preview.Restart();
         }
 
         protected override bool OnHover(HoverEvent e)
@@ -76,14 +67,14 @@ namespace osu_request.Drawables
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            PreviewMp3.Stop();
+            WorkingBeatmapset.Preview.Stop();
             this.MoveToY(0.0f, 100, Easing.InCubic);
             TweenEdgeEffectTo(OsuRequestEdgeEffects.NoShadow, 100, Easing.InCubic);
         }
 
         protected override void Dispose(bool isDisposing)
         {
-            PreviewMp3.Dispose();
+            WorkingBeatmapset.Preview.Dispose();
             base.Dispose(isDisposing);
         }
     }

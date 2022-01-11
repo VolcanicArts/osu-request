@@ -8,6 +8,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Osu;
+using osu_request.Structures;
 using osuTK;
 using volcanicarts.osu.NET.Structures;
 
@@ -32,7 +33,7 @@ namespace osu_request.Drawables.Bans
             var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
             if (previewMp3 == null || backgroundTexture == null) return;
 
-            var beatmapsetBan = new BeatmapsetBanEntry(beatmapset, backgroundTexture, previewMp3)
+            var beatmapsetBan = new BeatmapsetBanEntry(new WorkingBeatmapset(beatmapset, backgroundTexture, previewMp3))
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

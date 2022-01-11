@@ -1,4 +1,4 @@
-﻿using osu.Framework.Allocation;
+using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -6,21 +6,21 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Clients;
+using osu_request.Structures;
 using osuTK;
-using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
     public class BeatmapsetRequestButtons : Container
     {
-        private readonly Beatmapset Beatmapset;
+        private readonly WorkingBeatmapset WorkingBeatmapset;
 
         [Resolved]
         private BindableBool ShouldDispose { get; set; }
 
-        public BeatmapsetRequestButtons(Beatmapset beatmapset)
+        public BeatmapsetRequestButtons(WorkingBeatmapset workingBeatmapset)
         {
-            Beatmapset = beatmapset;
+            WorkingBeatmapset = workingBeatmapset;
         }
 
         [BackgroundDependencyLoader]
@@ -119,10 +119,10 @@ namespace osu_request.Drawables
                 }
             };
 
-            _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{Beatmapset.Id}");
-            _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{Beatmapset.Id}");
+            _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{WorkingBeatmapset.Beatmapset.Id}");
+            _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{WorkingBeatmapset.Beatmapset.Id}");
             _check.OnButtonClicked += () => ShouldDispose.Value = true;
-            _ban.OnButtonClicked += () => banManager.Ban(Beatmapset.Id.ToString());
+            _ban.OnButtonClicked += () => banManager.Ban(WorkingBeatmapset.Beatmapset.Id.ToString());
         }
     }
 }

@@ -1,30 +1,21 @@
 using osu.Framework.Allocation;
-using osu.Framework.Audio.Track;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Graphics.Textures;
+using osu_request.Structures;
 using osuTK;
-using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables.Bans
 {
     public class BeatmapsetBanEntry : Container
     {
-        private readonly Beatmapset Beatmapset;
         public readonly string BeatmapsetId;
-        private readonly Texture CoverTexture;
-        private readonly Track PreviewMp3;
+        private readonly WorkingBeatmapset WorkingBeatmapset;
 
-        public BeatmapsetBanEntry(Beatmapset beatmapset, Texture coverTexture, Track previewMp3)
+        public BeatmapsetBanEntry(WorkingBeatmapset workingBeatmapset)
         {
-            BeatmapsetId = beatmapset.Id.ToString();
-            Beatmapset = beatmapset;
-            CoverTexture = coverTexture;
-            PreviewMp3 = previewMp3;
-
-            PreviewMp3.Volume.Value = 0.25f;
-            PreviewMp3.Completed += PreviewMp3.Restart;
+            BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
+            WorkingBeatmapset = workingBeatmapset;
         }
 
         protected override void LoadComplete()
@@ -62,7 +53,7 @@ namespace osu_request.Drawables.Bans
                         Top = 5,
                         Bottom = 5
                     },
-                    Child = new BeatmapsetCard(Beatmapset, CoverTexture, PreviewMp3)
+                    Child = new BeatmapsetCard(WorkingBeatmapset)
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
@@ -82,7 +73,7 @@ namespace osu_request.Drawables.Bans
                         Top = 5,
                         Bottom = 5
                     },
-                    Child = new BeatmapsetBanButtons(Beatmapset)
+                    Child = new BeatmapsetBanButtons(WorkingBeatmapset)
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
