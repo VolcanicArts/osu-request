@@ -45,6 +45,7 @@ namespace osu_request.Drawables
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
+                        CornerRadius = 5,
                         BackgroundColour = OsuRequestColour.BlueDark,
                         Texture = textureStore.Get("undo")
                     }

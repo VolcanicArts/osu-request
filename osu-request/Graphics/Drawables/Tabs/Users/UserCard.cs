@@ -69,6 +69,7 @@ namespace osu_request.Drawables.Users
                         RelativeSizeAxes = Axes.Both,
                         Size = new Vector2(2.0f),
                         Scale = new Vector2(0.5f),
+                        CornerRadius = 5,
                         BackgroundColour = OsuRequestColour.RedDark,
                         Texture = textureStore.Get("ban")
                     }

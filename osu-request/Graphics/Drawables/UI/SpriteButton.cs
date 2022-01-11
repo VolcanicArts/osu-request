@@ -20,7 +20,6 @@ namespace osu_request.Drawables
         private void Load()
         {
             Masking = true;
-            CornerRadius = 5;
             EdgeEffect = OsuRequestEdgeEffects.NoShadow;
 
             Children = new Drawable[]

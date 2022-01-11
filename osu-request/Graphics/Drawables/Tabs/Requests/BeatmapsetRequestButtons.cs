@@ -4,6 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Structures;
@@ -32,7 +33,7 @@ namespace osu_request.Drawables
             SpriteButton _openExternally;
             SpriteButton _openDirect;
             SpriteButton _ban;
-            SpriteButton _check;
+            SpriteButton _banUser;
 
             Children = new Drawable[]
             {
@@ -53,8 +54,8 @@ namespace osu_request.Drawables
                     {
                         new Container
                         {
-                            Anchor = Anchor.TopLeft,
-                            Origin = Anchor.TopLeft,
+                            Anchor = Anchor.TopRight,
+                            Origin = Anchor.TopRight,
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
@@ -63,14 +64,15 @@ namespace osu_request.Drawables
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
+                                CornerRadius = 5,
                                 BackgroundColour = OsuRequestColour.BlueDark,
                                 Texture = textureStore.Get("open-externally")
                             }
                         },
                         new Container
                         {
-                            Anchor = Anchor.TopRight,
-                            Origin = Anchor.TopRight,
+                            Anchor = Anchor.TopLeft,
+                            Origin = Anchor.TopLeft,
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
@@ -79,24 +81,9 @@ namespace osu_request.Drawables
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
+                                CornerRadius = 5,
                                 BackgroundColour = OsuRequestColour.BlueDark,
                                 Texture = textureStore.Get("download")
-                            }
-                        },
-                        new Container
-                        {
-                            Anchor = Anchor.BottomRight,
-                            Origin = Anchor.BottomRight,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.5f),
-                            Padding = new MarginPadding(2),
-                            Child = _ban = new SpriteButton
-                            {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                RelativeSizeAxes = Axes.Both,
-                                BackgroundColour = OsuRequestColour.RedDark,
-                                Texture = textureStore.Get("ban")
                             }
                         },
                         new Container
@@ -106,13 +93,31 @@ namespace osu_request.Drawables
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
-                            Child = _check = new SpriteButton
+                            Child = _ban = new SpriteButton
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                BackgroundColour = OsuRequestColour.GreenDark,
-                                Texture = textureStore.Get("check")
+                                CornerRadius = 5,
+                                BackgroundColour = OsuRequestColour.RedDark,
+                                Texture = textureStore.Get("ban")
+                            }
+                        },
+                        new Container
+                        {
+                            Anchor = Anchor.BottomRight,
+                            Origin = Anchor.BottomRight,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(0.5f),
+                            Padding = new MarginPadding(2),
+                            Child = _banUser = new SpriteButton
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                CornerRadius = 5,
+                                BackgroundColour = OsuRequestColour.RedDark,
+                                Texture = textureStore.Get("ban-user")
                             }
                         }
                     }
@@ -121,8 +126,11 @@ namespace osu_request.Drawables
 
             _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{WorkingBeatmapset.Beatmapset.Id}");
             _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{WorkingBeatmapset.Beatmapset.Id}");
-            _check.OnButtonClicked += () => ShouldDispose.Value = true;
             _ban.OnButtonClicked += () => banManager.Ban(WorkingBeatmapset.Beatmapset.Id.ToString());
+            _banUser.OnButtonClicked += () =>
+            {
+                Logger.Log("Banning user");
+            };
         }
     }
 }
