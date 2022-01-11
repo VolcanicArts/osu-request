@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using osu.Framework.Logging;
 using osu.Framework.Platform;
 
 namespace osu_request.Clients
 {
     public class BeatmapsetBanManager
     {
+        private const string FileName = "BannedBeatmapsets.json";
         private readonly Storage Storage;
         private List<string> _bannedBeatmapsets = new();
-        private const string FileName = "BannedBeatmapsets.json";
 
         public Action<string> OnBeatmapsetBan;
         public Action<string> OnBeatmapsetUnBan;
@@ -36,7 +35,7 @@ namespace osu_request.Clients
             OnBeatmapsetUnBan?.Invoke(beatmapsetId);
             return _bannedBeatmapsets.Remove(beatmapsetId);
         }
-        
+
         public bool IsBanned(string beatmapsetId)
         {
             return _bannedBeatmapsets.Contains(beatmapsetId);

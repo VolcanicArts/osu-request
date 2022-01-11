@@ -24,7 +24,7 @@ namespace osu_request.Drawables
         {
             _osuRequestConfig = osuRequestConfig;
             _clientManager = clientManager;
-            
+
             TextFlowContainer _text;
 
             Children = new Drawable[]

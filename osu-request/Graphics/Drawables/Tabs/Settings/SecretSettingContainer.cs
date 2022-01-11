@@ -1,5 +1,4 @@
 ﻿using osu.Framework.Graphics;
-using osuTK;
 
 namespace osu_request.Drawables
 {

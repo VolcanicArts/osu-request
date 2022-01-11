@@ -10,7 +10,7 @@ namespace osu_request.Drawables
         private void Load()
         {
             Padding = new MarginPadding(20);
-            
+
             Child = new Container
             {
                 Anchor = Anchor.Centre,

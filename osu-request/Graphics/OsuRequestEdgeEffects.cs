@@ -9,10 +9,10 @@ namespace osu_request
     {
         public static readonly EdgeEffectParameters NoShadow = new()
         {
-            Colour = new Color4(0, 0, 0, 0),
+            Colour = OsuRequestColour.Invisible,
             Radius = 0,
             Type = EdgeEffectType.Shadow,
-            Offset = new Vector2(0)
+            Offset = Vector2.Zero
         };
 
         public static readonly EdgeEffectParameters BasicShadow = new()

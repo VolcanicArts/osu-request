@@ -11,8 +11,8 @@ namespace osu_request.Drawables.Bans
 {
     public class BeatmapsetBanEntry : Container
     {
-        public readonly string BeatmapsetId;
         private readonly Beatmapset Beatmapset;
+        public readonly string BeatmapsetId;
         private readonly Texture CoverTexture;
         private readonly Track PreviewMp3;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Batches;
-using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.OpenGL.Buffers;
 using osu.Framework.Graphics.OpenGL.Vertices;
 using osu.Framework.Graphics.Primitives;
@@ -23,12 +22,50 @@ namespace osu_request.Drawables
         private const float base_velocity = 50;
 
         /// <summary>
-        /// How many screen-space pixels are smoothed over.
-        /// Same behavior as Sprite's EdgeSmoothness.
+        ///     How many screen-space pixels are smoothed over.
+        ///     Same behavior as Sprite's EdgeSmoothness.
         /// </summary>
         private const float edge_smoothness = 1;
 
+        private readonly SortedList<TriangleParticle> parts = new(Comparer<TriangleParticle>.Default);
+        private readonly Texture texture;
+
+        private Color4 colourDark = Color4.Black;
+
         private Color4 colourLight = Color4.White;
+
+        /// <summary>
+        ///     Whether we should drop-off alpha values of triangles more quickly to improve
+        ///     the visual appearance of fading. This defaults to on as it is generally more
+        ///     aesthetically pleasing, but should be turned off in buffered containers.
+        /// </summary>
+        public bool HideAlphaDiscrepancies = true;
+
+        private IShader shader;
+
+        private Random stableRandom;
+
+        private float triangleScale = 1;
+
+        /// <summary>
+        ///     The relative velocity of the triangles. Default is 1.
+        /// </summary>
+        public float Velocity = 1;
+
+        /// <summary>
+        ///     Construct a new triangle visualisation.
+        /// </summary>
+        /// <param name="seed">
+        ///     An optional seed to stabilise random positions / attributes. Note that this does not guarantee
+        ///     stable playback when seeking in time.
+        /// </param>
+        public Triangles(int? seed = null)
+        {
+            if (seed != null)
+                stableRandom = new Random(seed.Value);
+
+            texture = Texture.WhitePixel;
+        }
 
         public Color4 ColourLight
         {
@@ -41,8 +78,6 @@ namespace osu_request.Drawables
                 updateColours();
             }
         }
-
-        private Color4 colourDark = Color4.Black;
 
         public Color4 ColourDark
         {
@@ -57,58 +92,14 @@ namespace osu_request.Drawables
         }
 
         /// <summary>
-        /// Whether we should create new triangles as others expire.
+        ///     Whether we should create new triangles as others expire.
         /// </summary>
         protected virtual bool CreateNewTriangles => true;
 
         /// <summary>
-        /// The amount of triangles we want compared to the default distribution.
+        ///     The amount of triangles we want compared to the default distribution.
         /// </summary>
         protected virtual float SpawnRatio => 1;
-
-        private float triangleScale = 1;
-
-        /// <summary>
-        /// Whether we should drop-off alpha values of triangles more quickly to improve
-        /// the visual appearance of fading. This defaults to on as it is generally more
-        /// aesthetically pleasing, but should be turned off in buffered containers.
-        /// </summary>
-        public bool HideAlphaDiscrepancies = true;
-
-        /// <summary>
-        /// The relative velocity of the triangles. Default is 1.
-        /// </summary>
-        public float Velocity = 1;
-
-        private readonly SortedList<TriangleParticle> parts = new SortedList<TriangleParticle>(Comparer<TriangleParticle>.Default);
-
-        private Random stableRandom;
-        private IShader shader;
-        private readonly Texture texture;
-
-        /// <summary>
-        /// Construct a new triangle visualisation.
-        /// </summary>
-        /// <param name="seed">An optional seed to stabilise random positions / attributes. Note that this does not guarantee stable playback when seeking in time.</param>
-        public Triangles(int? seed = null)
-        {
-            if (seed != null)
-                stableRandom = new Random(seed.Value);
-
-            texture = Texture.WhitePixel;
-        }
-
-        [BackgroundDependencyLoader]
-        private void load(ShaderManager shaders)
-        {
-            shader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE_ROUNDED);
-        }
-
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            addTriangles(true);
-        }
 
         public float TriangleScale
         {
@@ -125,6 +116,20 @@ namespace osu_request.Drawables
                     parts[i] = newParticle;
                 }
             }
+        }
+
+        protected int AimCount { get; private set; }
+
+        [BackgroundDependencyLoader]
+        private void load(ShaderManager shaders)
+        {
+            shader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE_ROUNDED);
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            addTriangles(true);
         }
 
         protected override void Update()
@@ -164,9 +169,12 @@ namespace osu_request.Drawables
         }
 
         /// <summary>
-        /// Clears and re-initialises triangles according to a given seed.
+        ///     Clears and re-initialises triangles according to a given seed.
         /// </summary>
-        /// <param name="seed">An optional seed to stabilise random positions / attributes. Note that this does not guarantee stable playback when seeking in time.</param>
+        /// <param name="seed">
+        ///     An optional seed to stabilise random positions / attributes. Note that this does not guarantee
+        ///     stable playback when seeking in time.
+        /// </param>
         public void Reset(int? seed = null)
         {
             if (seed != null)
@@ -176,16 +184,14 @@ namespace osu_request.Drawables
             addTriangles(true);
         }
 
-        protected int AimCount { get; private set; }
-
         private void addTriangles(bool randomY)
         {
             // limited by the maximum size of QuadVertexBuffer for safety.
             const int max_triangles = QuadVertexBuffer<TexturedVertex2D>.MAX_QUADS;
 
-            AimCount = (int)Math.Min(max_triangles, (DrawWidth * DrawHeight * 0.002f / (triangleScale * triangleScale) * SpawnRatio));
+            AimCount = (int)Math.Min(max_triangles, DrawWidth * DrawHeight * 0.002f / (triangleScale * triangleScale) * SpawnRatio);
 
-            for (int i = 0; i < AimCount - parts.Count; i++)
+            for (var i = 0; i < AimCount - parts.Count; i++)
                 parts.Add(createTriangle(randomY));
         }
 
@@ -201,7 +207,7 @@ namespace osu_request.Drawables
         }
 
         /// <summary>
-        /// Creates a triangle particle with a random scale.
+        ///     Creates a triangle particle with a random scale.
         /// </summary>
         /// <returns>The triangle particle.</returns>
         protected virtual TriangleParticle CreateTriangle()
@@ -218,10 +224,13 @@ namespace osu_request.Drawables
         }
 
         /// <summary>
-        /// Creates a shade of colour for the triangles.
+        ///     Creates a shade of colour for the triangles.
         /// </summary>
         /// <returns>The colour.</returns>
-        protected virtual Color4 CreateTriangleShade(float shade) => Interpolation.ValueAt(shade, colourDark, colourLight, 0, 1);
+        protected virtual Color4 CreateTriangleShade(float shade)
+        {
+            return Interpolation.ValueAt(shade, colourDark, colourLight, 0, 1);
+        }
 
         private void updateColours()
         {
@@ -233,26 +242,30 @@ namespace osu_request.Drawables
             }
         }
 
-        private float nextRandom() => (float)(stableRandom?.NextDouble() ?? RNG.NextSingle());
+        private float nextRandom()
+        {
+            return (float)(stableRandom?.NextDouble() ?? RNG.NextSingle());
+        }
 
-        protected override DrawNode CreateDrawNode() => new TrianglesDrawNode(this);
+        protected override DrawNode CreateDrawNode()
+        {
+            return new TrianglesDrawNode(this);
+        }
 
         private class TrianglesDrawNode : DrawNode
         {
-            private new Triangles Source => (Triangles)base.Source;
+            private readonly List<TriangleParticle> parts = new();
 
             private IShader shader;
-            private Texture texture;
-
-            private readonly List<TriangleParticle> parts = new List<TriangleParticle>();
             private Vector2 size;
+            private Texture texture;
 
             private QuadBatch<TexturedVertex2D> vertexBatch;
 
             public TrianglesDrawNode(Triangles source)
-                : base(source)
-            {
-            }
+                : base(source) { }
+
+            private new Triangles Source => (Triangles)base.Source;
 
             public override void ApplyState()
             {
@@ -278,9 +291,9 @@ namespace osu_request.Drawables
 
                 shader.Bind();
 
-                Vector2 localInflationAmount = edge_smoothness * DrawInfo.MatrixInverse.ExtractScale().Xy;
+                var localInflationAmount = edge_smoothness * DrawInfo.MatrixInverse.ExtractScale().Xy;
 
-                foreach (TriangleParticle particle in parts)
+                foreach (var particle in parts)
                 {
                     var offset = triangle_size * new Vector2(particle.Scale * 0.5f, particle.Scale * 0.866f);
 
@@ -316,33 +329,37 @@ namespace osu_request.Drawables
         protected struct TriangleParticle : IComparable<TriangleParticle>
         {
             /// <summary>
-            /// The position of the top vertex of the triangle.
+            ///     The position of the top vertex of the triangle.
             /// </summary>
             public Vector2 Position;
 
             /// <summary>
-            /// The colour shade of the triangle.
-            /// This is needed for colour recalculation of visible triangles when <see cref="ColourDark"/> or <see cref="ColourLight"/> is changed.
+            ///     The colour shade of the triangle.
+            ///     This is needed for colour recalculation of visible triangles when <see cref="ColourDark" /> or
+            ///     <see cref="ColourLight" /> is changed.
             /// </summary>
             public float ColourShade;
 
             /// <summary>
-            /// The colour of the triangle.
+            ///     The colour of the triangle.
             /// </summary>
             public Color4 Colour;
 
             /// <summary>
-            /// The scale of the triangle.
+            ///     The scale of the triangle.
             /// </summary>
             public float Scale;
 
             /// <summary>
-            /// Compares two <see cref="TriangleParticle"/>s. This is a reverse comparer because when the
-            /// triangles are added to the particles list, they should be drawn from largest to smallest
-            /// such that the smaller triangles appear on top.
+            ///     Compares two <see cref="TriangleParticle" />s. This is a reverse comparer because when the
+            ///     triangles are added to the particles list, they should be drawn from largest to smallest
+            ///     such that the smaller triangles appear on top.
             /// </summary>
             /// <param name="other"></param>
-            public int CompareTo(TriangleParticle other) => other.Scale.CompareTo(Scale);
+            public int CompareTo(TriangleParticle other)
+            {
+                return other.Scale.CompareTo(Scale);
+            }
         }
     }
 }

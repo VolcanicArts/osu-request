@@ -5,11 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
-using osu.Framework.Threading;
-using osu_request.Drawables;
 using volcanicarts.osu.NET.Client;
 using volcanicarts.osu.NET.Structures;
 
@@ -17,11 +14,11 @@ namespace osu_request.Osu
 {
     public class OsuClientLocal
     {
+        private const string FileName = "BeatmapsetCache.json";
+        private readonly Storage Storage;
+        private Dictionary<string, Beatmapset> BeatmapsetCache = new();
         private bool IsReady;
         private OsuClient OsuClient;
-        private readonly Storage Storage;
-        private const string FileName = "BeatmapsetCache.json";
-        private Dictionary<string, Beatmapset> BeatmapsetCache = new();
 
         public OsuClientLocal(Storage storage)
         {
@@ -49,7 +46,7 @@ namespace osu_request.Osu
         }
 
         /// <summary>
-        /// Middleman method to make requesting beatmapsets easier
+        ///     Middleman method to make requesting beatmapsets easier
         /// </summary>
         /// <param name="beatmapsetId">The beatmapset Id that will be used to get the beatmapset</param>
         /// <param name="callback">What to do with the resulting beatmapset</param>

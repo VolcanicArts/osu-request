@@ -4,15 +4,14 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
-using osuTK;
 using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
     public class BeatmapsetCard : Container
     {
-        public readonly string BeatmapsetId;
         private readonly Beatmapset Beatmapset;
+        public readonly string BeatmapsetId;
         private readonly Texture CoverTexture;
         private readonly Track PreviewMp3;
 
@@ -42,7 +41,7 @@ namespace osu_request.Drawables
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
+                    RelativeSizeAxes = Axes.Both
                 },
                 TopText = new TextFlowContainer
                 {

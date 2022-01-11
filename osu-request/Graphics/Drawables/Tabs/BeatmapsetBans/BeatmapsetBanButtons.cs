@@ -3,7 +3,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Platform;
 using osu_request.Clients;
 using volcanicarts.osu.NET.Structures;
 

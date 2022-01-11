@@ -1,9 +1,5 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Sprites;
-using osuTK;
-using osuTK.Graphics;
 
 namespace osu_request.Drawables.Bans
 {
@@ -13,7 +9,7 @@ namespace osu_request.Drawables.Bans
         private void Load()
         {
             Padding = new MarginPadding(20);
-            
+
             Child = new BeatmapsetBansList
             {
                 Anchor = Anchor.Centre,

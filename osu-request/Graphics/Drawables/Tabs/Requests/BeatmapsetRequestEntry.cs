@@ -4,7 +4,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Platform;
 using osuTK;
 using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Structures;
@@ -40,7 +39,7 @@ namespace osu_request.Drawables
             Alpha = 0;
             Masking = true;
             CornerRadius = 10;
-            
+
             Children = new Drawable[]
             {
                 new Box

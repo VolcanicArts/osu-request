@@ -18,8 +18,8 @@ namespace osu_request
         private bool FirstTimeLoad;
 
         public Action OnFailed;
-        public Action OnSuccess;
         public Action OnFirstTimeSuccess;
+        public Action OnSuccess;
 
         public ClientManager(Storage storage)
         {
