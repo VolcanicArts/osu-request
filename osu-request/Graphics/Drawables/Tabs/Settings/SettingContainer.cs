@@ -33,7 +33,7 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Colour = OsuRequestColour.Gray3
+                    Colour = OsuRequestColour.Gray2
                 },
                 new Container
                 {

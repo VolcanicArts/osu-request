@@ -23,12 +23,15 @@ namespace osu_request.Drawables.Users
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
             Children = new Drawable[]
             {
-                new Box
+                new TrianglesBackground
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Colour = OsuRequestColour.Gray3
+                    ColourLight = OsuRequestColour.Gray3,
+                    ColourDark = OsuRequestColour.Gray2,
+                    Velocity = 0.5f,
+                    TriangleScale = 5
                 },
                 new BasicScrollContainer
                 {
