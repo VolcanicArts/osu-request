@@ -15,6 +15,8 @@ namespace osu_request.Drawables
         private readonly Texture CoverTexture;
         private readonly Track PreviewMp3;
 
+        private double hoverTime = double.MaxValue;
+
         public BeatmapsetCard(Beatmapset beatmapset, Texture coverTexture, Track previewMp3)
         {
             BeatmapsetId = beatmapset.Id.ToString();
@@ -56,11 +58,19 @@ namespace osu_request.Drawables
             TopText.AddText($"Mapped by {Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
         }
 
+        protected override void Update()
+        {
+            base.Update();
+            if (!IsHovered || !(Time.Current - hoverTime > 250.0d)) return;
+            hoverTime = double.MaxValue;
+            PreviewMp3.Restart();
+        }
+
         protected override bool OnHover(HoverEvent e)
         {
-            PreviewMp3.Restart();
-            this.MoveToY(-1.5f, 100, Easing.OutCubic);
-            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 100, Easing.OutCubic);
+            hoverTime = Time.Current;
+            this.MoveToY(-1.5f, 250, Easing.OutCubic);
+            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 250, Easing.OutCubic);
             return true;
         }
 
