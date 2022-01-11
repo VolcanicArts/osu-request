@@ -1,9 +1,11 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu_request.Config;
+using osu_request.Drawables.Notifications;
 using osuTK;
 
 namespace osu_request.Drawables
@@ -13,17 +15,18 @@ namespace osu_request.Drawables
         private ClientManager _clientManager;
         private OsuRequestConfig _osuRequestConfig;
         private OsuRequestButton _saveButton;
-        private Container ErrorContainer;
+        private NotificationContainer NotificationContainer;
         private SettingContainer OsuClientIDContainer;
         private SettingContainer OsuClientSecretContainer;
         private SettingContainer TwitchClientChannelNameContainer;
         private SettingContainer TwitchClientOAuthTokenContainer;
 
         [BackgroundDependencyLoader]
-        private void Load(OsuRequestConfig osuRequestConfig, ClientManager clientManager)
+        private void Load(OsuRequestConfig osuRequestConfig, ClientManager clientManager, NotificationContainer notificationContainer)
         {
             _osuRequestConfig = osuRequestConfig;
             _clientManager = clientManager;
+            NotificationContainer = notificationContainer;
 
             TextFlowContainer _text;
 
@@ -89,7 +92,7 @@ namespace osu_request.Drawables
                         CornerRadius = 5
                     }
                 },
-                ErrorContainer = new Container
+                new Container
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -152,13 +155,14 @@ namespace osu_request.Drawables
             };
 
             _text.AddText("Incorrect Information!", t => t.Font = OsuRequestFonts.Regular.With(size: 20));
-
-            _clientManager.OnFailed += () => Scheduler.AddOnce(AnimateError);
             _saveButton.OnButtonClicked += SaveButtonClicked;
         }
 
         private void SaveButtonClicked()
         {
+            _clientManager.OnFailed += ClientManagerFail;
+            _clientManager.OnSuccess += ClientManagerSuccess;
+            
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = OsuClientIDContainer.TextBox.Text;
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = OsuClientSecretContainer.TextBox.Text;
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = TwitchClientChannelNameContainer.TextBox.Text;
@@ -167,13 +171,18 @@ namespace osu_request.Drawables
             _clientManager.TryConnectClients(_osuRequestConfig);
         }
 
-        private void AnimateError()
+        private void ClientManagerFail()
         {
-            ErrorContainer.MoveTo(Vector2.Zero, 250, Easing.OutCubic)
-                .Delay(2000)
-                .MoveTo(new Vector2(0.0f, 1.0f), 250, Easing.InCubic)
-                .Then()
-                .MoveTo(new Vector2(0.0f, -1.0f));
+            NotificationContainer.Notify("Invalid Settings", "Please enter valid settings to allow this app to work");
+            _clientManager.OnFailed -= ClientManagerFail;
+            _clientManager.OnSuccess -= ClientManagerSuccess;
+        }
+
+        private void ClientManagerSuccess()
+        {
+            NotificationContainer.Notify("Valid Settings", "Settings accepted. Requests incoming!");
+            _clientManager.OnFailed -= ClientManagerFail;
+            _clientManager.OnSuccess -= ClientManagerSuccess;
         }
     }
 }

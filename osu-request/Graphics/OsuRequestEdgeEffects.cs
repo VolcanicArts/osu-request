@@ -22,5 +22,13 @@ namespace osu_request
             Type = EdgeEffectType.Shadow,
             Offset = new Vector2(0.0f, 1.5f)
         };
+
+        public static EdgeEffectParameters DispersedShadow = new()
+        {
+            Colour = Color4.Black.Opacity(0.25f),
+            Radius = 20,
+            Type = EdgeEffectType.Shadow,
+            Offset = new Vector2(0.0f, 5.0f)
+        };
     }
 }

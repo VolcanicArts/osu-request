@@ -5,12 +5,21 @@ using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Config;
 using osu_request.Drawables;
+using osu_request.Drawables.Notifications;
 using osuTK;
 
 namespace osu_request
 {
     public class OsuRequest : OsuRequestBase
     {
+        [Cached]
+        private readonly NotificationContainer NotificationContainer = new()
+        {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            RelativeSizeAxes = Axes.Both
+        };
+
         private BeatmapsetBanManager BeatmapsetBanManager;
         private ClientManager ClientManager;
         private OsuRequestConfig OsuRequestConfig;
@@ -63,11 +72,15 @@ namespace osu_request
             Child = new DrawSizePreservingFillContainer
             {
                 TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height),
-                Child = TabsContainer = new TabsContainer
+                Children = new Drawable[]
                 {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both
+                    TabsContainer = new TabsContainer
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both
+                    },
+                    NotificationContainer
                 }
             };
         }
