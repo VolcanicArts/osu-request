@@ -1,6 +1,7 @@
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
@@ -15,29 +16,32 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetRequestsList : Container
     {
-        private AudioManager _audioManager;
-        private BeatmapsetBanManager _beatmapsetBanManager;
         private FillFlowContainer<BeatmapsetRequestEntry> _fillFlowContainer;
 
-        private OsuClientLocal _localOsuClient;
-        private TwitchClientLocal _localTwitchClient;
-        private TextureStore _textureStore;
+        [Resolved]
+        private AudioManager AudioManager { get; set; }
+
+        [Resolved]
+        private OsuClientLocal OsuClient { get; set; }
+
+        [Resolved]
+        private TextureStore TextureStore { get; set; }
+
+        [Resolved]
+        private BeatmapsetBanManager BanManager { get; set; }
 
         private void HandleTwitchMessage(ChatMessage message)
         {
-            if (message.Message.StartsWith("!rq"))
-            {
-                var beatmapsetId = message.Message.Split(" ")[1];
-                if (_beatmapsetBanManager.IsBanned(beatmapsetId)) return;
-                _localOsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId,
-                    beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset, message)));
-            }
+            if (!message.Message.StartsWith("!rq")) return;
+            var beatmapsetId = message.Message.Split(" ")[1];
+            if (BanManager.IsBanned(beatmapsetId)) return;
+            OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset, message)));
         }
 
         private void BeatmapsetLoaded(Beatmapset beatmapset, ChatMessage message)
         {
-            var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
-            var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
+            var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
+            var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
             var beatmapsetContainer = new BeatmapsetRequestEntry(beatmapset, previewMp3, backgroundTexture, message)
             {
                 Anchor = Anchor.Centre,
@@ -49,20 +53,16 @@ namespace osu_request.Drawables
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }
 
-        [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, AudioManager audioManager, TwitchClientLocal twitchClient,
-            OsuClientLocal osuClient, BeatmapsetBanManager beatmapsetBanManager)
+        private void OnBeatmapsetBan(string beatmapsetId)
         {
-            _textureStore = textureStore;
-            _audioManager = audioManager;
-            _localTwitchClient = twitchClient;
-            _localTwitchClient.OnChatMessage += HandleTwitchMessage;
-            _localOsuClient = osuClient;
-            _beatmapsetBanManager = beatmapsetBanManager;
-            _beatmapsetBanManager.OnBeatmapsetBan += beatmapsetId =>
-            {
-                foreach (var entry in _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId)) entry.DisposeGracefully();
-            };
+            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
+        }
+
+        [BackgroundDependencyLoader]
+        private void Load(TwitchClientLocal twitchClient)
+        {
+            twitchClient.OnChatMessage += HandleTwitchMessage;
+            BanManager.OnBeatmapsetBan += OnBeatmapsetBan;
 
             Children = new Drawable[]
             {
@@ -85,12 +85,6 @@ namespace osu_request.Drawables
                     }
                 }
             };
-        }
-
-        protected override void Dispose(bool isDisposing)
-        {
-            base.Dispose(isDisposing);
-            _localTwitchClient.OnChatMessage -= HandleTwitchMessage;
         }
     }
 }
