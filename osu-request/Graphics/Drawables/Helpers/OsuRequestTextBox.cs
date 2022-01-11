@@ -16,9 +16,6 @@ namespace osu_request.Drawables
     {
         public OsuRequestTextBox()
         {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
             BackgroundFocused = OsuRequestColour.Gray6;
             BackgroundUnfocused = OsuRequestColour.Gray4;
         }

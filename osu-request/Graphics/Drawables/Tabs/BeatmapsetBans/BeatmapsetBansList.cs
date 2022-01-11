@@ -127,6 +127,7 @@ namespace osu_request.Drawables.Bans
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
+                                            RelativeSizeAxes = Axes.Both,
                                             PlaceholderText = "Beatmapset ID",
                                             CornerRadius = 10
                                         }

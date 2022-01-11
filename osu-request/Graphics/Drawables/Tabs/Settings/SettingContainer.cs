@@ -72,6 +72,7 @@ namespace osu_request.Drawables
             {
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
+                RelativeSizeAxes = Axes.Both,
                 Text = text,
                 CornerRadius = 5
             };
