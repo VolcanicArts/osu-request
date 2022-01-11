@@ -19,7 +19,7 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, GameHost host, BeatmapsetBanManager banManager)
+        private void Load(TextureStore textureStore, BeatmapsetBanManager banManager)
         {
             Masking = true;
             CornerRadius = 10;

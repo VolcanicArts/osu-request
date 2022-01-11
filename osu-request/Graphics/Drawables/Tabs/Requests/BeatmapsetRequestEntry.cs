@@ -35,21 +35,12 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, GameHost host)
-        {
-            InitSelf();
-            InitChildren();
-        }
-
-        private void InitSelf()
+        private void Load()
         {
             Alpha = 0;
             Masking = true;
             CornerRadius = 10;
-        }
-
-        private void InitChildren()
-        {
+            
             Children = new Drawable[]
             {
                 new Box
