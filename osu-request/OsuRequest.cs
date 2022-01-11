@@ -56,8 +56,6 @@ namespace osu_request
                 TabsContainer.Select(Tabs.Settings);
                 NotificationContainer.Notify("Invalid Settings", "Please enter valid settings to allow this app to work");
             });
-            ClientManager.OnFailed -= OnClientManagerFail;
-            ClientManager.OnSuccess -= OnClientManagerSuccess;
         }
 
         [BackgroundDependencyLoader]
