@@ -15,10 +15,7 @@ namespace osu_request
         protected internal readonly OsuClientLocal OsuClient;
         protected internal readonly TwitchClientLocal TwitchClient = new();
 
-        private bool FirstTimeLoad;
-
         public Action OnFailed;
-        public Action OnFirstTimeSuccess;
         public Action OnSuccess;
 
         public ClientManager(Storage storage)
@@ -60,8 +57,6 @@ namespace osu_request
             var twitchChannelName = osuRequestConfig.Get<string>(OsuRequestSetting.TwitchChannelName);
             var twitchOAuthToken = osuRequestConfig.Get<string>(OsuRequestSetting.TwitchOAuthToken);
             ConnectionCredentials twitchCredentials = new(twitchChannelName, twitchOAuthToken);
-            TwitchClient.OnSuccess -= OnTwitchClientOnSuccess;
-            TwitchClient.OnFailed -= OnTwitchClientOnFailed;
             TwitchClient.OnSuccess += OnTwitchClientOnSuccess;
             TwitchClient.OnFailed += OnTwitchClientOnFailed;
             TwitchClient.Init(twitchCredentials);
@@ -70,18 +65,16 @@ namespace osu_request
         private void OnTwitchClientOnFailed()
         {
             Logger.Log("TwitchClient login failed");
+            TwitchClient.OnSuccess -= OnTwitchClientOnSuccess;
+            TwitchClient.OnFailed -= OnTwitchClientOnFailed;
             OnFailed?.Invoke();
         }
 
         private void OnTwitchClientOnSuccess()
         {
             Logger.Log("TwitchClient login successful");
-            if (!FirstTimeLoad)
-            {
-                FirstTimeLoad = true;
-                OnFirstTimeSuccess?.Invoke();
-            }
-
+            TwitchClient.OnSuccess -= OnTwitchClientOnSuccess;
+            TwitchClient.OnFailed -= OnTwitchClientOnFailed;
             OnSuccess?.Invoke();
         }
     }

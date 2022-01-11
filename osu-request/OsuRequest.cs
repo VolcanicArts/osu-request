@@ -36,10 +36,28 @@ namespace osu_request
         {
             base.LoadComplete();
             TabsContainer.Select(Tabs.Requests);
-            ClientManager.OnFailed += () => Scheduler.AddOnce(() => TabsContainer.Override(Tabs.Settings));
-            ClientManager.OnSuccess += () => Scheduler.AddOnce(() => TabsContainer.ReleaseAndSelect(Tabs.Requests));
-            ClientManager.OnFirstTimeSuccess += () => BeatmapsetBanManager.Load();
+            
+            ClientManager.OnFailed += OnClientManagerFail;
+            ClientManager.OnSuccess += OnClientManagerSuccess;
             ClientManager.TryConnectClients(OsuRequestConfig);
+        }
+
+        private void OnClientManagerSuccess()
+        {
+            BeatmapsetBanManager.Load();
+            ClientManager.OnFailed -= OnClientManagerFail;
+            ClientManager.OnSuccess -= OnClientManagerSuccess;
+        }
+
+        private void OnClientManagerFail()
+        {
+            Scheduler.AddOnce(() =>
+            {
+                TabsContainer.Select(Tabs.Settings);
+                NotificationContainer.Notify("Invalid Settings", "Please enter valid settings to allow this app to work");
+            });
+            ClientManager.OnFailed -= OnClientManagerFail;
+            ClientManager.OnSuccess -= OnClientManagerSuccess;
         }
 
         [BackgroundDependencyLoader]
