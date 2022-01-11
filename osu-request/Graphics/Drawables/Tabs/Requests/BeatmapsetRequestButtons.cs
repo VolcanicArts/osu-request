@@ -122,11 +122,7 @@ namespace osu_request.Drawables
             _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{Beatmapset.Id}");
             _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{Beatmapset.Id}");
             _check.OnButtonClicked += () => ShouldDispose.Value = true;
-            _ban.OnButtonClicked += () =>
-            {
-                banManager.Ban(Beatmapset.Id.ToString());
-                ShouldDispose.Value = true;
-            };
+            _ban.OnButtonClicked += () => banManager.Ban(Beatmapset.Id.ToString());
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
@@ -16,7 +17,7 @@ namespace osu_request.Drawables
     {
         private AudioManager _audioManager;
         private BeatmapsetBanManager _beatmapsetBanManager;
-        private FillFlowContainer _fillFlowContainer;
+        private FillFlowContainer<BeatmapsetRequestEntry> _fillFlowContainer;
 
         private OsuClientLocal _localOsuClient;
         private TwitchClientLocal _localTwitchClient;
@@ -58,6 +59,11 @@ namespace osu_request.Drawables
             _localTwitchClient.OnChatMessage += HandleTwitchMessage;
             _localOsuClient = osuClient;
             _beatmapsetBanManager = beatmapsetBanManager;
+            _beatmapsetBanManager.OnBeatmapsetBan += beatmapsetId =>
+            {
+                foreach (var entry in _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId)) entry.DisposeGracefully();
+            };
+
             Children = new Drawable[]
             {
                 new BasicScrollContainer
@@ -67,7 +73,7 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.Both,
                     ClampExtension = 20,
                     ScrollbarVisible = false,
-                    Child = _fillFlowContainer = new FillFlowContainer
+                    Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetRequestEntry>
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,

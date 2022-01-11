@@ -29,11 +29,8 @@ namespace osu_request.Drawables
             PreviewMp3 = previewMp3;
             CoverTexture = coverTexture;
             Message = message;
-            
-            ShouldDispose.BindValueChanged((_) =>
-            {
-                this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
-            });
+
+            ShouldDispose.BindValueChanged(_ => DisposeGracefully());
         }
 
         protected override void LoadComplete()
@@ -99,6 +96,11 @@ namespace osu_request.Drawables
                     }
                 }
             };
+        }
+
+        public void DisposeGracefully()
+        {
+            this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
         }
     }
 }
