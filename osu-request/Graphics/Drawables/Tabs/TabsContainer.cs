@@ -1,6 +1,5 @@
 ﻿using System;
 using osu.Framework.Allocation;
-using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu_request.Drawables.Bans;
@@ -11,13 +10,8 @@ namespace osu_request.Drawables
 {
     public class TabsContainer : Container
     {
-        [Cached]
-        private readonly BindableBool Locked = new();
-
         private GenericTab[] _tabs;
         private Toolbar _toolbar;
-
-        private Tabs CurrentTab;
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -74,35 +68,8 @@ namespace osu_request.Drawables
             _toolbar.NewSelectionEvent += id => Select((Tabs)id);
         }
 
-        public void Override(Tabs tab)
-        {
-            Locked.Value = false;
-            Select(tab, true);
-            Locked.Value = true;
-        }
-
-        public void Release()
-        {
-            Locked.Value = false;
-            Select(CurrentTab, false);
-        }
-
-        public void ReleaseAndSelect(Tabs tab)
-        {
-            Locked.Value = false;
-            Select(tab, false);
-        }
-
         public void Select(Tabs tab)
         {
-            Select(tab, false);
-        }
-
-        private void Select(Tabs tab, bool overriding)
-        {
-            if (Locked.Value) return;
-            if (!overriding) CurrentTab = tab;
-
             var id = Convert.ToInt32(tab);
             _toolbar.Select(id);
             AnimateTabs(id);

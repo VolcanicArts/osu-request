@@ -1,6 +1,5 @@
 ﻿using System;
 using osu.Framework.Allocation;
-using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -18,9 +17,6 @@ namespace osu_request.Drawables
         private bool _selected;
 
         public Action<int> OnSelected;
-
-        [Resolved]
-        private BindableBool Locked { get; init; }
 
         protected internal int ID { get; init; }
 
@@ -95,7 +91,6 @@ namespace osu_request.Drawables
 
         protected override bool OnClick(ClickEvent e)
         {
-            if (Locked.Value) return true;
             Select(true);
             return true;
         }

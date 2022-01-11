@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
-using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -14,9 +13,6 @@ namespace osu_request.Drawables
         private readonly List<ToolbarItem> _items = new();
         private FillFlowContainer _fillFlowContainer;
         public Action<int> NewSelectionEvent;
-
-        [Resolved]
-        private BindableBool Locked { get; init; }
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -56,7 +52,6 @@ namespace osu_request.Drawables
 
         public void Select(int id)
         {
-            if (Locked.Value) return;
             foreach (var item in _items) item.Deselect();
             _items[id].Select(false);
         }
