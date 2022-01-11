@@ -12,7 +12,7 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
-    public class BeatmapsetListContainer : Container
+    public class BeatmapsetRequestsList : Container
     {
         private AudioManager _audioManager;
         private BeatmapsetBanManager _beatmapsetBanManager;
@@ -37,7 +37,7 @@ namespace osu_request.Drawables
         {
             var previewMp3 = _audioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = _textureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetRequestContainer(beatmapset, previewMp3, backgroundTexture, message)
+            var beatmapsetContainer = new BeatmapsetRequestEntry(beatmapset, previewMp3, backgroundTexture, message)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -65,7 +65,7 @@ namespace osu_request.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    ClampExtension = 20.0f,
+                    ClampExtension = 20,
                     ScrollbarVisible = false,
                     Child = _fillFlowContainer = new FillFlowContainer
                     {
@@ -75,7 +75,7 @@ namespace osu_request.Drawables
                         AutoSizeAxes = Axes.Y,
                         Direction = FillDirection.Vertical,
                         Spacing = new Vector2(10),
-                        Padding = new MarginPadding(10.0f)
+                        Padding = new MarginPadding(10)
                     }
                 }
             };

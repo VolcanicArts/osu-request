@@ -21,12 +21,12 @@ namespace osu_request.Drawables.Users
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
-            Padding = new MarginPadding(20.0f);
+            Padding = new MarginPadding(20);
         }
 
         private void InitChildren()
         {
-            Child = new UserBansContainer
+            Child = new UsersList
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

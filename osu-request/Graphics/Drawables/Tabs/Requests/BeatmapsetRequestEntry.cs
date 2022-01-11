@@ -11,7 +11,7 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables
 {
-    public class BeatmapsetRequestContainer : Container
+    public class BeatmapsetRequestEntry : Container
     {
         private readonly Beatmapset Beatmapset;
         public readonly string BeatmapsetId;
@@ -19,7 +19,7 @@ namespace osu_request.Drawables
         private readonly ChatMessage Message;
         private readonly Track PreviewMp3;
 
-        public BeatmapsetRequestContainer(Beatmapset beatmapset, Track previewMp3, Texture coverTexture, ChatMessage message)
+        public BeatmapsetRequestEntry(Beatmapset beatmapset, Track previewMp3, Texture coverTexture, ChatMessage message)
         {
             BeatmapsetId = beatmapset.Id.ToString();
             Beatmapset = beatmapset;
@@ -79,7 +79,7 @@ namespace osu_request.Drawables
                         RelativeSizeAxes = Axes.Both
                     }
                 },
-                new BeatmapsetButtonsContainer(Beatmapset)
+                new Container
                 {
                     Anchor = Anchor.CentreRight,
                     Origin = Anchor.CentreRight,
@@ -91,6 +91,12 @@ namespace osu_request.Drawables
                         Right = 5,
                         Top = 5,
                         Bottom = 5
+                    },
+                    Child = new BeatmapsetRequestButtons(Beatmapset)
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both
                     }
                 }
             };

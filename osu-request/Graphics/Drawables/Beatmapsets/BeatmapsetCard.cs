@@ -38,13 +38,17 @@ namespace osu_request.Drawables
 
             Children = new Drawable[]
             {
-                new BeatmapsetCoverContainer(CoverTexture),
+                new BeatmapsetCover(CoverTexture)
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                },
                 TopText = new TextFlowContainer
                 {
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f),
                     Padding = new MarginPadding(5)
                 }
             };

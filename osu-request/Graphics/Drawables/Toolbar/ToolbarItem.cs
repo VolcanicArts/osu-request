@@ -15,7 +15,6 @@ namespace osu_request.Drawables
     public class ToolbarItem : Container
     {
         private Box _background;
-        private Container _content;
         private bool _selected;
 
         public Action<int> OnSelected;
@@ -45,7 +44,7 @@ namespace osu_request.Drawables
         {
             TextFlowContainer _text;
 
-            Child = _content = new Container
+            Child = new Container
             {
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,

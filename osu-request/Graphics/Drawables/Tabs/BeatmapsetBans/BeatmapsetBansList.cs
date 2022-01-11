@@ -14,11 +14,11 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables.Bans
 {
-    public class BeatmapsetBanContainer : Container
+    public class BeatmapsetBansList : Container
     {
         private AudioManager _audioManager;
         private OsuRequestButton _banButton;
-        private FillFlowContainer<BeatmapsetBan> _fillFlowContainer;
+        private FillFlowContainer<BeatmapsetBanEntry> _fillFlowContainer;
         private GameHost _host;
         private OsuClientLocal _localOsuClient;
         private OsuRequestTextBox _textBox;
@@ -32,7 +32,7 @@ namespace osu_request.Drawables.Bans
             if (previewMp3 == null || backgroundTexture == null) return;
             _textBox.Text = string.Empty;
 
-            var beatmapsetBan = new BeatmapsetBan(beatmapset, backgroundTexture, previewMp3)
+            var beatmapsetBan = new BeatmapsetBanEntry(beatmapset, backgroundTexture, previewMp3)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -76,10 +76,6 @@ namespace osu_request.Drawables.Bans
 
         private void InitSelf()
         {
-            Anchor = Anchor.CentreLeft;
-            Origin = Anchor.CentreLeft;
-            RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(1.0f);
             Masking = true;
             CornerRadius = 10;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
@@ -110,7 +106,6 @@ namespace osu_request.Drawables.Bans
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(1.0f),
                     Padding = new MarginPadding(10),
                     Children = new Drawable[]
                     {
@@ -187,7 +182,7 @@ namespace osu_request.Drawables.Bans
                             RelativeSizeAxes = Axes.Both,
                             Padding = new MarginPadding
                             {
-                                Top = 90.0f
+                                Top = 90
                             },
                             Child = new Container
                             {
@@ -217,9 +212,9 @@ namespace osu_request.Drawables.Bans
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
                                             RelativeSizeAxes = Axes.Both,
-                                            ClampExtension = 20.0f,
+                                            ClampExtension = 20,
                                             ScrollbarVisible = false,
-                                            Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetBan>
+                                            Child = _fillFlowContainer = new FillFlowContainer<BeatmapsetBanEntry>
                                             {
                                                 Anchor = Anchor.Centre,
                                                 Origin = Anchor.Centre,
@@ -227,7 +222,7 @@ namespace osu_request.Drawables.Bans
                                                 AutoSizeAxes = Axes.Y,
                                                 Direction = FillDirection.Full,
                                                 Spacing = new Vector2(10),
-                                                Padding = new MarginPadding(10.0f)
+                                                Padding = new MarginPadding(10)
                                             }
                                         }
                                     }

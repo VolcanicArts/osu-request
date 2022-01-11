@@ -9,14 +9,14 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables.Bans
 {
-    public class BeatmapsetBan : Container
+    public class BeatmapsetBanEntry : Container
     {
         public readonly string BeatmapsetId;
         private readonly Beatmapset Beatmapset;
         private readonly Texture CoverTexture;
         private readonly Track PreviewMp3;
 
-        public BeatmapsetBan(Beatmapset beatmapset, Texture coverTexture, Track previewMp3)
+        public BeatmapsetBanEntry(Beatmapset beatmapset, Texture coverTexture, Track previewMp3)
         {
             BeatmapsetId = beatmapset.Id.ToString();
             Beatmapset = beatmapset;
@@ -69,7 +69,7 @@ namespace osu_request.Drawables.Bans
                         RelativeSizeAxes = Axes.Both
                     }
                 },
-                new BeatmapsetBanButtonsContainer(Beatmapset)
+                new Container
                 {
                     Anchor = Anchor.CentreRight,
                     Origin = Anchor.CentreRight,
@@ -81,6 +81,12 @@ namespace osu_request.Drawables.Bans
                         Right = 5,
                         Top = 5,
                         Bottom = 5
+                    },
+                    Child = new BeatmapsetBanButtons(Beatmapset)
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both
                     }
                 }
             };

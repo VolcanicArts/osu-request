@@ -23,7 +23,6 @@ namespace osu_request.Drawables
         {
             Masking = true;
             CornerRadius = 5;
-            BorderColour = Color4.Black;
             EdgeEffect = OsuRequestEdgeEffects.NoShadow;
 
             Children = new Drawable[]

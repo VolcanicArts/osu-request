@@ -10,11 +10,11 @@ using osuTK.Graphics;
 
 namespace osu_request.Drawables
 {
-    public class BeatmapsetCoverContainer : Container
+    public class BeatmapsetCover : Container
     {
         private readonly Texture Texture;
 
-        public BeatmapsetCoverContainer(Texture texture)
+        public BeatmapsetCover(Texture texture)
         {
             Texture = texture;
         }
@@ -22,9 +22,6 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
             Masking = true;
             CornerRadius = 10;
 

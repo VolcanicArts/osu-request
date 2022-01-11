@@ -21,13 +21,17 @@ namespace osu_request.Drawables.Bans
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Both;
-            Size = new Vector2(1.0f);
-            Padding = new MarginPadding(20.0f);
+            Padding = new MarginPadding(20);
         }
 
         private void InitChildren()
         {
-            Child = new BeatmapsetBanContainer();
+            Child = new BeatmapsetBansList
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both
+            };
         }
     }
 }

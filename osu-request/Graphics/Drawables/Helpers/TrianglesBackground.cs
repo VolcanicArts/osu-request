@@ -10,8 +10,8 @@ namespace osu_request.Drawables
     {
         protected internal Color4 ColourLight { get; init; } = OsuRequestColour.Blue;
         protected internal Color4 ColourDark { get; init; } = OsuRequestColour.BlueDark;
-        protected internal float Velocity { get; init; } = 1.0f;
-        protected internal float TriangleScale { get; init; } = 1.0f;
+        protected internal float Velocity { get; init; } = 1;
+        protected internal float TriangleScale { get; init; } = 1;
 
         [BackgroundDependencyLoader]
         private void Load()

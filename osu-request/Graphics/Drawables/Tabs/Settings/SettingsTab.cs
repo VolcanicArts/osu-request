@@ -57,7 +57,7 @@ namespace osu_request.Drawables
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         Direction = FillDirection.Vertical,
-                        Spacing = new Vector2(0, 10),
+                        Spacing = new Vector2(0.0f, 10.0f),
                         Children = new Drawable[]
                         {
                             OsuClientIDContainer = new SettingContainer
@@ -181,7 +181,7 @@ namespace osu_request.Drawables
 
         private void AnimateError()
         {
-            ErrorContainer.MoveTo(new Vector2(0.0f), 250, Easing.OutCubic)
+            ErrorContainer.MoveTo(Vector2.Zero, 250, Easing.OutCubic)
                 .Delay(2000)
                 .MoveTo(new Vector2(0.0f, 1.0f), 250, Easing.InCubic)
                 .Then()

@@ -68,7 +68,7 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.Both,
                     ColourLight = OsuRequestColour.Gray7,
                     ColourDark = OsuRequestColour.Gray4,
-                    TriangleScale = 4.0f
+                    TriangleScale = 4
                 },
                 _toolbar = new Toolbar
                 {
@@ -84,7 +84,7 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.Both,
                     Padding = new MarginPadding
                     {
-                        Top = 60.0f
+                        Top = 60
                     },
                     Children = _tabs
                 }

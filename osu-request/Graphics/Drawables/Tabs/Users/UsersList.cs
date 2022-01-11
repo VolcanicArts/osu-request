@@ -9,7 +9,7 @@ using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables.Users
 {
-    public class UserBansContainer : Container
+    public class UsersList : Container
     {
         private FillFlowContainer<UserCard> _fillFlowContainer;
 
@@ -35,7 +35,7 @@ namespace osu_request.Drawables.Users
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    ClampExtension = 20.0f,
+                    ClampExtension = 20,
                     ScrollbarVisible = false,
                     Child = _fillFlowContainer = new FillFlowContainer<UserCard>
                     {
@@ -45,7 +45,7 @@ namespace osu_request.Drawables.Users
                         AutoSizeAxes = Axes.Y,
                         Direction = FillDirection.Vertical,
                         Spacing = new Vector2(2),
-                        Padding = new MarginPadding(10.0f)
+                        Padding = new MarginPadding(10)
                     }
                 }
             };
