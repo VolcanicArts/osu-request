@@ -76,24 +76,23 @@ namespace osu_request.Drawables
                 },
                 new Container
                 {
-                    Anchor = Anchor.BottomRight,
-                    Origin = Anchor.BottomRight,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.2f, 0.1f),
-                    Margin = new MarginPadding(20),
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
+                    RelativeSizeAxes = Axes.X,
+                    Size = new Vector2(1.0f, 150.0f),
                     Child = _saveButton = new OsuRequestButton
                     {
-                        Anchor = Anchor.BottomRight,
-                        Origin = Anchor.BottomRight,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Size = new Vector2(0.9f),
+                        Size = new Vector2(0.2f, 0.4f),
                         Text = "Save Settings",
                         FontSize = 30,
                         CornerRadius = 5
                     }
                 }
             };
-            
+
             _saveButton.OnButtonClicked += SaveButtonClicked;
         }
 
@@ -101,7 +100,7 @@ namespace osu_request.Drawables
         {
             _clientManager.OnFailed += ClientManagerFail;
             _clientManager.OnSuccess += ClientManagerSuccess;
-            
+
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = OsuClientIDContainer.TextBox.Text;
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = OsuClientSecretContainer.TextBox.Text;
             _osuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = TwitchClientChannelNameContainer.TextBox.Text;
