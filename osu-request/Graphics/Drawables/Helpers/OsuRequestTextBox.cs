@@ -1,10 +1,5 @@
-﻿using System;
-using System.Linq;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
-using osu.Framework.Extensions.IEnumerableExtensions;
-using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Platform;
@@ -23,7 +18,7 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load(GameHost host)
         {
-            host.Window.Resized += () => Scheduler.AddOnce(RecalculateSize);
+            host.Window.Resized += () => Scheduler.AddOnce(KillFocus);
         }
 
         protected override SpriteText CreatePlaceholder()
@@ -31,18 +26,6 @@ namespace osu_request.Drawables
             var fadingPlaceholderText = base.CreatePlaceholder();
             fadingPlaceholderText.Colour = Color4.White.Opacity(0.5f);
             return fadingPlaceholderText;
-        }
-
-        private void RecalculateSize()
-        {
-            var localSize = MathF.Max(CalculatedTextSize, 0);
-            TextFlow?.Children.Cast<Container>().ForEach(container =>
-            {
-                var character = (SpriteText)container.Child;
-                character.Font = character.Font.With(size: localSize);
-            });
-            Placeholder.Font = Placeholder.Font.With(size: localSize);
-            KillFocus();
         }
     }
 }
