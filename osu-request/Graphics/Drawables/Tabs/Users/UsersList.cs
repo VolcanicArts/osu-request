@@ -54,7 +54,7 @@ namespace osu_request.Drawables.Users
         private void HandleTwitchMessage(ChatMessage message)
         {
             if (message.Message.StartsWith("!rq") && _fillFlowContainer.Children.All(card => card.Username != message.Username))
-                Scheduler.Add(() => _fillFlowContainer.Add(new UserCard(message.Username)
+                Scheduler.Add(() => _fillFlowContainer.Add(new UserCard(message)
                     {
                         Anchor = Anchor.TopLeft,
                         Origin = Anchor.TopLeft,

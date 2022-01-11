@@ -29,7 +29,7 @@ namespace osu_request.Drawables
                 RelativeSizeAxes = Axes.Both,
                 Padding = new MarginPadding(5)
             };
-            RequestText.AddText($"Requested by {Message.Username}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+            RequestText.AddText($"Requested by {Message.DisplayName}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
             AddInternal(RequestText);
         }
     }

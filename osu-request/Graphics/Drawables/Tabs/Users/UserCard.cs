@@ -4,16 +4,19 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osuTK;
+using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables.Users
 {
     public class UserCard : Container
     {
         public readonly string Username;
+        private readonly string DisplayName;
 
-        public UserCard(string username)
+        public UserCard(ChatMessage message)
         {
-            Username = username;
+            Username = message.Username;
+            DisplayName = message.DisplayName;
         }
 
         protected override void LoadComplete()
@@ -72,7 +75,7 @@ namespace osu_request.Drawables.Users
                 }
             };
 
-            _text.AddText(Username, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
+            _text.AddText(DisplayName, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
         }
     }
 }
