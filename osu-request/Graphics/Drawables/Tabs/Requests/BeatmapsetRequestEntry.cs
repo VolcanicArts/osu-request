@@ -1,5 +1,6 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio.Track;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -18,6 +19,9 @@ namespace osu_request.Drawables
         private readonly ChatMessage Message;
         private readonly Track PreviewMp3;
 
+        [Cached]
+        private BindableBool ShouldDispose = new();
+
         public BeatmapsetRequestEntry(Beatmapset beatmapset, Track previewMp3, Texture coverTexture, ChatMessage message)
         {
             BeatmapsetId = beatmapset.Id.ToString();
@@ -25,6 +29,11 @@ namespace osu_request.Drawables
             PreviewMp3 = previewMp3;
             CoverTexture = coverTexture;
             Message = message;
+            
+            ShouldDispose.BindValueChanged((_) =>
+            {
+                this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
+            });
         }
 
         protected override void LoadComplete()
@@ -90,11 +99,6 @@ namespace osu_request.Drawables
                     }
                 }
             };
-        }
-
-        protected internal void DisposeGracefully()
-        {
-            this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
         }
     }
 }

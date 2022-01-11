@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -13,6 +14,9 @@ namespace osu_request.Drawables
     public class BeatmapsetRequestButtons : Container
     {
         private readonly Beatmapset Beatmapset;
+
+        [Resolved]
+        private BindableBool ShouldDispose { get; set; }
 
         public BeatmapsetRequestButtons(Beatmapset beatmapset)
         {
@@ -117,17 +121,12 @@ namespace osu_request.Drawables
 
             _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{Beatmapset.Id}");
             _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{Beatmapset.Id}");
-            _check.OnButtonClicked += DisposeGracefully;
+            _check.OnButtonClicked += () => ShouldDispose.Value = true;
             _ban.OnButtonClicked += () =>
             {
                 banManager.Ban(Beatmapset.Id.ToString());
-                DisposeGracefully();
+                ShouldDispose.Value = true;
             };
-        }
-
-        private void DisposeGracefully()
-        {
-            ((BeatmapsetRequestEntry)Parent.Parent).DisposeGracefully();
         }
     }
 }
