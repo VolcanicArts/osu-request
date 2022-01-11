@@ -44,6 +44,7 @@ namespace osu_request
 
         private void OnClientManagerSuccess()
         {
+            ClientManager.OsuClient.LoadCache();
             BeatmapsetBanManager.Load();
             ClientManager.OnFailed -= OnClientManagerFail;
             ClientManager.OnSuccess -= OnClientManagerSuccess;
@@ -70,7 +71,6 @@ namespace osu_request
         {
             OsuRequestConfig = new OsuRequestConfig(storage);
             ClientManager = new ClientManager(storage);
-            ClientManager.OsuClient.LoadCache();
             BeatmapsetBanManager = new BeatmapsetBanManager(storage);
         }
 
