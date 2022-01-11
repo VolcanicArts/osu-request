@@ -4,25 +4,13 @@ using osu.Framework.Graphics.Containers;
 
 namespace osu_request.Drawables
 {
-    public class RequestsTab : Container
+    public class RequestsTab : GenericTab
     {
         [BackgroundDependencyLoader]
         private void Load()
         {
-            InitSelf();
-            InitChildren();
-        }
-
-        private void InitSelf()
-        {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
             Padding = new MarginPadding(20);
-        }
-
-        private void InitChildren()
-        {
+            
             Child = new Container
             {
                 Anchor = Anchor.Centre,

@@ -7,25 +7,13 @@ using osuTK.Graphics;
 
 namespace osu_request.Drawables.Bans
 {
-    public class BansTab : Container
+    public class BansTab : GenericTab
     {
         [BackgroundDependencyLoader]
         private void Load()
         {
-            InitSelf();
-            InitChildren();
-        }
-
-        private void InitSelf()
-        {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
             Padding = new MarginPadding(20);
-        }
-
-        private void InitChildren()
-        {
+            
             Child = new BeatmapsetBansList
             {
                 Anchor = Anchor.Centre,

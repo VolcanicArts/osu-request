@@ -8,7 +8,7 @@ using osuTK;
 
 namespace osu_request.Drawables
 {
-    public class SettingsTab : Container
+    public class SettingsTab : GenericTab
     {
         private ClientManager _clientManager;
         private OsuRequestConfig _osuRequestConfig;
@@ -24,19 +24,7 @@ namespace osu_request.Drawables
         {
             _osuRequestConfig = osuRequestConfig;
             _clientManager = clientManager;
-            InitSelf();
-            InitChildren();
-        }
-
-        private void InitSelf()
-        {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
-        }
-
-        private void InitChildren()
-        {
+            
             TextFlowContainer _text;
 
             Children = new Drawable[]

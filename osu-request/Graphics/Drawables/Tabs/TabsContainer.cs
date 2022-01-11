@@ -14,7 +14,7 @@ namespace osu_request.Drawables
         [Cached]
         private readonly BindableBool Locked = new();
 
-        private Drawable[] _tabs;
+        private GenericTab[] _tabs;
         private Toolbar _toolbar;
 
         private Tabs CurrentTab;
@@ -22,43 +22,6 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            InitSelf();
-            InitChildren();
-        }
-
-        private void InitSelf()
-        {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Both;
-        }
-
-        private void InitChildren()
-        {
-            _tabs = new Drawable[]
-            {
-                new RequestsTab
-                {
-                    RelativePositionAxes = Axes.Both,
-                    Position = new Vector2(0.0f, 0.0f)
-                },
-                new BansTab
-                {
-                    RelativePositionAxes = Axes.Both,
-                    Position = new Vector2(1.0f, 0.0f)
-                },
-                new UsersTab
-                {
-                    RelativePositionAxes = Axes.Both,
-                    Position = new Vector2(2.0f, 0.0f)
-                },
-                new SettingsTab
-                {
-                    RelativePositionAxes = Axes.Both,
-                    Position = new Vector2(3.0f, 0.0f)
-                }
-            };
-
             Children = new Drawable[]
             {
                 new TrianglesBackground
@@ -86,7 +49,25 @@ namespace osu_request.Drawables
                     {
                         Top = 60
                     },
-                    Children = _tabs
+                    Children = _tabs = new GenericTab[]
+                    {
+                        new RequestsTab
+                        {
+                            Position = new Vector2(0.0f, 0.0f)
+                        },
+                        new BansTab
+                        {
+                            Position = new Vector2(1.0f, 0.0f)
+                        },
+                        new UsersTab
+                        {
+                            Position = new Vector2(2.0f, 0.0f)
+                        },
+                        new SettingsTab
+                        {
+                            Position = new Vector2(3.0f, 0.0f)
+                        }
+                    }
                 }
             };
 

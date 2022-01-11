@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Platform;
 using osu_request.Clients;
@@ -62,7 +63,12 @@ namespace osu_request
             Child = new DrawSizePreservingFillContainer
             {
                 TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height),
-                Child = TabsContainer = new TabsContainer()
+                Child = TabsContainer = new TabsContainer
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both
+                }
             };
         }
 
