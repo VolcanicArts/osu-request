@@ -4,28 +4,30 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu_request.Clients;
 using osu_request.Structures;
 using osuTK;
+using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables
 {
     public class BeatmapsetRequestButtons : Container
     {
+        private readonly ChatMessage Message;
         private readonly WorkingBeatmapset WorkingBeatmapset;
+
+        public BeatmapsetRequestButtons(WorkingBeatmapset workingBeatmapset, ChatMessage message)
+        {
+            WorkingBeatmapset = workingBeatmapset;
+            Message = message;
+        }
 
         [Resolved]
         private BindableBool ShouldDispose { get; set; }
 
-        public BeatmapsetRequestButtons(WorkingBeatmapset workingBeatmapset)
-        {
-            WorkingBeatmapset = workingBeatmapset;
-        }
-
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, GameHost host, BeatmapsetBanManager banManager)
+        private void Load(TextureStore textureStore, GameHost host, BeatmapsetBanManager beatmapsetBanManager, UserBanManager userBanManager)
         {
             Masking = true;
             CornerRadius = 10;
@@ -126,11 +128,8 @@ namespace osu_request.Drawables
 
             _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{WorkingBeatmapset.Beatmapset.Id}");
             _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{WorkingBeatmapset.Beatmapset.Id}");
-            _ban.OnButtonClicked += () => banManager.Ban(WorkingBeatmapset.Beatmapset.Id.ToString());
-            _banUser.OnButtonClicked += () =>
-            {
-                Logger.Log("Banning user");
-            };
+            _ban.OnButtonClicked += () => beatmapsetBanManager.Ban(WorkingBeatmapset.Beatmapset.Id.ToString());
+            _banUser.OnButtonClicked += () => userBanManager.Ban(Message.Username);
         }
     }
 }

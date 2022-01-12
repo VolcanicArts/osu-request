@@ -49,11 +49,11 @@ namespace osu_request.Drawables
                         {
                             Position = new Vector2(0.0f, 0.0f)
                         },
-                        new BansTab
+                        new BeatmapsetBansTab
                         {
                             Position = new Vector2(1.0f, 0.0f)
                         },
-                        new UsersTab
+                        new UserBansTab
                         {
                             Position = new Vector2(2.0f, 0.0f)
                         },

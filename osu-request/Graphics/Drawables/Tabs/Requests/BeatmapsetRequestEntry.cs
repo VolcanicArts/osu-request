@@ -14,6 +14,7 @@ namespace osu_request.Drawables
     {
         public readonly string BeatmapsetId;
         private readonly ChatMessage Message;
+        public readonly string Username;
         private readonly WorkingBeatmapset WorkingBeatmapset;
 
         [Cached]
@@ -22,6 +23,7 @@ namespace osu_request.Drawables
         public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, ChatMessage message)
         {
             BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
+            Username = message.Username;
             WorkingBeatmapset = workingBeatmapset;
             Message = message;
 
@@ -42,7 +44,7 @@ namespace osu_request.Drawables
             CornerRadius = 10;
 
             SpriteButton remove;
-            
+
             Children = new Drawable[]
             {
                 new Box
@@ -116,7 +118,7 @@ namespace osu_request.Drawables
                                 Top = 5,
                                 Bottom = 5
                             },
-                            Child = new BeatmapsetRequestButtons(WorkingBeatmapset)
+                            Child = new BeatmapsetRequestButtons(WorkingBeatmapset, Message)
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
@@ -126,7 +128,7 @@ namespace osu_request.Drawables
                     }
                 }
             };
-            
+
             remove.OnButtonClicked += DisposeGracefully;
         }
 

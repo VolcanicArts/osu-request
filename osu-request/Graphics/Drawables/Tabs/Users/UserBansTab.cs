@@ -3,9 +3,9 @@ using osu.Framework.Graphics;
 using osu_request.Graphics.Drawables.Tabs.BeatmapsetBans;
 using osuTK;
 
-namespace osu_request.Drawables.Bans
+namespace osu_request.Drawables.Users
 {
-    public class BeatmapsetBansTab : GenericTab
+    public class UserBansTab : GenericTab
     {
         [BackgroundDependencyLoader]
         private void Load()
@@ -14,14 +14,14 @@ namespace osu_request.Drawables.Bans
 
             Children = new Drawable[]
             {
-                new BeatmapsetBansTextBox
+                new UserBansTextBox
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     RelativeSizeAxes = Axes.X,
                     Size = new Vector2(1.0f, 80.0f)
                 },
-                new BeatmapsetBansList
+                new UserBansList
                 {
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,

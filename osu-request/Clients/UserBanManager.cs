@@ -21,24 +21,23 @@ namespace osu_request.Clients
             Storage = storage;
         }
 
-        public bool Ban(string beatmapsetId)
+        public bool Ban(string username)
         {
-            if (!int.TryParse(beatmapsetId, out _)) return false;
-            if (IsBanned(beatmapsetId)) return true;
-            OnUserBan?.Invoke(beatmapsetId);
-            _bannedUsers.Add(beatmapsetId);
+            if (IsBanned(username)) return true;
+            OnUserBan?.Invoke(username);
+            _bannedUsers.Add(username);
             return true;
         }
 
-        public bool UnBan(string beatmapsetId)
+        public bool UnBan(string username)
         {
-            OnUserUnBan?.Invoke(beatmapsetId);
-            return _bannedUsers.Remove(beatmapsetId);
+            OnUserUnBan?.Invoke(username);
+            return _bannedUsers.Remove(username);
         }
 
-        public bool IsBanned(string beatmapsetId)
+        public bool IsBanned(string username)
         {
-            return _bannedUsers.Contains(beatmapsetId);
+            return _bannedUsers.Contains(username);
         }
 
         public void Load()
@@ -46,7 +45,7 @@ namespace osu_request.Clients
             if (!Storage.Exists(FileName)) return;
             var file = LoadFileToString();
             _bannedUsers = JsonConvert.DeserializeObject<List<string>>(file);
-            _bannedUsers!.ForEach(beatmapsetId => OnUserBan?.Invoke(beatmapsetId));
+            _bannedUsers!.ForEach(username => OnUserBan?.Invoke(username));
         }
 
         private string LoadFileToString()

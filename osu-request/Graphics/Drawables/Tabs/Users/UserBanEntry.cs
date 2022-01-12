@@ -3,20 +3,18 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
+using osu_request.Clients;
 using osuTK;
-using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables.Users
 {
-    public class UserCard : Container
+    public class UserBanEntry : Container
     {
         public readonly string Username;
-        private readonly string DisplayName;
 
-        public UserCard(ChatMessage message)
+        public UserBanEntry(string username)
         {
-            Username = message.Username;
-            DisplayName = message.DisplayName;
+            Username = username;
         }
 
         protected override void LoadComplete()
@@ -26,14 +24,14 @@ namespace osu_request.Drawables.Users
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore)
+        private void Load(TextureStore textureStore, UserBanManager banManager)
         {
             Alpha = 0;
             Masking = true;
             CornerRadius = 5;
 
             TextFlowContainer _text;
-            SpriteButton _ban;
+            SpriteButton _unban;
 
             Children = new Drawable[]
             {
@@ -62,7 +60,7 @@ namespace osu_request.Drawables.Users
                     RelativeSizeAxes = Axes.Both,
                     Size = new Vector2(0.1f, 1.0f),
                     Padding = new MarginPadding(5),
-                    Child = _ban = new SpriteButton
+                    Child = _unban = new SpriteButton
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
@@ -70,13 +68,19 @@ namespace osu_request.Drawables.Users
                         Size = new Vector2(2.0f),
                         Scale = new Vector2(0.5f),
                         CornerRadius = 5,
-                        BackgroundColour = OsuRequestColour.RedDark,
-                        Texture = textureStore.Get("ban")
+                        BackgroundColour = OsuRequestColour.BlueDark,
+                        Texture = textureStore.Get("undo")
                     }
                 }
             };
 
-            _text.AddText(DisplayName, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
+            _unban.OnButtonClicked += () => banManager.UnBan(Username);
+            _text.AddText(Username, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
+        }
+
+        protected internal void DisposeGracefully()
+        {
+            this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
         }
     }
 }

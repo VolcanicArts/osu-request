@@ -25,6 +25,7 @@ namespace osu_request
         private OsuRequestConfig OsuRequestConfig;
 
         private TabsContainer TabsContainer;
+        private UserBanManager UserBanManager;
 
         protected override void UpdateAfterChildren()
         {
@@ -36,7 +37,7 @@ namespace osu_request
         {
             base.LoadComplete();
             TabsContainer.Select(Tabs.Requests);
-            
+
             ClientManager.OnFailed += OnClientManagerFail;
             ClientManager.OnSuccess += OnClientManagerSuccess;
             ClientManager.TryConnectClients(OsuRequestConfig);
@@ -46,6 +47,7 @@ namespace osu_request
         {
             ClientManager.OsuClient.LoadCache();
             BeatmapsetBanManager.Load();
+            UserBanManager.Load();
             ClientManager.OnFailed -= OnClientManagerFail;
             ClientManager.OnSuccess -= OnClientManagerSuccess;
         }
@@ -72,6 +74,7 @@ namespace osu_request
             OsuRequestConfig = new OsuRequestConfig(storage);
             ClientManager = new ClientManager(storage);
             BeatmapsetBanManager = new BeatmapsetBanManager(storage);
+            UserBanManager = new UserBanManager(storage);
         }
 
         private void CacheDependencies()
@@ -81,6 +84,7 @@ namespace osu_request
             Dependencies.CacheAs(ClientManager.OsuClient);
             Dependencies.CacheAs(ClientManager.TwitchClient);
             Dependencies.CacheAs(BeatmapsetBanManager);
+            Dependencies.CacheAs(UserBanManager);
         }
 
         private void InitialiseChildren()
@@ -104,6 +108,7 @@ namespace osu_request
         protected override void Dispose(bool isDisposing)
         {
             BeatmapsetBanManager.Save();
+            UserBanManager.Save();
             ClientManager.OsuClient.SaveCache();
             base.Dispose(isDisposing);
         }

@@ -29,13 +29,17 @@ namespace osu_request.Drawables
         private TextureStore TextureStore { get; set; }
 
         [Resolved]
-        private BeatmapsetBanManager BanManager { get; set; }
+        private BeatmapsetBanManager BeatmapsetBanManager { get; set; }
+
+        [Resolved]
+        private UserBanManager UserBanManager { get; set; }
 
         private void HandleTwitchMessage(ChatMessage message)
         {
             if (!message.Message.StartsWith("!rq")) return;
             var beatmapsetId = message.Message.Split(" ")[1];
-            if (BanManager.IsBanned(beatmapsetId)) return;
+            if (BeatmapsetBanManager.IsBanned(beatmapsetId)) return;
+            if (UserBanManager.IsBanned(message.Username)) return;
             OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset, message)));
         }
 
@@ -59,11 +63,17 @@ namespace osu_request.Drawables
             _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
         }
 
+        private void OnUserBan(string username)
+        {
+            _fillFlowContainer.Where(entry => entry.Username == username).ForEach(entry => entry.DisposeGracefully());
+        }
+
         [BackgroundDependencyLoader]
         private void Load(TwitchClientLocal twitchClient)
         {
             twitchClient.OnChatMessage += HandleTwitchMessage;
-            BanManager.OnBeatmapsetBan += OnBeatmapsetBan;
+            BeatmapsetBanManager.OnBeatmapsetBan += OnBeatmapsetBan;
+            UserBanManager.OnUserBan += OnUserBan;
 
             Children = new Drawable[]
             {
