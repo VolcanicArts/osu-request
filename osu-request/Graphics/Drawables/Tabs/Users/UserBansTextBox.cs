@@ -1,8 +1,8 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osu_request.Clients;
 using osu_request.Drawables;
 using osuTK;
 
@@ -14,7 +14,7 @@ namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
         private OsuRequestTextBox TextBox;
 
         [BackgroundDependencyLoader]
-        private void Load(UserBanManager banManager)
+        private void Load()
         {
             Masking = true;
             CornerRadius = 10;
@@ -79,8 +79,7 @@ namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
 
             BanButton.OnButtonClicked += () =>
             {
-                var success = banManager.Ban(TextBox.Text);
-                if (success) TextBox.Text = string.Empty;
+                Console.WriteLine("Ban button clicked");
             };
         }
     }

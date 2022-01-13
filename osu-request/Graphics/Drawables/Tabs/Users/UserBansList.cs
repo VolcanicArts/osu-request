@@ -3,7 +3,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu_request.Clients;
 using osuTK;
 
 namespace osu_request.Drawables.Users
@@ -13,10 +12,8 @@ namespace osu_request.Drawables.Users
         private FillFlowContainer<UserBanEntry> _fillFlowContainer;
 
         [BackgroundDependencyLoader]
-        private void Load(UserBanManager banManager)
+        private void Load()
         {
-            banManager.OnUserBan += OnUserBan;
-            banManager.OnUserUnBan += OnUserUnBan;
             InitChildren();
         }
 

@@ -6,8 +6,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
-using osu_request.Clients;
-using osu_request.Osu;
 using osu_request.Structures;
 using osuTK;
 using volcanicarts.osu.NET.Structures;
@@ -20,9 +18,6 @@ namespace osu_request.Drawables.Bans
 
         [Resolved]
         private AudioManager AudioManager { get; set; }
-
-        [Resolved]
-        private OsuClientLocal OsuClient { get; set; }
 
         [Resolved]
         private TextureStore TextureStore { get; set; }
@@ -46,22 +41,15 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(GameHost host, BeatmapsetBanManager banManager)
+        private void Load(GameHost host)
         {
             host.Window.Resized += () => UpdateSizing(host.Window);
-            banManager.OnBeatmapsetBan += OnBeatmapsetBan;
-            banManager.OnBeatmapsetUnBan += OnBeatmapsetUnBan;
             InitChildren();
         }
 
         private void OnBeatmapsetUnBan(string beatmapsetId)
         {
             _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
-        }
-
-        private void OnBeatmapsetBan(string beatmapsetId)
-        {
-            OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
         }
 
         private void UpdateSizing(IWindow window)

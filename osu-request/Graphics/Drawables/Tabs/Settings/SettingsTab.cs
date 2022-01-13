@@ -10,14 +10,9 @@ namespace osu_request.Drawables
     public class SettingsTab : GenericTab
     {
         private OsuRequestButton _saveButton;
-
-        private SettingContainer OsuClientIDContainer;
-        private SettingContainer OsuClientSecretContainer;
-        private SettingContainer TwitchClientChannelNameContainer;
-        private SettingContainer TwitchClientOAuthTokenContainer;
-
-        [Resolved]
-        private ClientManager ClientManager { get; set; }
+        
+        private SettingContainer ChannelNameContainer;
+        private SettingContainer PasscodeContainer;
 
         [Resolved]
         private OsuRequestConfig OsuRequestConfig { get; set; }
@@ -49,25 +44,15 @@ namespace osu_request.Drawables
                         Spacing = new Vector2(0.0f, 10.0f),
                         Children = new Drawable[]
                         {
-                            OsuClientIDContainer = new SettingContainer
+                            ChannelNameContainer = new SettingContainer
                             {
                                 Setting = OsuRequestSetting.OsuClientId,
                                 Prompt = "osu! client ID"
                             },
-                            OsuClientSecretContainer = new SecretSettingContainer
+                            PasscodeContainer = new SecretSettingContainer
                             {
                                 Setting = OsuRequestSetting.OsuClientSecret,
                                 Prompt = "osu! client secret"
-                            },
-                            TwitchClientChannelNameContainer = new SettingContainer
-                            {
-                                Setting = OsuRequestSetting.TwitchChannelName,
-                                Prompt = "Twitch channel name"
-                            },
-                            TwitchClientOAuthTokenContainer = new SecretSettingContainer
-                            {
-                                Setting = OsuRequestSetting.TwitchOAuthToken,
-                                Prompt = "Twitch OAuth code"
                             }
                         }
                     }
@@ -96,29 +81,9 @@ namespace osu_request.Drawables
 
         private void SaveButtonClicked()
         {
-            ClientManager.OnFailed += ClientManagerFail;
-            ClientManager.OnSuccess += ClientManagerSuccess;
-
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientId).Value = OsuClientIDContainer.TextBox.Text;
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.OsuClientSecret).Value = OsuClientSecretContainer.TextBox.Text;
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = TwitchClientChannelNameContainer.TextBox.Text;
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = TwitchClientOAuthTokenContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = ChannelNameContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = PasscodeContainer.TextBox.Text;
             OsuRequestConfig.Save();
-            ClientManager.TryConnectClients(OsuRequestConfig);
-        }
-
-        private void ClientManagerFail()
-        {
-            NotificationContainer.Notify("Invalid Settings", "Please enter valid settings to allow this app to work");
-            ClientManager.OnFailed -= ClientManagerFail;
-            ClientManager.OnSuccess -= ClientManagerSuccess;
-        }
-
-        private void ClientManagerSuccess()
-        {
-            NotificationContainer.Notify("Valid Settings", "Settings accepted. Requests incoming!");
-            ClientManager.OnFailed -= ClientManagerFail;
-            ClientManager.OnSuccess -= ClientManagerSuccess;
         }
     }
 }

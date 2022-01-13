@@ -5,10 +5,7 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
-using osu_request.Clients;
-using osu_request.Osu;
 using osu_request.Structures;
-using osu_request.Twitch;
 using osuTK;
 using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Structures;
@@ -23,25 +20,7 @@ namespace osu_request.Drawables
         private AudioManager AudioManager { get; set; }
 
         [Resolved]
-        private OsuClientLocal OsuClient { get; set; }
-
-        [Resolved]
         private TextureStore TextureStore { get; set; }
-
-        [Resolved]
-        private BeatmapsetBanManager BeatmapsetBanManager { get; set; }
-
-        [Resolved]
-        private UserBanManager UserBanManager { get; set; }
-
-        private void HandleTwitchMessage(ChatMessage message)
-        {
-            if (!message.Message.StartsWith("!rq")) return;
-            var beatmapsetId = message.Message.Split(" ")[1];
-            if (BeatmapsetBanManager.IsBanned(beatmapsetId)) return;
-            if (UserBanManager.IsBanned(message.Username)) return;
-            OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset, message)));
-        }
 
         private void BeatmapsetLoaded(Beatmapset beatmapset, ChatMessage message)
         {
@@ -69,11 +48,8 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TwitchClientLocal twitchClient)
+        private void Load()
         {
-            twitchClient.OnChatMessage += HandleTwitchMessage;
-            BeatmapsetBanManager.OnBeatmapsetBan += OnBeatmapsetBan;
-            UserBanManager.OnUserBan += OnUserBan;
 
             Children = new Drawable[]
             {

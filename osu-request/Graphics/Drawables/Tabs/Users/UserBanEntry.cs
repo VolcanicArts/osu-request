@@ -1,9 +1,9 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu_request.Clients;
 using osuTK;
 
 namespace osu_request.Drawables.Users
@@ -24,7 +24,7 @@ namespace osu_request.Drawables.Users
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, UserBanManager banManager)
+        private void Load(TextureStore textureStore)
         {
             Alpha = 0;
             Masking = true;
@@ -74,7 +74,7 @@ namespace osu_request.Drawables.Users
                 }
             };
 
-            _unban.OnButtonClicked += () => banManager.UnBan(Username);
+            _unban.OnButtonClicked += () => Console.WriteLine("Unban button clicked");
             _text.AddText(Username, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
         }
 

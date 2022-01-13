@@ -1,9 +1,9 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu_request.Clients;
 using osu_request.Structures;
 
 namespace osu_request.Drawables
@@ -18,7 +18,7 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, BeatmapsetBanManager banManager)
+        private void Load(TextureStore textureStore)
         {
             Masking = true;
             CornerRadius = 10;
@@ -52,7 +52,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _unban.OnButtonClicked += () => banManager.UnBan(WorkingBeatmapset.Beatmapset.Id.ToString());
+            _unban.OnButtonClicked += () => Console.WriteLine("Unban button clicked");
         }
     }
 }

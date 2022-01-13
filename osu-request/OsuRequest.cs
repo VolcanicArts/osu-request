@@ -2,7 +2,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Platform;
-using osu_request.Clients;
 using osu_request.Config;
 using osu_request.Drawables;
 using osu_request.Drawables.Notifications;
@@ -19,38 +18,10 @@ namespace osu_request
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both
         };
-
-        private BeatmapsetBanManager BeatmapsetBanManager;
-        private ClientManager ClientManager;
+        
         private OsuRequestConfig OsuRequestConfig;
 
         private TabsContainer TabsContainer;
-        private UserBanManager UserBanManager;
-
-        protected override void UpdateAfterChildren()
-        {
-            base.UpdateAfterChildren();
-            ClientManager.Update();
-        }
-
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            TabsContainer.Select(Tabs.Requests);
-
-            ClientManager.OnFailed += OnClientManagerFail;
-            ClientManager.OnSuccess += OnClientManagerSuccess;
-            ClientManager.TryConnectClients(OsuRequestConfig);
-        }
-
-        private void OnClientManagerSuccess()
-        {
-            ClientManager.OsuClient.LoadCache();
-            BeatmapsetBanManager.Load();
-            UserBanManager.Load();
-            ClientManager.OnFailed -= OnClientManagerFail;
-            ClientManager.OnSuccess -= OnClientManagerSuccess;
-        }
 
         private void OnClientManagerFail()
         {
@@ -72,19 +43,11 @@ namespace osu_request
         private void CreateConfigsAndManagers(Storage storage)
         {
             OsuRequestConfig = new OsuRequestConfig(storage);
-            ClientManager = new ClientManager(storage);
-            BeatmapsetBanManager = new BeatmapsetBanManager(storage);
-            UserBanManager = new UserBanManager(storage);
         }
 
         private void CacheDependencies()
         {
             Dependencies.CacheAs(OsuRequestConfig);
-            Dependencies.CacheAs(ClientManager);
-            Dependencies.CacheAs(ClientManager.OsuClient);
-            Dependencies.CacheAs(ClientManager.TwitchClient);
-            Dependencies.CacheAs(BeatmapsetBanManager);
-            Dependencies.CacheAs(UserBanManager);
         }
 
         private void InitialiseChildren()
@@ -103,14 +66,6 @@ namespace osu_request
                     NotificationContainer
                 }
             };
-        }
-
-        protected override void Dispose(bool isDisposing)
-        {
-            BeatmapsetBanManager.Save();
-            UserBanManager.Save();
-            ClientManager.OsuClient.SaveCache();
-            base.Dispose(isDisposing);
         }
     }
 }
