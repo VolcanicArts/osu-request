@@ -13,19 +13,18 @@ namespace osu_request.Drawables
     public class BeatmapsetRequestEntry : Container
     {
         public readonly string BeatmapsetId;
-        private readonly ChatMessage Message;
+        private readonly string DisplayName;
         public readonly string Username;
         private readonly WorkingBeatmapset WorkingBeatmapset;
 
         [Cached]
         private BindableBool ShouldDispose = new();
 
-        public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, ChatMessage message)
+        public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, string displayName)
         {
             BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
-            Username = message.Username;
             WorkingBeatmapset = workingBeatmapset;
-            Message = message;
+            DisplayName = displayName;
 
             ShouldDispose.BindValueChanged(_ => DisposeGracefully());
         }
@@ -98,7 +97,7 @@ namespace osu_request.Drawables
                                 Top = 5,
                                 Bottom = 5
                             },
-                            Child = new BeatmapsetRequestCard(WorkingBeatmapset, Message)
+                            Child = new BeatmapsetRequestCard(WorkingBeatmapset, DisplayName)
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
@@ -118,7 +117,7 @@ namespace osu_request.Drawables
                                 Top = 5,
                                 Bottom = 5
                             },
-                            Child = new BeatmapsetRequestButtons(WorkingBeatmapset, Message)
+                            Child = new BeatmapsetRequestButtons(WorkingBeatmapset)
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,

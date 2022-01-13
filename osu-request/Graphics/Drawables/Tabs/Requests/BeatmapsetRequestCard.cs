@@ -8,11 +8,11 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetRequestCard : BeatmapsetCard
     {
-        private readonly ChatMessage Message;
+        private readonly string DisplayName;
 
-        public BeatmapsetRequestCard(WorkingBeatmapset workingBeatmapset, ChatMessage message) : base(workingBeatmapset)
+        public BeatmapsetRequestCard(WorkingBeatmapset workingBeatmapset, string displayName) : base(workingBeatmapset)
         {
-            Message = message;
+            DisplayName = displayName;
         }
 
         [BackgroundDependencyLoader]
@@ -26,7 +26,7 @@ namespace osu_request.Drawables
                 RelativeSizeAxes = Axes.Both,
                 Padding = new MarginPadding(5)
             };
-            RequestText.AddText($"Requested by {Message.DisplayName}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+            RequestText.AddText($"Requested by {DisplayName}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
             AddInternal(RequestText);
         }
     }

@@ -6,6 +6,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu_request.Structures;
+using osu_request.Websocket;
+using osu_request.Websocket.Structures;
 using osuTK;
 using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Structures;
@@ -22,11 +24,11 @@ namespace osu_request.Drawables
         [Resolved]
         private TextureStore TextureStore { get; set; }
 
-        private void BeatmapsetLoaded(Beatmapset beatmapset, ChatMessage message)
+        private void NewRequest(RequestArgs requestArgs)
         {
-            var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
-            var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetRequestEntry(new WorkingBeatmapset(beatmapset, backgroundTexture, previewMp3), message)
+            var previewMp3 = AudioManager.GetTrackStore().Get(requestArgs.Beatmapset.PreviewUrl);
+            var backgroundTexture = TextureStore.Get(requestArgs.Beatmapset.Covers.CardAt2X);
+            var beatmapsetContainer = new BeatmapsetRequestEntry(new WorkingBeatmapset(requestArgs.Beatmapset, backgroundTexture, previewMp3), requestArgs.Requester.DisplayName)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -48,9 +50,10 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(WebSocketClient webSocketClient)
         {
-
+            webSocketClient.OnNewRequest += NewRequest;
+            
             Children = new Drawable[]
             {
                 new BasicScrollContainer

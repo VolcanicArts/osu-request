@@ -3,7 +3,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using NetCoreServer;
+using Newtonsoft.Json;
 using osu.Framework.Logging;
+using osu_request.Websocket.Structures;
 using TwitchLib.Client.Events;
 
 namespace osu_request.Websocket;
@@ -47,6 +49,9 @@ public class WebSocketClientBase : WsClient
     {
         var message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
         Logger.Log($"{log_prefix} Incoming: {message}");
+        var webSocketMessage = JsonConvert.DeserializeObject<WebSocketMessage>(message);
+        webSocketMessage.RawMessage = message;
+        OnMessage(webSocketMessage);
     }
 
     protected override void OnError(SocketError error)
@@ -54,5 +59,5 @@ public class WebSocketClientBase : WsClient
         Logger.Log($"{log_prefix} WebSocketClient caught an error with code {error}");
     }
 
-    protected virtual void OnMessage(string message) { }
+    protected virtual void OnMessage(WebSocketMessage message) { }
 }

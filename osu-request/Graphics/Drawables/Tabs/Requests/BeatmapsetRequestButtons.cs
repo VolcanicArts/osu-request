@@ -14,13 +14,11 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetRequestButtons : Container
     {
-        private readonly ChatMessage Message;
         private readonly WorkingBeatmapset WorkingBeatmapset;
 
-        public BeatmapsetRequestButtons(WorkingBeatmapset workingBeatmapset, ChatMessage message)
+        public BeatmapsetRequestButtons(WorkingBeatmapset workingBeatmapset)
         {
             WorkingBeatmapset = workingBeatmapset;
-            Message = message;
         }
 
         [Resolved]

@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System;
+using System.Net.Http.Json;
 using Newtonsoft.Json;
 using osu_request.Config;
 using osu_request.Websocket.Structures;
@@ -7,11 +8,18 @@ namespace osu_request.Websocket;
 
 public class WebSocketClient : WebSocketClientBase
 {
+    public Action<RequestArgs> OnNewRequest;
     public WebSocketClient(string address, int port) : base(address, port) { }
 
-    protected override void OnMessage(string message)
+    protected override void OnMessage(WebSocketMessage message)
     {
         base.OnMessage(message);
+        switch (message.Op)
+        {
+            case OpCode.REQUEST:
+                HandleNewRequest(message);
+                break;
+        }
     }
 
     public void SendAuth(OsuRequestConfig osuRequestConfig)
@@ -26,5 +34,11 @@ public class WebSocketClient : WebSocketClientBase
             }
         };
         SendText(JsonConvert.SerializeObject(authMessage));
+    }
+
+    private void HandleNewRequest(WebSocketMessage message)
+    {
+        var requestArgsMessage = JsonConvert.DeserializeObject<RequestArgsMessage>(message.RawMessage);
+        OnNewRequest?.Invoke(requestArgsMessage.Data);
     }
 }

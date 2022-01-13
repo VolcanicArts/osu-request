@@ -6,4 +6,5 @@ public enum OpCode
     AUTH = 0,
     
     //Incoming
+    REQUEST = 1003,
 }
