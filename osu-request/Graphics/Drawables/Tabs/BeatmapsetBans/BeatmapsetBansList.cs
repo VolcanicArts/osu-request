@@ -7,8 +7,9 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Structures;
+using osu_request.Websocket;
+using osu_request.Websocket.Structures;
 using osuTK;
-using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Drawables.Bans
 {
@@ -22,13 +23,13 @@ namespace osu_request.Drawables.Bans
         [Resolved]
         private TextureStore TextureStore { get; set; }
 
-        private void BeatmapsetLoaded(Beatmapset beatmapset)
+        private void OnBeatmapsetBan(BeatmapsetBanArgs beatmapsetBanArgs)
         {
-            var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
-            var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
+            var previewMp3 = AudioManager.GetTrackStore().Get(beatmapsetBanArgs.Beatmapset.PreviewUrl);
+            var backgroundTexture = TextureStore.Get(beatmapsetBanArgs.Beatmapset.Covers.CardAt2X);
             if (previewMp3 == null || backgroundTexture == null) return;
 
-            var beatmapsetBan = new BeatmapsetBanEntry(new WorkingBeatmapset(beatmapset, backgroundTexture, previewMp3))
+            var beatmapsetBan = new BeatmapsetBanEntry(new WorkingBeatmapset(beatmapsetBanArgs.Beatmapset, backgroundTexture, previewMp3))
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -41,9 +42,10 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(GameHost host)
+        private void Load(GameHost host, WebSocketClient webSocketClient)
         {
             host.Window.Resized += () => UpdateSizing(host.Window);
+            webSocketClient.OnBeatmapsetBan += (beatmapsetBanArgs => Scheduler.Add(() => OnBeatmapsetBan(beatmapsetBanArgs)));
             InitChildren();
         }
 

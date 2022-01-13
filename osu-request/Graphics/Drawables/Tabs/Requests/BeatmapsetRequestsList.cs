@@ -39,9 +39,9 @@ namespace osu_request.Drawables
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }
 
-        private void OnBeatmapsetBan(string beatmapsetId)
+        private void OnBeatmapsetBan(BeatmapsetBanArgs beatmapsetBanArgs)
         {
-            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetBanArgs.Beatmapset.Id.ToString()).ForEach(entry => entry.DisposeGracefully());
         }
 
         private void OnUserBan(string username)
@@ -52,7 +52,8 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load(WebSocketClient webSocketClient)
         {
-            webSocketClient.OnNewRequest += NewRequest;
+            webSocketClient.OnNewRequest += (requestArgs) => Scheduler.Add(() => NewRequest(requestArgs));
+            webSocketClient.OnBeatmapsetBan += (beatmapsetBanArgs => Scheduler.Add(() => OnBeatmapsetBan(beatmapsetBanArgs)));
             
             Children = new Drawable[]
             {

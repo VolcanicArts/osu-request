@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Structures;
+using osu_request.Websocket;
 using osuTK;
 using TwitchLib.Client.Models;
 
@@ -25,7 +26,7 @@ namespace osu_request.Drawables
         private BindableBool ShouldDispose { get; set; }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, GameHost host)
+        private void Load(TextureStore textureStore, GameHost host, WebSocketClient webSocketClient)
         {
             Masking = true;
             CornerRadius = 10;
@@ -126,7 +127,7 @@ namespace osu_request.Drawables
 
             _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{WorkingBeatmapset.Beatmapset.Id}");
             _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{WorkingBeatmapset.Beatmapset.Id}");
-            _ban.OnButtonClicked += () => Console.WriteLine("Beatmapset ban button clicked");
+            _ban.OnButtonClicked += () => webSocketClient.BanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString());
             _banUser.OnButtonClicked += () => Console.WriteLine("User ban button clicked");
         }
     }
