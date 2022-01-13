@@ -46,12 +46,13 @@ namespace osu_request.Drawables.Bans
         {
             host.Window.Resized += () => UpdateSizing(host.Window);
             webSocketClient.OnBeatmapsetBan += (beatmapsetBanArgs => Scheduler.Add(() => OnBeatmapsetBan(beatmapsetBanArgs)));
+            webSocketClient.OnBeatmapsetUnBan += (beatmapsetUnBanArgs => Scheduler.Add(() => OnBeatmapsetUnBan(beatmapsetUnBanArgs)));
             InitChildren();
         }
 
-        private void OnBeatmapsetUnBan(string beatmapsetId)
+        private void OnBeatmapsetUnBan(BeatmapsetUnBanArgs beatmapsetUnBanArgs)
         {
-            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetUnBanArgs.BeatmapsetId).ForEach(entry => entry.DisposeGracefully());
         }
 
         private void UpdateSizing(IWindow window)

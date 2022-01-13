@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http.Json;
 using Newtonsoft.Json;
 using osu_request.Config;
 using osu_request.Websocket.Structures;
@@ -11,6 +10,7 @@ public class WebSocketClient : WebSocketClientBase
     public Action<RequestArgs> OnNewRequest;
     public Action<BeatmapsetBanArgs> OnBeatmapsetBan;
     public Action<UserBanArgs> OnUserBan;
+    public Action<BeatmapsetUnBanArgs> OnBeatmapsetUnBan;
 
     protected override void OnMessage(WebSocketMessage message)
     {
@@ -25,6 +25,9 @@ public class WebSocketClient : WebSocketClientBase
                 break;
             case IncomingOpCode.USERBAN:
                 HandleUserBan(message);
+                break;
+            case IncomingOpCode.BEATMAPSETUNBAN:
+                HandleBeatmapsetUnBan(message);
                 break;
         }
     }
@@ -61,6 +64,12 @@ public class WebSocketClient : WebSocketClientBase
         OnUserBan?.Invoke(userBanMessage.Data);
     }
 
+    private void HandleBeatmapsetUnBan(WebSocketMessage message)
+    {
+        var beatmapsetUnBanMessage = JsonConvert.DeserializeObject<BeatmapsetUnBanMessage>(message.RawMessage);
+        OnBeatmapsetUnBan?.Invoke(beatmapsetUnBanMessage.Data);
+    }
+
     public void BanBeatmapset(string beatmapsetId)
     {
         var banBeatmapsetMessage = new BanBeatmapsetMessage
@@ -83,5 +92,17 @@ public class WebSocketClient : WebSocketClientBase
             }
         };
         SendText(JsonConvert.SerializeObject(banUserMessage));
+    }
+
+    public void UnBanBeatmapset(string beatmapsetId)
+    {
+        var unBanBeatmapsetMessage = new UnBanBeatmapsetMessage
+        {
+            Data = new UnBanBeatmapsetData
+            {
+                BeatmapsetId = beatmapsetId
+            }
+        };
+        SendText(JsonConvert.SerializeObject(unBanBeatmapsetMessage));
     }
 }
