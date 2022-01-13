@@ -11,6 +11,7 @@ public class WebSocketClient : WebSocketClientBase
     public Action<BeatmapsetBanArgs> OnBeatmapsetBan;
     public Action<UserBanArgs> OnUserBan;
     public Action<BeatmapsetUnBanArgs> OnBeatmapsetUnBan;
+    public Action<UserUnBanArgs> OnUserUnBan;
 
     protected override void OnMessage(WebSocketMessage message)
     {
@@ -28,6 +29,9 @@ public class WebSocketClient : WebSocketClientBase
                 break;
             case IncomingOpCode.BEATMAPSETUNBAN:
                 HandleBeatmapsetUnBan(message);
+                break;
+            case IncomingOpCode.USERUNBAN:
+                HandleUserUnBan(message);
                 break;
         }
     }
@@ -70,6 +74,12 @@ public class WebSocketClient : WebSocketClientBase
         OnBeatmapsetUnBan?.Invoke(beatmapsetUnBanMessage.Data);
     }
 
+    private void HandleUserUnBan(WebSocketMessage message)
+    {
+        var userUnBanMessage = JsonConvert.DeserializeObject<UserUnBanMessage>(message.RawMessage);
+        OnUserUnBan?.Invoke(userUnBanMessage.Data);
+    }
+
     public void BanBeatmapset(string beatmapsetId)
     {
         var banBeatmapsetMessage = new BanBeatmapsetMessage
@@ -104,5 +114,17 @@ public class WebSocketClient : WebSocketClientBase
             }
         };
         SendText(JsonConvert.SerializeObject(unBanBeatmapsetMessage));
+    }
+
+    public void UnBanUser(string userId)
+    {
+        var unBanUserMessage = new UnBanUserMessage
+        {
+            Data = new UnBanUserData
+            {
+                UserId = userId
+            }
+        };
+        SendText(JsonConvert.SerializeObject(unBanUserMessage));
     }
 }

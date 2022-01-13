@@ -17,17 +17,18 @@ namespace osu_request.Drawables.Users
         private void Load(WebSocketClient webSocketClient)
         {
             webSocketClient.OnUserBan += (userBanArgs) => Scheduler.Add(() => OnUserBan(userBanArgs));
+            webSocketClient.OnUserUnBan += (userUnBanArgs) => Scheduler.Add(() => OnUserUnBan(userUnBanArgs));
             InitChildren();
         }
 
-        private void OnUserUnBan(string username)
+        private void OnUserUnBan(UserUnBanArgs userUnBanArgs)
         {
-            _fillFlowContainer.Where(entry => entry.Username == username).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.User.Id == userUnBanArgs.UserId).ForEach(entry => entry.DisposeGracefully());
         }
 
         private void OnUserBan(UserBanArgs userBanArgs)
         {
-            _fillFlowContainer.Add(new UserBanEntry(userBanArgs.User.Login)
+            _fillFlowContainer.Add(new UserBanEntry(userBanArgs.User)
             {
                 Anchor = Anchor.TopLeft,
                 Origin = Anchor.TopLeft,
