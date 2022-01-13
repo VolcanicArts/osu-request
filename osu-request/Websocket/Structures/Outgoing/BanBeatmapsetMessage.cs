@@ -5,7 +5,7 @@ namespace osu_request.Websocket.Structures;
 public class BanBeatmapsetMessage
 {
     [JsonProperty("op")]
-    public OpCode Op { get; } = OpCode.BANBEATMAPSET;
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.BANBEATMAPSET;
 
     [JsonProperty("d")]
     public BanBeatmapsetData Data;

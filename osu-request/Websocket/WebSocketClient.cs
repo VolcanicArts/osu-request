@@ -16,10 +16,10 @@ public class WebSocketClient : WebSocketClientBase
         base.OnMessage(message);
         switch (message.Op)
         {
-            case OpCode.REQUEST:
+            case IncomingOpCode.REQUEST:
                 HandleNewRequest(message);
                 break;
-            case OpCode.BEATMAPSETBAN:
+            case IncomingOpCode.BEATMAPSETBAN:
                 HandleBeatmapsetBan(message);
                 break;
         }
@@ -29,7 +29,7 @@ public class WebSocketClient : WebSocketClientBase
     {
         var authMessage = new AuthMessage
         {
-            Op = OpCode.AUTH,
+            Op = OutgoingOpCode.AUTH,
             Data = new AuthData
             {
                 Username = osuRequestConfig.Get<string>(OsuRequestSetting.Username),

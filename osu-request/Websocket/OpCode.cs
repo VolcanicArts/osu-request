@@ -1,12 +1,12 @@
 ﻿namespace osu_request.Websocket;
 
-public enum OpCode
+public enum IncomingOpCode
 {
-    //Outgoing
-    AUTH = 0,
-    BANBEATMAPSET = 1,
-    
-    //Incoming
     REQUEST = 1003,
     BEATMAPSETBAN = 1004,
+}
+public enum OutgoingOpCode
+{
+    AUTH = 0,
+    BANBEATMAPSET = 1,
 }

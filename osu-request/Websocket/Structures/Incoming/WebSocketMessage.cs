@@ -5,7 +5,7 @@ namespace osu_request.Websocket.Structures;
 public class WebSocketMessage
 {
     [JsonProperty("op")]
-    public OpCode Op;
+    public IncomingOpCode Op;
 
     [JsonIgnore]
     public string RawMessage;
