@@ -39,6 +39,7 @@ namespace osu_request
             base.LoadComplete();
             TabsContainer.Select(Tabs.Requests);
             WebSocketClient.ConnectAsync();
+            WebSocketClient.SendAuth(OsuRequestConfig);
         }
 
         private void CreateConfigsAndManagers(Storage storage)
@@ -50,6 +51,7 @@ namespace osu_request
         private void CacheDependencies()
         {
             Dependencies.CacheAs(OsuRequestConfig);
+            Dependencies.CacheAs(WebSocketClient);
         }
 
         private void InitialiseChildren()

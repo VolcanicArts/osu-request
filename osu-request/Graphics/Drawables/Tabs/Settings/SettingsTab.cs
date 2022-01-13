@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu_request.Config;
 using osu_request.Drawables.Notifications;
+using osu_request.Websocket;
 using osuTK;
 
 namespace osu_request.Drawables
@@ -10,9 +11,12 @@ namespace osu_request.Drawables
     public class SettingsTab : GenericTab
     {
         private OsuRequestButton _saveButton;
-        
+
         private SettingContainer ChannelNameContainer;
         private SettingContainer PasscodeContainer;
+
+        [Resolved]
+        private WebSocketClient WebSocketClient { get; set; }
 
         [Resolved]
         private OsuRequestConfig OsuRequestConfig { get; set; }
@@ -46,13 +50,13 @@ namespace osu_request.Drawables
                         {
                             ChannelNameContainer = new SettingContainer
                             {
-                                Setting = OsuRequestSetting.OsuClientId,
-                                Prompt = "osu! client ID"
+                                Setting = OsuRequestSetting.Username,
+                                Prompt = "Username"
                             },
                             PasscodeContainer = new SecretSettingContainer
                             {
-                                Setting = OsuRequestSetting.OsuClientSecret,
-                                Prompt = "osu! client secret"
+                                Setting = OsuRequestSetting.Passcode,
+                                Prompt = "Passcode"
                             }
                         }
                     }
@@ -81,9 +85,10 @@ namespace osu_request.Drawables
 
         private void SaveButtonClicked()
         {
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchChannelName).Value = ChannelNameContainer.TextBox.Text;
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.TwitchOAuthToken).Value = PasscodeContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = ChannelNameContainer.TextBox.Text;
+            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = PasscodeContainer.TextBox.Text;
             OsuRequestConfig.Save();
+            WebSocketClient.SendAuth(OsuRequestConfig);
         }
     }
 }
