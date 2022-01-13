@@ -10,6 +10,7 @@ public class WebSocketClient : WebSocketClientBase
 {
     public Action<RequestArgs> OnNewRequest;
     public Action<BeatmapsetBanArgs> OnBeatmapsetBan;
+    public Action<UserBanArgs> OnUserBan;
 
     protected override void OnMessage(WebSocketMessage message)
     {
@@ -21,6 +22,9 @@ public class WebSocketClient : WebSocketClientBase
                 break;
             case IncomingOpCode.BEATMAPSETBAN:
                 HandleBeatmapsetBan(message);
+                break;
+            case IncomingOpCode.USERBAN:
+                HandleUserBan(message);
                 break;
         }
     }
@@ -47,8 +51,14 @@ public class WebSocketClient : WebSocketClientBase
 
     private void HandleBeatmapsetBan(WebSocketMessage message)
     {
-        var requestArgsMessage = JsonConvert.DeserializeObject<BeatmapsetBanMessage>(message.RawMessage);
-        OnBeatmapsetBan?.Invoke(requestArgsMessage.Data);
+        var beatmapsetBanMessage = JsonConvert.DeserializeObject<BeatmapsetBanMessage>(message.RawMessage);
+        OnBeatmapsetBan?.Invoke(beatmapsetBanMessage.Data);
+    }
+
+    private void HandleUserBan(WebSocketMessage message)
+    {
+        var userBanMessage = JsonConvert.DeserializeObject<UserBanMessage>(message.RawMessage);
+        OnUserBan?.Invoke(userBanMessage.Data);
     }
 
     public void BanBeatmapset(string beatmapsetId)
@@ -61,5 +71,17 @@ public class WebSocketClient : WebSocketClientBase
             }
         };
         SendText(JsonConvert.SerializeObject(banBeatmapsetMessage));
+    }
+
+    public void BanUser(string username)
+    {
+        var banUserMessage = new BanUserMessage
+        {
+            Data = new BanUserData
+            {
+                Username = username
+            }
+        };
+        SendText(JsonConvert.SerializeObject(banUserMessage));
     }
 }

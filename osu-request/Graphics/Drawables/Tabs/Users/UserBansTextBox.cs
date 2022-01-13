@@ -4,6 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu_request.Drawables;
+using osu_request.Websocket;
 using osuTK;
 
 namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
@@ -14,7 +15,7 @@ namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
         private OsuRequestTextBox TextBox;
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(WebSocketClient webSocketClient)
         {
             Masking = true;
             CornerRadius = 10;
@@ -77,10 +78,7 @@ namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
                 }
             };
 
-            BanButton.OnButtonClicked += () =>
-            {
-                Console.WriteLine("Ban button clicked");
-            };
+            BanButton.OnButtonClicked += () => webSocketClient.BanUser(TextBox.Text);
         }
     }
 }

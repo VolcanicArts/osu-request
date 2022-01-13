@@ -3,6 +3,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu_request.Websocket;
+using osu_request.Websocket.Structures;
 using osuTK;
 
 namespace osu_request.Drawables.Users
@@ -12,8 +14,9 @@ namespace osu_request.Drawables.Users
         private FillFlowContainer<UserBanEntry> _fillFlowContainer;
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(WebSocketClient webSocketClient)
         {
+            webSocketClient.OnUserBan += (userBanArgs) => Scheduler.Add(() => OnUserBan(userBanArgs));
             InitChildren();
         }
 
@@ -22,9 +25,9 @@ namespace osu_request.Drawables.Users
             _fillFlowContainer.Where(entry => entry.Username == username).ForEach(entry => entry.DisposeGracefully());
         }
 
-        private void OnUserBan(string username)
+        private void OnUserBan(UserBanArgs userBanArgs)
         {
-            _fillFlowContainer.Add(new UserBanEntry(username)
+            _fillFlowContainer.Add(new UserBanEntry(userBanArgs.User.Login)
             {
                 Anchor = Anchor.TopLeft,
                 Origin = Anchor.TopLeft,

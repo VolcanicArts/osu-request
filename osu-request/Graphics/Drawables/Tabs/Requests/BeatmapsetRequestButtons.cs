@@ -8,6 +8,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu_request.Structures;
 using osu_request.Websocket;
+using osu_request.Websocket.Structures;
 using osuTK;
 using TwitchLib.Client.Models;
 
@@ -15,11 +16,11 @@ namespace osu_request.Drawables
 {
     public class BeatmapsetRequestButtons : Container
     {
-        private readonly WorkingBeatmapset WorkingBeatmapset;
+        private readonly RequestArgs RequestArgs;
 
-        public BeatmapsetRequestButtons(WorkingBeatmapset workingBeatmapset)
+        public BeatmapsetRequestButtons(RequestArgs requestArgs)
         {
-            WorkingBeatmapset = workingBeatmapset;
+            RequestArgs = requestArgs;
         }
 
         [Resolved]
@@ -125,10 +126,10 @@ namespace osu_request.Drawables
                 }
             };
 
-            _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{WorkingBeatmapset.Beatmapset.Id}");
-            _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{WorkingBeatmapset.Beatmapset.Id}");
-            _ban.OnButtonClicked += () => webSocketClient.BanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString());
-            _banUser.OnButtonClicked += () => Console.WriteLine("User ban button clicked");
+            _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{RequestArgs.Beatmapset.Id}");
+            _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{RequestArgs.Beatmapset.Id}");
+            _ban.OnButtonClicked += () => webSocketClient.BanBeatmapset(RequestArgs.Beatmapset.Id.ToString());
+            _banUser.OnButtonClicked += () => webSocketClient.BanUser(RequestArgs.Requester.Login);
         }
     }
 }

@@ -2,17 +2,18 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu_request.Structures;
+using osu_request.Websocket.Structures;
 using TwitchLib.Client.Models;
 
 namespace osu_request.Drawables
 {
     public class BeatmapsetRequestCard : BeatmapsetCard
     {
-        private readonly string DisplayName;
+        private readonly RequestArgs RequestArgs;
 
-        public BeatmapsetRequestCard(WorkingBeatmapset workingBeatmapset, string displayName) : base(workingBeatmapset)
+        public BeatmapsetRequestCard(WorkingBeatmapset workingBeatmapset, RequestArgs requestArgs) : base(workingBeatmapset)
         {
-            DisplayName = displayName;
+            RequestArgs = requestArgs;
         }
 
         [BackgroundDependencyLoader]
@@ -26,7 +27,7 @@ namespace osu_request.Drawables
                 RelativeSizeAxes = Axes.Both,
                 Padding = new MarginPadding(5)
             };
-            RequestText.AddText($"Requested by {DisplayName}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+            RequestText.AddText($"Requested by {RequestArgs.Requester.DisplayName}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
             AddInternal(RequestText);
         }
     }

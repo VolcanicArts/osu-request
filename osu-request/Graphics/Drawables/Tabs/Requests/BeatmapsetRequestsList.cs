@@ -28,7 +28,8 @@ namespace osu_request.Drawables
         {
             var previewMp3 = AudioManager.GetTrackStore().Get(requestArgs.Beatmapset.PreviewUrl);
             var backgroundTexture = TextureStore.Get(requestArgs.Beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetRequestEntry(new WorkingBeatmapset(requestArgs.Beatmapset, backgroundTexture, previewMp3), requestArgs.Requester.DisplayName)
+            var workingBeatmapset = new WorkingBeatmapset(requestArgs.Beatmapset, backgroundTexture, previewMp3);
+            var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset, requestArgs)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -44,16 +45,17 @@ namespace osu_request.Drawables
             _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetBanArgs.Beatmapset.Id.ToString()).ForEach(entry => entry.DisposeGracefully());
         }
 
-        private void OnUserBan(string username)
+        private void OnUserBan(UserBanArgs userBanArgs)
         {
-            _fillFlowContainer.Where(entry => entry.Username == username).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.Username == userBanArgs.User.Login).ForEach(entry => entry.DisposeGracefully());
         }
 
         [BackgroundDependencyLoader]
         private void Load(WebSocketClient webSocketClient)
         {
             webSocketClient.OnNewRequest += (requestArgs) => Scheduler.Add(() => NewRequest(requestArgs));
-            webSocketClient.OnBeatmapsetBan += (beatmapsetBanArgs => Scheduler.Add(() => OnBeatmapsetBan(beatmapsetBanArgs)));
+            webSocketClient.OnBeatmapsetBan += (beatmapsetBanArgs) => Scheduler.Add(() => OnBeatmapsetBan(beatmapsetBanArgs));
+            webSocketClient.OnUserBan += (userBanArgs) => Scheduler.Add(() => OnUserBan(userBanArgs));
             
             Children = new Drawable[]
             {
