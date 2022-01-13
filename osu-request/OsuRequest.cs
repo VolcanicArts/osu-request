@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -5,6 +7,7 @@ using osu.Framework.Platform;
 using osu_request.Config;
 using osu_request.Drawables;
 using osu_request.Drawables.Notifications;
+using osu_request.Websocket;
 using osuTK;
 
 namespace osu_request
@@ -18,19 +21,10 @@ namespace osu_request
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both
         };
-        
+
         private OsuRequestConfig OsuRequestConfig;
-
         private TabsContainer TabsContainer;
-
-        private void OnClientManagerFail()
-        {
-            Scheduler.AddOnce(() =>
-            {
-                TabsContainer.Select(Tabs.Settings);
-                NotificationContainer.Notify("Invalid Settings", "Please enter valid settings to allow this app to work");
-            });
-        }
+        private WebSocketClient WebSocketClient;
 
         [BackgroundDependencyLoader]
         private void Load(Storage storage)
@@ -40,9 +34,17 @@ namespace osu_request
             InitialiseChildren();
         }
 
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            TabsContainer.Select(Tabs.Requests);
+            WebSocketClient.ConnectAsync();
+        }
+
         private void CreateConfigsAndManagers(Storage storage)
         {
             OsuRequestConfig = new OsuRequestConfig(storage);
+            WebSocketClient = new WebSocketClient("127.0.0.1", 8080);
         }
 
         private void CacheDependencies()
