@@ -9,7 +9,6 @@ namespace osu_request.Websocket;
 public class WebSocketClient : WebSocketClientBase
 {
     public Action<RequestArgs> OnNewRequest;
-    public WebSocketClient(string address, int port) : base(address, port) { }
 
     protected override void OnMessage(WebSocketMessage message)
     {

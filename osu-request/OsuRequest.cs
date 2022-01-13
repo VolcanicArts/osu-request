@@ -45,7 +45,7 @@ namespace osu_request
         private void CreateConfigsAndManagers(Storage storage)
         {
             OsuRequestConfig = new OsuRequestConfig(storage);
-            WebSocketClient = new WebSocketClient("127.0.0.1", 8080);
+            WebSocketClient = new WebSocketClient();
         }
 
         private void CacheDependencies()

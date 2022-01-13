@@ -13,7 +13,7 @@ namespace osu_request.Websocket;
 public class WebSocketClientBase : WsClient
 {
     private const string log_prefix = "[WebSocket]";
-    public WebSocketClientBase(string address, int port) : base(address, port) { }
+    protected WebSocketClientBase() : base("127.0.0.1", 8080) { }
     
     public override void OnWsConnecting(HttpRequest request)
     {
