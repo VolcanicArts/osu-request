@@ -14,8 +14,6 @@ namespace osu_request.Drawables
         private const string twitchLoginUrl =
             "https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=w1j4lbtlp30d1z1whtutav6mgshzd3&redirect_uri=http://localhost/redirect&scope=user:read:email+chat:read+chat:edit+moderation:read";
 
-        private OsuRequestButton _saveButton;
-
         private SettingContainer ChannelNameContainer;
         private SettingContainer PasscodeContainer;
 
@@ -31,6 +29,7 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load(GameHost host)
         {
+            OsuRequestButton _saveButton;
             OsuRequestButton _loginWithTwitch;
 
             Children = new Drawable[]
