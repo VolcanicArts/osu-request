@@ -5,27 +5,26 @@ using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Platform;
 using osuTK.Graphics;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public class OsuRequestTextBox : BasicTextBox
 {
-    public class OsuRequestTextBox : BasicTextBox
+    public OsuRequestTextBox()
     {
-        public OsuRequestTextBox()
-        {
-            BackgroundFocused = OsuRequestColour.Gray6;
-            BackgroundUnfocused = OsuRequestColour.Gray4;
-        }
+        BackgroundFocused = OsuRequestColour.Gray6;
+        BackgroundUnfocused = OsuRequestColour.Gray4;
+    }
 
-        [BackgroundDependencyLoader]
-        private void Load(GameHost host)
-        {
-            host.Window.Resized += () => Scheduler.AddOnce(KillFocus);
-        }
+    [BackgroundDependencyLoader]
+    private void Load(GameHost host)
+    {
+        host.Window.Resized += () => Scheduler.AddOnce(KillFocus);
+    }
 
-        protected override SpriteText CreatePlaceholder()
-        {
-            var fadingPlaceholderText = base.CreatePlaceholder();
-            fadingPlaceholderText.Colour = Color4.White.Opacity(0.5f);
-            return fadingPlaceholderText;
-        }
+    protected override SpriteText CreatePlaceholder()
+    {
+        var fadingPlaceholderText = base.CreatePlaceholder();
+        fadingPlaceholderText.Colour = Color4.White.Opacity(0.5f);
+        return fadingPlaceholderText;
     }
 }

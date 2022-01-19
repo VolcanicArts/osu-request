@@ -1,15 +1,14 @@
 ﻿using osu.Framework;
 using osu.Framework.Platform;
 
-namespace osu_request
+namespace osu_request;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
-        {
-            using GameHost host = Host.GetSuitableHost(@"osu!request");
-            using Game game = new OsuRequest();
-            host.Run(game);
-        }
+        using GameHost host = Host.GetSuitableHost(@"osu!request");
+        using Game game = new OsuRequest();
+        host.Run(game);
     }
 }

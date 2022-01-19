@@ -14,11 +14,12 @@ public enum IncomingOpCode
     ALLBEATMAPSETBANS = 1009,
     ALLUSERBANS = 1010
 }
+
 public enum OutgoingOpCode
 {
     AUTH = 0,
     BANBEATMAPSET = 1,
     BANUSER = 2,
     UNBANBEATMAPSET = 3,
-    UNBANUSER = 4,
+    UNBANUSER = 4
 }

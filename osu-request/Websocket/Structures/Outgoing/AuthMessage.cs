@@ -4,18 +4,18 @@ namespace osu_request.Websocket.Structures;
 
 public class AuthMessage
 {
-    [JsonProperty("op")]
-    public OutgoingOpCode Op { get; } = OutgoingOpCode.AUTH;
-    
     [JsonProperty("d")]
     public AuthData Data;
+
+    [JsonProperty("op")]
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.AUTH;
 }
 
 public class AuthData
 {
-    [JsonProperty("username")]
-    public string Username;
-
     [JsonProperty("code")]
     public string Passcode;
+
+    [JsonProperty("username")]
+    public string Username;
 }

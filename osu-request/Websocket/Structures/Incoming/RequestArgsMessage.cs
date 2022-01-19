@@ -9,11 +9,12 @@ public class RequestArgsMessage
     [JsonProperty("d")]
     public RequestArgs Data;
 }
+
 public class RequestArgs
 {
     [JsonProperty("beatmapset")]
     public Beatmapset Beatmapset;
-    
+
     [JsonProperty("requester")]
     public User Requester;
 }

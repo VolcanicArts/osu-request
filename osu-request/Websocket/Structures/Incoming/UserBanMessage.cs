@@ -8,6 +8,7 @@ public class UserBanMessage
     [JsonProperty("d")]
     public UserBanArgs Data;
 }
+
 public class UserBanArgs
 {
     [JsonProperty("user")]

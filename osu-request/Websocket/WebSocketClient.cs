@@ -9,16 +9,16 @@ namespace osu_request.Websocket;
 
 public class WebSocketClient : WebSocketClientBase
 {
-    public Action OnFailedConnection;
-    public Action OnDisconnect;
-    public Action OnConnect;
-    public Action OnLoggedIn;
-    public Action OnInvalidUsername;
-    public Action OnInvalidCode;
-    public Action<RequestArgs> OnNewRequest;
     public Action<Beatmapset> OnBeatmapsetBan;
-    public Action<User> OnUserBan;
     public Action<string> OnBeatmapsetUnBan;
+    public Action OnConnect;
+    public Action OnDisconnect;
+    public Action OnFailedConnection;
+    public Action OnInvalidCode;
+    public Action OnInvalidUsername;
+    public Action OnLoggedIn;
+    public Action<RequestArgs> OnNewRequest;
+    public Action<User> OnUserBan;
     public Action<string> OnUserUnBan;
 
     protected override void OnMessage(WebSocketMessage message)
@@ -117,19 +117,13 @@ public class WebSocketClient : WebSocketClientBase
     private void HandleAllBeatmapsetBans(WebSocketMessage message)
     {
         var allBeatmapsetBansMessage = JsonConvert.DeserializeObject<AllBeatmapsetBansMessage>(message.RawMessage);
-        foreach (var beatmapset in allBeatmapsetBansMessage.Data.Beatmapsets)
-        {
-            OnBeatmapsetBan?.Invoke(beatmapset);
-        }
+        foreach (var beatmapset in allBeatmapsetBansMessage.Data.Beatmapsets) OnBeatmapsetBan?.Invoke(beatmapset);
     }
-    
+
     private void HandleAllUserBans(WebSocketMessage message)
     {
         var allUserBansMessage = JsonConvert.DeserializeObject<AllUserBansMessage>(message.RawMessage);
-        foreach (var user in allUserBansMessage.Data.Users)
-        {
-            OnUserBan?.Invoke(user);
-        }
+        foreach (var user in allUserBansMessage.Data.Users) OnUserBan?.Invoke(user);
     }
 
     public void BanBeatmapset(string beatmapsetId)

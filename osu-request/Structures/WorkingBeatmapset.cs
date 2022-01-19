@@ -2,22 +2,21 @@
 using osu.Framework.Graphics.Textures;
 using volcanicarts.osu.NET.Structures;
 
-namespace osu_request.Structures
+namespace osu_request.Structures;
+
+public class WorkingBeatmapset
 {
-    public class WorkingBeatmapset
+    public WorkingBeatmapset(Beatmapset beatmapset, Texture cover, Track preview)
     {
-        protected internal Beatmapset Beatmapset { get; }
-        protected internal Texture Cover { get; }
-        protected internal Track Preview { get; }
+        Beatmapset = beatmapset;
+        Cover = cover;
+        Preview = preview;
 
-        public WorkingBeatmapset(Beatmapset beatmapset, Texture cover, Track preview)
-        {
-            Beatmapset = beatmapset;
-            Cover = cover;
-            Preview = preview;
-
-            Preview.Volume.Value = 0.25f;
-            Preview.Completed += Preview.Restart;
-        }
+        Preview.Volume.Value = 0.25f;
+        Preview.Completed += Preview.Restart;
     }
+
+    protected internal Beatmapset Beatmapset { get; }
+    protected internal Texture Cover { get; }
+    protected internal Track Preview { get; }
 }

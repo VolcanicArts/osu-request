@@ -5,81 +5,80 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osuTK;
 
-namespace osu_request.Drawables.Notifications
-{
-    public class NotificationContainer : Container
-    {
-        private new Container Content;
-        private TextFlowContainer Message;
-        private TextFlowContainer Title;
+namespace osu_request.Drawables.Notifications;
 
-        [BackgroundDependencyLoader]
-        private void Load()
+public class NotificationContainer : Container
+{
+    private new Container Content;
+    private TextFlowContainer Message;
+    private TextFlowContainer Title;
+
+    [BackgroundDependencyLoader]
+    private void Load()
+    {
+        InternalChild = Content = new Container
         {
-            InternalChild = Content = new Container
+            Anchor = Anchor.BottomCentre,
+            Origin = Anchor.BottomCentre,
+            Size = new Vector2(300.0f, 100.0f),
+            RelativeAnchorPosition = new Vector2(0.5f, 0.0f),
+            Masking = true,
+            CornerRadius = 10,
+            EdgeEffect = OsuRequestEdgeEffects.DispersedShadow,
+            Children = new Drawable[]
             {
-                Anchor = Anchor.BottomCentre,
-                Origin = Anchor.BottomCentre,
-                Size = new Vector2(300.0f, 100.0f),
-                RelativeAnchorPosition = new Vector2(0.5f, 0.0f),
-                Masking = true,
-                CornerRadius = 10,
-                EdgeEffect = OsuRequestEdgeEffects.DispersedShadow,
-                Children = new Drawable[]
+                new Box
                 {
-                    new Box
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = OsuRequestColour.Gray2.Opacity(0.75f)
+                },
+                new Container
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    Padding = new MarginPadding(10),
+                    Children = new Drawable[]
                     {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Colour = OsuRequestColour.Gray2.Opacity(0.75f)
-                    },
-                    new Container
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Padding = new MarginPadding(10),
-                        Children = new Drawable[]
+                        Title = new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 30))
                         {
-                            Title = new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 30))
-                            {
-                                Anchor = Anchor.TopCentre,
-                                Origin = Anchor.TopCentre,
-                                TextAnchor = Anchor.TopCentre,
-                                RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(1.0f, 0.5f)
-                            },
-                            Message = new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 20))
-                            {
-                                Anchor = Anchor.BottomCentre,
-                                Origin = Anchor.BottomCentre,
-                                TextAnchor = Anchor.Centre,
-                                RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(1.0f, 0.5f)
-                            }
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            TextAnchor = Anchor.TopCentre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(1.0f, 0.5f)
+                        },
+                        Message = new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 20))
+                        {
+                            Anchor = Anchor.BottomCentre,
+                            Origin = Anchor.BottomCentre,
+                            TextAnchor = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(1.0f, 0.5f)
                         }
                     }
                 }
-            };
-        }
+            }
+        };
+    }
 
-        public void Notify(string title, string message)
-        {
-            Scheduler.Add(() => notify(title, message));
-        }
+    public void Notify(string title, string message)
+    {
+        Scheduler.Add(() => notify(title, message));
+    }
 
-        private void notify(string title, string message)
-        {
-            Content.FinishTransforms();
+    private void notify(string title, string message)
+    {
+        Content.FinishTransforms();
 
-            Title.Text = title;
-            Message.Text = message;
+        Title.Text = title;
+        Message.Text = message;
 
-            Content.Delay(500)
-                .MoveToY(150.0f, 300, Easing.OutCubic)
-                .Delay(3000)
-                .MoveToY(0.0f, 300, Easing.InCubic);
-        }
+        Content.Delay(500)
+            .MoveToY(150.0f, 300, Easing.OutCubic)
+            .Delay(3000)
+            .MoveToY(0.0f, 300, Easing.InCubic);
     }
 }

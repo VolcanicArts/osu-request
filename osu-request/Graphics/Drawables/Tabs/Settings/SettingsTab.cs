@@ -3,105 +3,103 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Platform;
 using osu_request.Config;
-using osu_request.Drawables.Notifications;
 using osu_request.Websocket;
 using osuTK;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public class SettingsTab : GenericTab
 {
-    public class SettingsTab : GenericTab
+    private const string twitchLoginUrl =
+        "https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=w1j4lbtlp30d1z1whtutav6mgshzd3&redirect_uri=http://localhost/redirect&scope=user:read:email+chat:read+chat:edit+moderation:read";
+
+    private SettingContainer ChannelNameContainer;
+    private SettingContainer PasscodeContainer;
+
+    [Resolved]
+    private WebSocketClient WebSocketClient { get; set; }
+
+    [Resolved]
+    private OsuRequestConfig OsuRequestConfig { get; set; }
+
+    [BackgroundDependencyLoader]
+    private void Load(GameHost host)
     {
-        private const string twitchLoginUrl =
-            "https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=w1j4lbtlp30d1z1whtutav6mgshzd3&redirect_uri=http://localhost/redirect&scope=user:read:email+chat:read+chat:edit+moderation:read";
-
-        private SettingContainer ChannelNameContainer;
-        private SettingContainer PasscodeContainer;
-
-        [Resolved]
-        private WebSocketClient WebSocketClient { get; set; }
-
-        [Resolved]
-        private OsuRequestConfig OsuRequestConfig { get; set; }
-
-        [BackgroundDependencyLoader]
-        private void Load(GameHost host)
+        Children = new Drawable[]
         {
-            Children = new Drawable[]
+            new Container
             {
-                new Container
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Size = new Vector2(0.8f),
+                Margin = new MarginPadding
+                {
+                    Bottom = 50
+                },
+                Child = new FillFlowContainer
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.8f),
-                    Margin = new MarginPadding
-                    {
-                        Bottom = 50
-                    },
-                    Child = new FillFlowContainer
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        Direction = FillDirection.Vertical,
-                        Spacing = new Vector2(0.0f, 10.0f),
-                        Children = new Drawable[]
-                        {
-                            ChannelNameContainer = new SettingContainer
-                            {
-                                Setting = OsuRequestSetting.Username,
-                                Prompt = "Username"
-                            },
-                            PasscodeContainer = new SecretSettingContainer
-                            {
-                                Setting = OsuRequestSetting.Passcode,
-                                Prompt = "Passcode"
-                            }
-                        }
-                    }
-                },
-                new Container
-                {
-                    Anchor = Anchor.BottomCentre,
-                    Origin = Anchor.BottomCentre,
-                    RelativeSizeAxes = Axes.X,
-                    Size = new Vector2(1.0f, 250.0f),
-                    Padding = new MarginPadding(50),
+                    Direction = FillDirection.Vertical,
+                    Spacing = new Vector2(0.0f, 10.0f),
                     Children = new Drawable[]
                     {
-                        new TextButton
+                        ChannelNameContainer = new SettingContainer
                         {
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.2f, 0.4f),
-                            Text = "Login with Twitch",
-                            FontSize = 25,
-                            CornerRadius = 5,
-                            OnButtonClicked = () => host.OpenUrlExternally(twitchLoginUrl)
+                            Setting = OsuRequestSetting.Username,
+                            Prompt = "Username"
                         },
-                        new TextButton
+                        PasscodeContainer = new SecretSettingContainer
                         {
-                            Anchor = Anchor.BottomCentre,
-                            Origin = Anchor.BottomCentre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.2f, 0.4f),
-                            Text = "Save and Connect",
-                            FontSize = 25,
-                            CornerRadius = 5,
-                            OnButtonClicked = SaveButtonClicked
+                            Setting = OsuRequestSetting.Passcode,
+                            Prompt = "Passcode"
                         }
                     }
                 }
-            };
-        }
+            },
+            new Container
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.BottomCentre,
+                RelativeSizeAxes = Axes.X,
+                Size = new Vector2(1.0f, 250.0f),
+                Padding = new MarginPadding(50),
+                Children = new Drawable[]
+                {
+                    new TextButton
+                    {
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        RelativeSizeAxes = Axes.Both,
+                        Size = new Vector2(0.2f, 0.4f),
+                        Text = "Login with Twitch",
+                        FontSize = 25,
+                        CornerRadius = 5,
+                        OnButtonClicked = () => host.OpenUrlExternally(twitchLoginUrl)
+                    },
+                    new TextButton
+                    {
+                        Anchor = Anchor.BottomCentre,
+                        Origin = Anchor.BottomCentre,
+                        RelativeSizeAxes = Axes.Both,
+                        Size = new Vector2(0.2f, 0.4f),
+                        Text = "Save and Connect",
+                        FontSize = 25,
+                        CornerRadius = 5,
+                        OnButtonClicked = SaveButtonClicked
+                    }
+                }
+            }
+        };
+    }
 
-        private void SaveButtonClicked()
-        {
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = ChannelNameContainer.TextBox.Text;
-            OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = PasscodeContainer.TextBox.Text;
-            OsuRequestConfig.Save();
-            WebSocketClient.SendAuth(OsuRequestConfig);
-        }
+    private void SaveButtonClicked()
+    {
+        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = ChannelNameContainer.TextBox.Text;
+        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = PasscodeContainer.TextBox.Text;
+        OsuRequestConfig.Save();
+        WebSocketClient.SendAuth(OsuRequestConfig);
     }
 }

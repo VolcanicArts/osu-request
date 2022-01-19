@@ -5,74 +5,73 @@ using osu.Framework.Graphics.Shapes;
 using osu_request.Config;
 using osuTK;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public class SettingContainer : Container
 {
-    public class SettingContainer : Container
+    protected internal OsuRequestTextBox TextBox { get; private set; }
+    protected internal string Prompt { get; init; }
+    protected internal OsuRequestSetting Setting { get; init; }
+
+    [BackgroundDependencyLoader]
+    private void Load(OsuRequestConfig osuRequestConfig)
     {
-        protected internal OsuRequestTextBox TextBox { get; private set; }
-        protected internal string Prompt { get; init; }
-        protected internal OsuRequestSetting Setting { get; init; }
+        Anchor = Anchor.Centre;
+        Origin = Anchor.Centre;
+        RelativeSizeAxes = Axes.X;
+        Size = new Vector2(1.0f, 100.0f);
+        Masking = true;
+        CornerRadius = 10;
+        EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
 
-        [BackgroundDependencyLoader]
-        private void Load(OsuRequestConfig osuRequestConfig)
+        Children = new Drawable[]
         {
-            Anchor = Anchor.Centre;
-            Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.X;
-            Size = new Vector2(1.0f, 100.0f);
-            Masking = true;
-            CornerRadius = 10;
-            EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
-
-            Children = new Drawable[]
+            new Box
             {
-                new Box
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Colour = OsuRequestColour.Gray2
+            },
+            new Container
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Padding = new MarginPadding(10),
+                Children = new Drawable[]
                 {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = OsuRequestColour.Gray2
-                },
-                new Container
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding(10),
-                    Children = new Drawable[]
+                    new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 30))
                     {
-                        new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 30))
-                        {
-                            Anchor = Anchor.TopCentre,
-                            Origin = Anchor.TopCentre,
-                            TextAnchor = Anchor.TopLeft,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f),
-                            Text = Prompt
-                        },
-                        new Container
-                        {
-                            Anchor = Anchor.BottomCentre,
-                            Origin = Anchor.BottomCentre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f),
-                            Child = TextBox = CreateTextBox(osuRequestConfig.Get<string>(Setting))
-                        }
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        TextAnchor = Anchor.TopLeft,
+                        RelativeSizeAxes = Axes.Both,
+                        Size = new Vector2(1.0f, 0.5f),
+                        Text = Prompt
+                    },
+                    new Container
+                    {
+                        Anchor = Anchor.BottomCentre,
+                        Origin = Anchor.BottomCentre,
+                        RelativeSizeAxes = Axes.Both,
+                        Size = new Vector2(1.0f, 0.5f),
+                        Child = TextBox = CreateTextBox(osuRequestConfig.Get<string>(Setting))
                     }
                 }
-            };
-        }
+            }
+        };
+    }
 
-        protected virtual OsuRequestTextBox CreateTextBox(string text)
+    protected virtual OsuRequestTextBox CreateTextBox(string text)
+    {
+        return new OsuRequestTextBox
         {
-            return new OsuRequestTextBox
-            {
-                Anchor = Anchor.TopCentre,
-                Origin = Anchor.TopCentre,
-                RelativeSizeAxes = Axes.Both,
-                Text = text,
-                CornerRadius = 5
-            };
-        }
+            Anchor = Anchor.TopCentre,
+            Origin = Anchor.TopCentre,
+            RelativeSizeAxes = Axes.Both,
+            Text = text,
+            CornerRadius = 5
+        };
     }
 }

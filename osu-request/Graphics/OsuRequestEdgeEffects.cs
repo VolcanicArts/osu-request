@@ -3,32 +3,31 @@ using osu.Framework.Graphics.Effects;
 using osuTK;
 using osuTK.Graphics;
 
-namespace osu_request
+namespace osu_request;
+
+public static class OsuRequestEdgeEffects
 {
-    public static class OsuRequestEdgeEffects
+    public static readonly EdgeEffectParameters NoShadow = new()
     {
-        public static readonly EdgeEffectParameters NoShadow = new()
-        {
-            Colour = OsuRequestColour.Invisible,
-            Radius = 0,
-            Type = EdgeEffectType.Shadow,
-            Offset = Vector2.Zero
-        };
+        Colour = OsuRequestColour.Invisible,
+        Radius = 0,
+        Type = EdgeEffectType.Shadow,
+        Offset = Vector2.Zero
+    };
 
-        public static readonly EdgeEffectParameters BasicShadow = new()
-        {
-            Colour = Color4.Black.Opacity(0.6f),
-            Radius = 2.5f,
-            Type = EdgeEffectType.Shadow,
-            Offset = new Vector2(0.0f, 1.5f)
-        };
+    public static readonly EdgeEffectParameters BasicShadow = new()
+    {
+        Colour = Color4.Black.Opacity(0.6f),
+        Radius = 2.5f,
+        Type = EdgeEffectType.Shadow,
+        Offset = new Vector2(0.0f, 1.5f)
+    };
 
-        public static EdgeEffectParameters DispersedShadow = new()
-        {
-            Colour = Color4.Black.Opacity(0.25f),
-            Radius = 20,
-            Type = EdgeEffectType.Shadow,
-            Offset = new Vector2(0.0f, 5.0f)
-        };
-    }
+    public static EdgeEffectParameters DispersedShadow = new()
+    {
+        Colour = Color4.Black.Opacity(0.25f),
+        Radius = 20,
+        Type = EdgeEffectType.Shadow,
+        Offset = new Vector2(0.0f, 5.0f)
+    };
 }

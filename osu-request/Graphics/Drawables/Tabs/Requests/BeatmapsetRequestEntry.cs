@@ -7,132 +7,130 @@ using osu.Framework.Graphics.Textures;
 using osu_request.Structures;
 using osu_request.Websocket.Structures;
 using osuTK;
-using TwitchLib.Client.Models;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public class BeatmapsetRequestEntry : Container
 {
-    public class BeatmapsetRequestEntry : Container
+    public readonly string BeatmapsetId;
+    private readonly RequestArgs RequestArgs;
+    public readonly string Username;
+    private readonly WorkingBeatmapset WorkingBeatmapset;
+
+    [Cached]
+    private BindableBool ShouldDispose = new();
+
+    public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, RequestArgs requestArgs)
     {
-        public readonly string BeatmapsetId;
-        public readonly string Username;
-        private readonly RequestArgs RequestArgs;
-        private readonly WorkingBeatmapset WorkingBeatmapset;
+        RequestArgs = requestArgs;
+        WorkingBeatmapset = workingBeatmapset;
+        BeatmapsetId = RequestArgs.Beatmapset.Id.ToString();
+        Username = RequestArgs.Requester.Login;
 
-        [Cached]
-        private BindableBool ShouldDispose = new();
+        ShouldDispose.BindValueChanged(_ => DisposeGracefully());
+    }
 
-        public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, RequestArgs requestArgs)
+    protected override void LoadComplete()
+    {
+        base.LoadComplete();
+        this.FadeInFromZero(1000, Easing.InQuad);
+    }
+
+    [BackgroundDependencyLoader]
+    private void Load(TextureStore textureStore)
+    {
+        Alpha = 0;
+        Masking = true;
+        CornerRadius = 10;
+
+        Children = new Drawable[]
         {
-            RequestArgs = requestArgs;
-            WorkingBeatmapset = workingBeatmapset;
-            BeatmapsetId = RequestArgs.Beatmapset.Id.ToString();
-            Username = RequestArgs.Requester.Login;
-
-            ShouldDispose.BindValueChanged(_ => DisposeGracefully());
-        }
-
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            this.FadeInFromZero(1000, Easing.InQuad);
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore)
-        {
-            Alpha = 0;
-            Masking = true;
-            CornerRadius = 10;
-
-            Children = new Drawable[]
+            new Box
             {
-                new Box
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Colour = OsuRequestColour.Gray4
+            },
+            new Container
+            {
+                Anchor = Anchor.CentreLeft,
+                Origin = Anchor.CentreLeft,
+                RelativeSizeAxes = Axes.Both,
+                Size = new Vector2(0.05f, 1.0f),
+                Padding = new MarginPadding
+                {
+                    Left = 5,
+                    Right = 2.5f,
+                    Top = 5,
+                    Bottom = 5
+                },
+                Child = new SpriteButton
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Colour = OsuRequestColour.Gray4
-                },
-                new Container
+                    CornerRadius = 10,
+                    BackgroundColour = OsuRequestColour.GreenDark,
+                    Texture = textureStore.Get("check"),
+                    OnButtonClicked = DisposeGracefully
+                }
+            },
+            new Container
+            {
+                Anchor = Anchor.CentreRight,
+                Origin = Anchor.CentreRight,
+                RelativeSizeAxes = Axes.Both,
+                Size = new Vector2(0.95f, 1.0f),
+                Children = new Drawable[]
                 {
-                    Anchor = Anchor.CentreLeft,
-                    Origin = Anchor.CentreLeft,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.05f, 1.0f),
-                    Padding = new MarginPadding
+                    new Container
                     {
-                        Left = 5,
-                        Right = 2.5f,
-                        Top = 5,
-                        Bottom = 5
-                    },
-                    Child = new SpriteButton
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
                         RelativeSizeAxes = Axes.Both,
-                        CornerRadius = 10,
-                        BackgroundColour = OsuRequestColour.GreenDark,
-                        Texture = textureStore.Get("check"),
-                        OnButtonClicked = DisposeGracefully
-                    }
-                },
-                new Container
-                {
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
-                    RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.95f, 1.0f),
-                    Children = new Drawable[]
-                    {
-                        new Container
+                        Size = new Vector2(0.85f, 1.0f),
+                        Padding = new MarginPadding
                         {
-                            Anchor = Anchor.CentreLeft,
-                            Origin = Anchor.CentreLeft,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.85f, 1.0f),
-                            Padding = new MarginPadding
-                            {
-                                Left = 2.5f,
-                                Right = 2.5f,
-                                Top = 5,
-                                Bottom = 5
-                            },
-                            Child = new BeatmapsetRequestCard(WorkingBeatmapset, RequestArgs)
-                            {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                RelativeSizeAxes = Axes.Both
-                            }
+                            Left = 2.5f,
+                            Right = 2.5f,
+                            Top = 5,
+                            Bottom = 5
                         },
-                        new Container
+                        Child = new BeatmapsetRequestCard(WorkingBeatmapset, RequestArgs)
                         {
-                            Anchor = Anchor.CentreRight,
-                            Origin = Anchor.CentreRight,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(0.15f, 1.0f),
-                            Padding = new MarginPadding
-                            {
-                                Left = 2.5f,
-                                Right = 5,
-                                Top = 5,
-                                Bottom = 5
-                            },
-                            Child = new BeatmapsetRequestButtons(RequestArgs)
-                            {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                RelativeSizeAxes = Axes.Both
-                            }
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both
+                        }
+                    },
+                    new Container
+                    {
+                        Anchor = Anchor.CentreRight,
+                        Origin = Anchor.CentreRight,
+                        RelativeSizeAxes = Axes.Both,
+                        Size = new Vector2(0.15f, 1.0f),
+                        Padding = new MarginPadding
+                        {
+                            Left = 2.5f,
+                            Right = 5,
+                            Top = 5,
+                            Bottom = 5
+                        },
+                        Child = new BeatmapsetRequestButtons(RequestArgs)
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both
                         }
                     }
                 }
-            };
-        }
+            }
+        };
+    }
 
-        public void DisposeGracefully()
-        {
-            this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
-        }
+    public void DisposeGracefully()
+    {
+        this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
     }
 }

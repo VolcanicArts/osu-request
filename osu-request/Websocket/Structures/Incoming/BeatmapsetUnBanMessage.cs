@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Websocket.Structures;
 

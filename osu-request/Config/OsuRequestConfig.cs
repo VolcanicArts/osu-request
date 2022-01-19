@@ -1,24 +1,23 @@
 ﻿using osu.Framework.Configuration;
 using osu.Framework.Platform;
 
-namespace osu_request.Config
+namespace osu_request.Config;
+
+public class OsuRequestConfig : IniConfigManager<OsuRequestSetting>
 {
-    public class OsuRequestConfig : IniConfigManager<OsuRequestSetting>
+    public OsuRequestConfig(Storage storage) : base(storage) { }
+
+    protected override string Filename => @"config.ini";
+
+    protected override void InitialiseDefaults()
     {
-        public OsuRequestConfig(Storage storage) : base(storage) { }
-
-        protected override string Filename => @"config.ini";
-
-        protected override void InitialiseDefaults()
-        {
-            SetDefault(OsuRequestSetting.Username, string.Empty);
-            SetDefault(OsuRequestSetting.Passcode, string.Empty);
-        }
+        SetDefault(OsuRequestSetting.Username, string.Empty);
+        SetDefault(OsuRequestSetting.Passcode, string.Empty);
     }
+}
 
-    public enum OsuRequestSetting
-    {
-        Username,
-        Passcode
-    }
+public enum OsuRequestSetting
+{
+    Username,
+    Passcode
 }

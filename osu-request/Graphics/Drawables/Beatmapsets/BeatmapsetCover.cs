@@ -8,42 +8,41 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK.Graphics;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public class BeatmapsetCover : Container
 {
-    public class BeatmapsetCover : Container
+    private readonly Texture Texture;
+
+    public BeatmapsetCover(Texture texture)
     {
-        private readonly Texture Texture;
+        Texture = texture;
+    }
 
-        public BeatmapsetCover(Texture texture)
+    [BackgroundDependencyLoader]
+    private void Load()
+    {
+        Masking = true;
+        CornerRadius = 10;
+
+        Children = new Drawable[]
         {
-            Texture = texture;
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load()
-        {
-            Masking = true;
-            CornerRadius = 10;
-
-            Children = new Drawable[]
+            new Sprite
             {
-                new Sprite
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    FillMode = FillMode.Fill,
-                    FillAspectRatio = Texture.Width / (float)Texture.Height,
-                    Texture = Texture
-                },
-                new Box
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = ColourInfo.GradientHorizontal(Color4.Black.Opacity(0.9f), Color4.Black.Opacity(0.5f))
-                }
-            };
-        }
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fill,
+                FillAspectRatio = Texture.Width / (float)Texture.Height,
+                Texture = Texture
+            },
+            new Box
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Colour = ColourInfo.GradientHorizontal(Color4.Black.Opacity(0.9f), Color4.Black.Opacity(0.5f))
+            }
+        };
     }
 }

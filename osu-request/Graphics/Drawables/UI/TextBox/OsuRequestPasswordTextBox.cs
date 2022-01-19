@@ -1,15 +1,17 @@
 ﻿using osu.Framework.Graphics;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public sealed class OsuRequestPasswordTextBox : OsuRequestTextBox
 {
-    public sealed class OsuRequestPasswordTextBox : OsuRequestTextBox
+    private static char MaskCharacter => '*';
+
+    protected override bool AllowClipboardExport => true;
+
+    protected override bool AllowWordNavigation => false;
+
+    protected override Drawable AddCharacterToFlow(char c)
     {
-        private static char MaskCharacter => '*';
-
-        protected override bool AllowClipboardExport => true;
-
-        protected override bool AllowWordNavigation => false;
-
-        protected override Drawable AddCharacterToFlow(char c) => base.AddCharacterToFlow(MaskCharacter);
+        return base.AddCharacterToFlow(MaskCharacter);
     }
 }

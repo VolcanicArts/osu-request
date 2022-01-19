@@ -9,5 +9,4 @@ public class WebSocketMessage
 
     [JsonIgnore]
     public string RawMessage;
-
 }

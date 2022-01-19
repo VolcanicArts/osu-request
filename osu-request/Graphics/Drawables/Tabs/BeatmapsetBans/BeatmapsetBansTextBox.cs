@@ -1,5 +1,4 @@
-﻿using System;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -7,76 +6,75 @@ using osu_request.Drawables;
 using osu_request.Websocket;
 using osuTK;
 
-namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
-{
-    public class BeatmapsetBansTextBox : Container
-    {
-        private OsuRequestTextBox TextBox;
+namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans;
 
-        [BackgroundDependencyLoader]
-        private void Load(WebSocketClient webSocketClient)
+public class BeatmapsetBansTextBox : Container
+{
+    private OsuRequestTextBox TextBox;
+
+    [BackgroundDependencyLoader]
+    private void Load(WebSocketClient webSocketClient)
+    {
+        Masking = true;
+        CornerRadius = 10;
+        EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
+        Children = new Drawable[]
         {
-            Masking = true;
-            CornerRadius = 10;
-            EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
-            Children = new Drawable[]
+            new Box
             {
-                new Box
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Colour = OsuRequestColour.Gray2
+            },
+            new Container
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Padding = new MarginPadding(10),
+                Child = new Container
                 {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
                     RelativeSizeAxes = Axes.Both,
-                    Colour = OsuRequestColour.Gray2
-                },
-                new Container
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding(10),
-                    Child = new Container
+                    Children = new Drawable[]
                     {
-                        Anchor = Anchor.TopCentre,
-                        Origin = Anchor.TopCentre,
-                        RelativeSizeAxes = Axes.Both,
-                        Children = new Drawable[]
+                        new Container
                         {
-                            new Container
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(0.795f, 1.0f),
+                            Child = TextBox = new OsuRequestTextBox
                             {
-                                Anchor = Anchor.CentreLeft,
-                                Origin = Anchor.CentreLeft,
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.795f, 1.0f),
-                                Child = TextBox = new OsuRequestTextBox
-                                {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    RelativeSizeAxes = Axes.Both,
-                                    PlaceholderText = "Beatmapset ID",
-                                    CornerRadius = 10
-                                }
-                            },
-                            new Container
+                                PlaceholderText = "Beatmapset ID",
+                                CornerRadius = 10
+                            }
+                        },
+                        new Container
+                        {
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(0.195f, 1.0f),
+                            Child = new TextButton
                             {
-                                Anchor = Anchor.CentreRight,
-                                Origin = Anchor.CentreRight,
+                                Anchor = Anchor.BottomRight,
+                                Origin = Anchor.BottomRight,
                                 RelativeSizeAxes = Axes.Both,
-                                Size = new Vector2(0.195f, 1.0f),
-                                Child = new TextButton
-                                {
-                                    Anchor = Anchor.BottomRight,
-                                    Origin = Anchor.BottomRight,
-                                    RelativeSizeAxes = Axes.Both,
-                                    Text = "Ban",
-                                    FontSize = 40,
-                                    CornerRadius = 10,
-                                    OnButtonClicked = () => webSocketClient.BanBeatmapset(TextBox.Text)
-                                }
+                                Text = "Ban",
+                                FontSize = 40,
+                                CornerRadius = 10,
+                                OnButtonClicked = () => webSocketClient.BanBeatmapset(TextBox.Text)
                             }
                         }
                     }
                 }
-            };
-        }
+            }
+        };
     }
 }

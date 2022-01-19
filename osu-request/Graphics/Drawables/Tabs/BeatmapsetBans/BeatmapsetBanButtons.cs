@@ -1,5 +1,4 @@
-﻿using System;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -7,50 +6,49 @@ using osu.Framework.Graphics.Textures;
 using osu_request.Structures;
 using osu_request.Websocket;
 
-namespace osu_request.Drawables
+namespace osu_request.Drawables;
+
+public class BeatmapsetBanButtons : Container
 {
-    public class BeatmapsetBanButtons : Container
+    private readonly WorkingBeatmapset WorkingBeatmapset;
+
+    public BeatmapsetBanButtons(WorkingBeatmapset workingBeatmapset)
     {
-        private readonly WorkingBeatmapset WorkingBeatmapset;
+        WorkingBeatmapset = workingBeatmapset;
+    }
 
-        public BeatmapsetBanButtons(WorkingBeatmapset workingBeatmapset)
+    [BackgroundDependencyLoader]
+    private void Load(TextureStore textureStore, WebSocketClient webSocketClient)
+    {
+        Masking = true;
+        CornerRadius = 10;
+
+        Children = new Drawable[]
         {
-            WorkingBeatmapset = workingBeatmapset;
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, WebSocketClient webSocketClient)
-        {
-            Masking = true;
-            CornerRadius = 10;
-
-            Children = new Drawable[]
+            new Box
             {
-                new Box
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Colour = OsuRequestColour.Gray2
+            },
+            new Container
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Padding = new MarginPadding(5),
+                Child = new SpriteButton
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Colour = OsuRequestColour.Gray2
-                },
-                new Container
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding(5),
-                    Child = new SpriteButton
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        RelativeSizeAxes = Axes.Both,
-                        CornerRadius = 5,
-                        BackgroundColour = OsuRequestColour.BlueDark,
-                        Texture = textureStore.Get("undo"),
-                        OnButtonClicked = () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString())
-                    }
+                    CornerRadius = 5,
+                    BackgroundColour = OsuRequestColour.BlueDark,
+                    Texture = textureStore.Get("undo"),
+                    OnButtonClicked = () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString())
                 }
-            };
-        }
+            }
+        };
     }
 }

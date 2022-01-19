@@ -4,11 +4,11 @@ namespace osu_request.Websocket.Structures;
 
 public class BanUserMessage
 {
-    [JsonProperty("op")]
-    public OutgoingOpCode Op { get; } = OutgoingOpCode.BANUSER;
-
     [JsonProperty("d")]
     public BanUserData Data;
+
+    [JsonProperty("op")]
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.BANUSER;
 }
 
 public class BanUserData

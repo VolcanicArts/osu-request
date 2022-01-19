@@ -8,6 +8,7 @@ public class BeatmapsetBanMessage
     [JsonProperty("d")]
     public BeatmapsetBanArgs Data;
 }
+
 public class BeatmapsetBanArgs
 {
     [JsonProperty("beatmapset")]

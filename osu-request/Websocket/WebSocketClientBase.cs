@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using NetCoreServer;
 using Newtonsoft.Json;
 using osu.Framework.Logging;
 using osu_request.Websocket.Structures;
-using TwitchLib.Client.Events;
 
 namespace osu_request.Websocket;
 
