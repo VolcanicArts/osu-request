@@ -12,6 +12,7 @@ public class TabsContainer : Container
 {
     private GenericTab[] _tabs;
     private Toolbar _toolbar;
+    private int CurrentTabId;
 
     [BackgroundDependencyLoader]
     private void Load()
@@ -51,15 +52,15 @@ public class TabsContainer : Container
                     },
                     new BeatmapsetBansTab
                     {
-                        Position = new Vector2(1.0f, 0.0f)
+                        Position = new Vector2(-1.0f, 0.0f)
                     },
                     new UserBansTab
                     {
-                        Position = new Vector2(2.0f, 0.0f)
+                        Position = new Vector2(-1.0f, 0.0f)
                     },
                     new SettingsTab
                     {
-                        Position = new Vector2(3.0f, 0.0f)
+                        Position = new Vector2(-1.0f, 0.0f)
                     }
                 }
             }
@@ -78,15 +79,24 @@ public class TabsContainer : Container
         var id = Convert.ToInt32(tab);
         _toolbar.Select(id);
         AnimateTabs(id);
+        CurrentTabId = id;
     }
 
     private void AnimateTabs(int id)
     {
-        for (var i = 0; i < _tabs.Length; i++)
+        if (id == CurrentTabId) return;
+        var currentTab = _tabs[CurrentTabId];
+        var newTab = _tabs[id];
+
+        if (id > CurrentTabId)
         {
-            var tab = _tabs[i];
-            var pos = i - id;
-            tab.MoveTo(new Vector2(pos, 0.0f), 200, Easing.InOutQuart);
+            newTab.MoveToX(1.0f).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
+            currentTab.MoveToX(-1.0f, 200, Easing.InOutQuart);
+        }
+        else
+        {
+            newTab.MoveToX(-1.0f).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
+            currentTab.MoveToX(1.0f, 200, Easing.InOutQuart);
         }
     }
 }
