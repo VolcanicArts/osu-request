@@ -4,7 +4,7 @@ namespace osu_request.Drawables
 {
     public sealed class OsuRequestPasswordTextBox : OsuRequestTextBox
     {
-        private char MaskCharacter => '*';
+        private static char MaskCharacter => '*';
 
         protected override bool AllowClipboardExport => true;
 
