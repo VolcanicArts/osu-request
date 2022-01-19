@@ -88,7 +88,7 @@ namespace osu_request.Drawables
             OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = ChannelNameContainer.TextBox.Text;
             OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = PasscodeContainer.TextBox.Text;
             OsuRequestConfig.Save();
-            WebSocketClient.SendAuth(OsuRequestConfig);
+            WebSocketClient.ResendAuth(OsuRequestConfig);
         }
     }
 }
