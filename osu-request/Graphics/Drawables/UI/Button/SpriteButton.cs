@@ -13,7 +13,6 @@ namespace osu_request.Drawables
     public class SpriteButton : OsuRequestButton
     {
         protected internal Texture Texture { get; init; }
-        protected internal Color4 BackgroundColour { get; init; }
 
         [BackgroundDependencyLoader]
         private void Load()
