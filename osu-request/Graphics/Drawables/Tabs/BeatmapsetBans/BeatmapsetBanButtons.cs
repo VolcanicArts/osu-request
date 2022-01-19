@@ -1,10 +1,11 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu_request.Clients;
 using osu_request.Structures;
+using osu_request.Websocket;
 
 namespace osu_request.Drawables
 {
@@ -18,7 +19,7 @@ namespace osu_request.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, BeatmapsetBanManager banManager)
+        private void Load(TextureStore textureStore, WebSocketClient webSocketClient)
         {
             Masking = true;
             CornerRadius = 10;
@@ -52,7 +53,7 @@ namespace osu_request.Drawables
                 }
             };
 
-            _unban.OnButtonClicked += () => banManager.UnBan(WorkingBeatmapset.Beatmapset.Id.ToString());
+            _unban.OnButtonClicked += () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString());
         }
     }
 }

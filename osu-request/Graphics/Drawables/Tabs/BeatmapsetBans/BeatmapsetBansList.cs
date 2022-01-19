@@ -6,9 +6,9 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
-using osu_request.Clients;
-using osu_request.Osu;
 using osu_request.Structures;
+using osu_request.Websocket;
+using osu_request.Websocket.Structures;
 using osuTK;
 using volcanicarts.osu.NET.Structures;
 
@@ -22,12 +22,9 @@ namespace osu_request.Drawables.Bans
         private AudioManager AudioManager { get; set; }
 
         [Resolved]
-        private OsuClientLocal OsuClient { get; set; }
-
-        [Resolved]
         private TextureStore TextureStore { get; set; }
 
-        private void BeatmapsetLoaded(Beatmapset beatmapset)
+        private void OnBeatmapsetBan(Beatmapset beatmapset)
         {
             var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
             var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
@@ -46,22 +43,17 @@ namespace osu_request.Drawables.Bans
         }
 
         [BackgroundDependencyLoader]
-        private void Load(GameHost host, BeatmapsetBanManager banManager)
+        private void Load(GameHost host, WebSocketClient webSocketClient)
         {
             host.Window.Resized += () => UpdateSizing(host.Window);
-            banManager.OnBeatmapsetBan += OnBeatmapsetBan;
-            banManager.OnBeatmapsetUnBan += OnBeatmapsetUnBan;
+            webSocketClient.OnBeatmapsetBan += (beatmapset => Scheduler.Add(() => OnBeatmapsetBan(beatmapset)));
+            webSocketClient.OnBeatmapsetUnBan += (beatmapsetId => Scheduler.Add(() => OnBeatmapsetUnBan(beatmapsetId)));
             InitChildren();
         }
 
         private void OnBeatmapsetUnBan(string beatmapsetId)
         {
             _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
-        }
-
-        private void OnBeatmapsetBan(string beatmapsetId)
-        {
-            OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset)));
         }
 
         private void UpdateSizing(IWindow window)

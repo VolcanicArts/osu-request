@@ -2,13 +2,15 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>osu_request</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="NetCoreServer" Version="6.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="ppy.osu.Framework" Version="2022.118.0" />
+        <PackageReference Include="TwitchLib.Api" Version="3.3.0" />
         <PackageReference Include="TwitchLib.Client" Version="3.2.4" />
         <PackageReference Include="volcanicarts.osu.NET" Version="2022.105.0" />
     </ItemGroup>

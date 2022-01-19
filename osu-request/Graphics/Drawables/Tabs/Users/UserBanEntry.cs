@@ -1,20 +1,22 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
-using osu_request.Clients;
+using osu_request.Websocket;
 using osuTK;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
 namespace osu_request.Drawables.Users
 {
     public class UserBanEntry : Container
     {
-        public readonly string Username;
+        public readonly User User;
 
-        public UserBanEntry(string username)
+        public UserBanEntry(User user)
         {
-            Username = username;
+            User = user;
         }
 
         protected override void LoadComplete()
@@ -24,7 +26,7 @@ namespace osu_request.Drawables.Users
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textureStore, UserBanManager banManager)
+        private void Load(TextureStore textureStore, WebSocketClient webSocketClient)
         {
             Alpha = 0;
             Masking = true;
@@ -74,8 +76,8 @@ namespace osu_request.Drawables.Users
                 }
             };
 
-            _unban.OnButtonClicked += () => banManager.UnBan(Username);
-            _text.AddText(Username, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
+            _unban.OnButtonClicked += () => webSocketClient.UnBanUser(User.Id);
+            _text.AddText(User.Login, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
         }
 
         protected internal void DisposeGracefully()

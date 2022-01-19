@@ -11,18 +11,14 @@ namespace osu_request.Config
 
         protected override void InitialiseDefaults()
         {
-            SetDefault(OsuRequestSetting.OsuClientId, string.Empty);
-            SetDefault(OsuRequestSetting.OsuClientSecret, string.Empty);
-            SetDefault(OsuRequestSetting.TwitchChannelName, string.Empty);
-            SetDefault(OsuRequestSetting.TwitchOAuthToken, string.Empty);
+            SetDefault(OsuRequestSetting.Username, string.Empty);
+            SetDefault(OsuRequestSetting.Passcode, string.Empty);
         }
     }
 
     public enum OsuRequestSetting
     {
-        OsuClientId,
-        OsuClientSecret,
-        TwitchChannelName,
-        TwitchOAuthToken
+        Username,
+        Passcode
     }
 }

@@ -5,13 +5,12 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
-using osu_request.Clients;
-using osu_request.Osu;
 using osu_request.Structures;
-using osu_request.Twitch;
+using osu_request.Websocket;
+using osu_request.Websocket.Structures;
 using osuTK;
-using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Structures;
+using User = TwitchLib.Api.Helix.Models.Users.GetUsers.User;
 
 namespace osu_request.Drawables
 {
@@ -23,31 +22,14 @@ namespace osu_request.Drawables
         private AudioManager AudioManager { get; set; }
 
         [Resolved]
-        private OsuClientLocal OsuClient { get; set; }
-
-        [Resolved]
         private TextureStore TextureStore { get; set; }
 
-        [Resolved]
-        private BeatmapsetBanManager BeatmapsetBanManager { get; set; }
-
-        [Resolved]
-        private UserBanManager UserBanManager { get; set; }
-
-        private void HandleTwitchMessage(ChatMessage message)
+        private void NewRequest(RequestArgs requestArgs)
         {
-            if (!message.Message.StartsWith("!rq")) return;
-            var beatmapsetId = message.Message.Split(" ")[1];
-            if (BeatmapsetBanManager.IsBanned(beatmapsetId)) return;
-            if (UserBanManager.IsBanned(message.Username)) return;
-            OsuClient.RequestBeatmapsetFromBeatmapsetId(beatmapsetId, beatmapset => Scheduler.Add(() => BeatmapsetLoaded(beatmapset, message)));
-        }
-
-        private void BeatmapsetLoaded(Beatmapset beatmapset, ChatMessage message)
-        {
-            var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
-            var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
-            var beatmapsetContainer = new BeatmapsetRequestEntry(new WorkingBeatmapset(beatmapset, backgroundTexture, previewMp3), message)
+            var previewMp3 = AudioManager.GetTrackStore().Get(requestArgs.Beatmapset.PreviewUrl);
+            var backgroundTexture = TextureStore.Get(requestArgs.Beatmapset.Covers.CardAt2X);
+            var workingBeatmapset = new WorkingBeatmapset(requestArgs.Beatmapset, backgroundTexture, previewMp3);
+            var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset, requestArgs)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -58,23 +40,23 @@ namespace osu_request.Drawables
             Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
         }
 
-        private void OnBeatmapsetBan(string beatmapsetId)
+        private void OnBeatmapsetBan(Beatmapset beatmapset)
         {
-            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapsetId).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapset.Id.ToString()).ForEach(entry => entry.DisposeGracefully());
         }
 
-        private void OnUserBan(string username)
+        private void OnUserBan(User user)
         {
-            _fillFlowContainer.Where(entry => entry.Username == username).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.Username == user.Login).ForEach(entry => entry.DisposeGracefully());
         }
 
         [BackgroundDependencyLoader]
-        private void Load(TwitchClientLocal twitchClient)
+        private void Load(WebSocketClient webSocketClient)
         {
-            twitchClient.OnChatMessage += HandleTwitchMessage;
-            BeatmapsetBanManager.OnBeatmapsetBan += OnBeatmapsetBan;
-            UserBanManager.OnUserBan += OnUserBan;
-
+            webSocketClient.OnNewRequest += (requestArgs) => Scheduler.Add(() => NewRequest(requestArgs));
+            webSocketClient.OnBeatmapsetBan += (beatmapset) => Scheduler.Add(() => OnBeatmapsetBan(beatmapset));
+            webSocketClient.OnUserBan += (user) => Scheduler.Add(() => OnUserBan(user));
+            
             Children = new Drawable[]
             {
                 new BasicScrollContainer
