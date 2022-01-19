@@ -9,6 +9,9 @@ namespace osu_request.Websocket;
 
 public class WebSocketClient : WebSocketClientBase
 {
+    public Action OnLoggedIn;
+    public Action OnInvalidUsername;
+    public Action OnInvalidCode;
     public Action<RequestArgs> OnNewRequest;
     public Action<Beatmapset> OnBeatmapsetBan;
     public Action<User> OnUserBan;
@@ -20,6 +23,15 @@ public class WebSocketClient : WebSocketClientBase
         base.OnMessage(message);
         switch (message.Op)
         {
+            case IncomingOpCode.LOGGEDIN:
+                OnLoggedIn?.Invoke();
+                break;
+            case IncomingOpCode.AUTH_INVALID_USERNAME:
+                OnInvalidUsername?.Invoke();
+                break;
+            case IncomingOpCode.AUTH_INVALID_CODE:
+                OnInvalidCode?.Invoke();
+                break;
             case IncomingOpCode.REQUEST:
                 HandleNewRequest(message);
                 break;

@@ -2,6 +2,10 @@
 
 public enum IncomingOpCode
 {
+    AUTH_INVALID_USERNAME = 1000,
+    AUTH_INVALID_CODE = 1008,
+    CONNECTED = 1001,
+    LOGGEDIN = 1002,
     REQUEST = 1003,
     BEATMAPSETBAN = 1004,
     USERBAN = 1005,

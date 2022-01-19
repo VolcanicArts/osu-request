@@ -38,6 +38,25 @@ namespace osu_request
         {
             base.LoadComplete();
             TabsContainer.Select(Tabs.Requests);
+            StartWebsocket();
+        }
+
+        private void StartWebsocket()
+        {
+            WebSocketClient.OnLoggedIn += () => Scheduler.Add(() =>
+            {
+                NotificationContainer.Notify("Logged In!", "Connection was successful. Requests incoming!");
+            });
+            WebSocketClient.OnInvalidUsername += () => Scheduler.Add(() =>
+            {
+                NotificationContainer.Notify("Invalid username", "Please login with Twitch or enter a correct username");
+                TabsContainer.Select(Tabs.Settings);
+            });
+            WebSocketClient.OnInvalidCode += () => Scheduler.Add(() =>
+            {
+                NotificationContainer.Notify("Invalid code", "Please login with Twitch or enter a correct code");
+                TabsContainer.Select(Tabs.Settings);
+            });
             WebSocketClient.ConnectAsync();
             WebSocketClient.SendAuth(OsuRequestConfig);
         }
