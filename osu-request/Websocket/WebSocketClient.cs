@@ -13,7 +13,7 @@ public class WebSocketClient : WebSocketClientBase
     public Action<Beatmapset> OnBeatmapsetBan;
     public Action<User> OnUserBan;
     public Action<string> OnBeatmapsetUnBan;
-    public Action<UserUnBanArgs> OnUserUnBan;
+    public Action<string> OnUserUnBan;
 
     protected override void OnMessage(WebSocketMessage message)
     {
@@ -78,7 +78,7 @@ public class WebSocketClient : WebSocketClientBase
     private void HandleUserUnBan(WebSocketMessage message)
     {
         var userUnBanMessage = JsonConvert.DeserializeObject<UserUnBanMessage>(message.RawMessage);
-        OnUserUnBan?.Invoke(userUnBanMessage.Data);
+        OnUserUnBan?.Invoke(userUnBanMessage.Data.UserId);
     }
 
     public void BanBeatmapset(string beatmapsetId)
