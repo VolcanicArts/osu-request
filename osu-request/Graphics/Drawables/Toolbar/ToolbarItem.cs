@@ -78,7 +78,7 @@ namespace osu_request.Drawables
 
         protected override bool OnClick(ClickEvent e)
         {
-            Select(true);
+            OnSelected?.Invoke(ID);
             return true;
         }
 
@@ -87,10 +87,9 @@ namespace osu_request.Drawables
             return true;
         }
 
-        public void Select(bool trigger)
+        public void Select()
         {
             Selected = true;
-            if (trigger) OnSelected?.Invoke(ID);
             Background.FadeColour(SelectedColour, 200, Easing.OutCubic);
         }
 

@@ -55,7 +55,7 @@ namespace osu_request.Drawables
         public void Select(int id)
         {
             foreach (var item in Items) item.Deselect();
-            Items[id].Select(false);
+            Items[id].Select();
         }
     }
 }
