@@ -26,8 +26,8 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load(GameHost host)
         {
-            OsuRequestButton _saveButton;
-            OsuRequestButton _loginWithTwitch;
+            TextButton _saveButton;
+            TextButton _loginWithTwitch;
 
             Children = new Drawable[]
             {
@@ -72,7 +72,7 @@ namespace osu_request.Drawables
                     Padding = new MarginPadding(50),
                     Children = new Drawable[]
                     {
-                        _loginWithTwitch = new OsuRequestButton
+                        _loginWithTwitch = new TextButton
                         {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
@@ -82,7 +82,7 @@ namespace osu_request.Drawables
                             FontSize = 25,
                             CornerRadius = 5
                         },
-                        _saveButton = new OsuRequestButton
+                        _saveButton = new TextButton
                         {
                             Anchor = Anchor.BottomCentre,
                             Origin = Anchor.BottomCentre,

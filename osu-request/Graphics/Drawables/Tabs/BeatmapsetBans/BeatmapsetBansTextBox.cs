@@ -11,7 +11,7 @@ namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
 {
     public class BeatmapsetBansTextBox : Container
     {
-        private OsuRequestButton BanButton;
+        private TextButton BanButton;
         private OsuRequestTextBox TextBox;
 
         [BackgroundDependencyLoader]
@@ -63,7 +63,7 @@ namespace osu_request.Graphics.Drawables.Tabs.BeatmapsetBans
                                 Origin = Anchor.CentreRight,
                                 RelativeSizeAxes = Axes.Both,
                                 Size = new Vector2(0.195f, 1.0f),
-                                Child = BanButton = new OsuRequestButton
+                                Child = BanButton = new TextButton
                                 {
                                     Anchor = Anchor.BottomRight,
                                     Origin = Anchor.BottomRight,
