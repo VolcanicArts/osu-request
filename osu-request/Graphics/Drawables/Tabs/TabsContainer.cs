@@ -70,6 +70,11 @@ namespace osu_request.Drawables
 
         public void Select(Tabs tab)
         {
+            Scheduler.Add(() => select(tab));
+        }
+
+        private void select(Tabs tab)
+        {
             var id = Convert.ToInt32(tab);
             _toolbar.Select(id);
             AnimateTabs(id);
