@@ -43,6 +43,7 @@ namespace osu_request
 
         private void StartWebsocket()
         {
+            WebSocketClient.OnFailedConnection += () => NotificationContainer.Notify("Failed Connection", "Could not connect to the server. Please try again later");
             WebSocketClient.OnLoggedIn += () => NotificationContainer.Notify("Logged In!", "Connection was successful. Requests incoming!");
             WebSocketClient.OnInvalidUsername += () =>
             {
