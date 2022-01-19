@@ -11,6 +11,7 @@ public enum IncomingOpCode
     USERBAN = 1005,
     BEATMAPSETUNBAN = 1006,
     USERUNBAN = 1007,
+    ALLBEATMAPSETBANS = 1009
 }
 public enum OutgoingOpCode
 {
