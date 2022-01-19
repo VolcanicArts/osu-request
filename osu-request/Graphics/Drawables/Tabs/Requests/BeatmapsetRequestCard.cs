@@ -19,16 +19,15 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            var RequestText = new TextFlowContainer
+            AddInternal(new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 25))
             {
                 Anchor = Anchor.BottomLeft,
                 Origin = Anchor.BottomLeft,
                 TextAnchor = Anchor.BottomLeft,
                 RelativeSizeAxes = Axes.Both,
-                Padding = new MarginPadding(5)
-            };
-            RequestText.AddText($"Requested by {RequestArgs.Requester.DisplayName}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
-            AddInternal(RequestText);
+                Padding = new MarginPadding(5),
+                Text = $"Requested by {RequestArgs.Requester.DisplayName}"
+            });
         }
     }
 }

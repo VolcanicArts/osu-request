@@ -24,8 +24,6 @@ namespace osu_request.Drawables
             CornerRadius = 10;
             EdgeEffect = OsuRequestEdgeEffects.BasicShadow;
 
-            TextFlowContainer _text;
-
             Children = new Drawable[]
             {
                 new Box
@@ -43,13 +41,14 @@ namespace osu_request.Drawables
                     Padding = new MarginPadding(10),
                     Children = new Drawable[]
                     {
-                        _text = new TextFlowContainer
+                        new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 30))
                         {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
                             TextAnchor = Anchor.TopLeft,
                             RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1.0f, 0.5f)
+                            Size = new Vector2(1.0f, 0.5f),
+                            Text = Prompt
                         },
                         new Container
                         {
@@ -62,8 +61,6 @@ namespace osu_request.Drawables
                     }
                 }
             };
-
-            _text.AddText(Prompt, t => t.Font = OsuRequestFonts.Regular.With(size: 30));
         }
 
         protected virtual OsuRequestTextBox CreateTextBox(string text)

@@ -42,7 +42,7 @@ namespace osu_request.Drawables.Notifications
                         Padding = new MarginPadding(10),
                         Children = new Drawable[]
                         {
-                            Title = new TextFlowContainer
+                            Title = new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 30))
                             {
                                 Anchor = Anchor.TopCentre,
                                 Origin = Anchor.TopCentre,
@@ -50,7 +50,7 @@ namespace osu_request.Drawables.Notifications
                                 RelativeSizeAxes = Axes.Both,
                                 Size = new Vector2(1.0f, 0.5f)
                             },
-                            Message = new TextFlowContainer
+                            Message = new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 20))
                             {
                                 Anchor = Anchor.BottomCentre,
                                 Origin = Anchor.BottomCentre,
@@ -73,11 +73,8 @@ namespace osu_request.Drawables.Notifications
         {
             Content.FinishTransforms();
 
-            Title.Text = string.Empty;
-            Message.Text = string.Empty;
-
-            Title.AddText(title, t => t.Font = OsuRequestFonts.Regular.With(size: 30));
-            Message.AddText(message, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
+            Title.Text = title;
+            Message.Text = message;
 
             Content.Delay(500)
                 .MoveToY(150.0f, 300, Easing.OutCubic)

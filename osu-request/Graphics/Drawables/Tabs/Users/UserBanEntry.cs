@@ -32,7 +32,6 @@ namespace osu_request.Drawables.Users
             Masking = true;
             CornerRadius = 5;
 
-            TextFlowContainer _text;
             SpriteButton _unban;
 
             Children = new Drawable[]
@@ -44,7 +43,7 @@ namespace osu_request.Drawables.Users
                     RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray4
                 },
-                _text = new TextFlowContainer
+                new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 20))
                 {
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft,
@@ -53,7 +52,8 @@ namespace osu_request.Drawables.Users
                     Padding = new MarginPadding
                     {
                         Left = 5
-                    }
+                    },
+                    Text = User.Login
                 },
                 new Container
                 {
@@ -77,7 +77,6 @@ namespace osu_request.Drawables.Users
             };
 
             _unban.OnButtonClicked += () => webSocketClient.UnBanUser(User.Id);
-            _text.AddText(User.Login, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
         }
 
         protected internal void DisposeGracefully()

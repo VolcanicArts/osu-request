@@ -17,22 +17,19 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load()
         {
-            TextFlowContainer _text;
-
-            AddInternal(_text = new TextFlowContainer
-            {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                TextAnchor = Anchor.Centre,
-                RelativeSizeAxes = Axes.Both
-            });
-
-            _text.AddText(Text, t =>
+            AddInternal(new TextFlowContainer(t =>
             {
                 t.Font = OsuRequestFonts.Regular.With(size: FontSize);
                 t.Shadow = true;
                 t.ShadowColour = Color4.Black.Opacity(0.5f);
                 t.ShadowOffset = new Vector2(0.0f, 0.025f);
+            })
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                TextAnchor = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Text = Text
             });
         }
     }
