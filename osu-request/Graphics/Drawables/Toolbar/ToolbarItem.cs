@@ -13,8 +13,12 @@ namespace osu_request.Drawables
 {
     public class ToolbarItem : Container
     {
-        private Box _background;
-        private bool _selected;
+        private static readonly ColourInfo HoverColour = ColourInfo.GradientVertical(OsuRequestColour.Gray7.Opacity(0.5f), OsuRequestColour.Invisible);
+        private static readonly ColourInfo HoverLostColour = OsuRequestColour.Invisible;
+        private static readonly ColourInfo SelectedColour = ColourInfo.GradientVertical(OsuRequestColour.Gray7, OsuRequestColour.Invisible);
+
+        private Box Background;
+        private bool Selected;
 
         public Action<int> OnSelected;
 
@@ -22,21 +26,6 @@ namespace osu_request.Drawables
 
         [BackgroundDependencyLoader]
         private void Load()
-        {
-            InitSelf();
-            InitChildren();
-        }
-
-        private void InitSelf()
-        {
-            Anchor = Anchor.TopLeft;
-            Origin = Anchor.TopLeft;
-            RelativeSizeAxes = Axes.Y;
-            AutoSizeAxes = Axes.X;
-            Height = 1.0f;
-        }
-
-        private void InitChildren()
         {
             TextFlowContainer _text;
 
@@ -48,7 +37,7 @@ namespace osu_request.Drawables
                 Size = new Vector2(200, 1.0f),
                 Children = new Drawable[]
                 {
-                    _background = new Box
+                    Background = new Box
                     {
                         Anchor = Anchor.TopCentre,
                         Origin = Anchor.TopCentre,
@@ -77,15 +66,13 @@ namespace osu_request.Drawables
 
         protected override bool OnHover(HoverEvent e)
         {
-            if (!_selected)
-                _background.FadeColour(ColourInfo.GradientVertical(OsuRequestColour.Gray7.Opacity(0.5f), OsuRequestColour.Invisible), 300,
-                    Easing.OutCubic);
+            if (!Selected) Background.FadeColour(HoverColour, 300, Easing.OutCubic);
             return true;
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            if (!_selected) _background.FadeColour(OsuRequestColour.Invisible, 300, Easing.InCubic);
+            if (!Selected) Background.FadeColour(HoverLostColour, 300, Easing.InCubic);
             base.OnHoverLost(e);
         }
 
@@ -102,15 +89,15 @@ namespace osu_request.Drawables
 
         public void Select(bool trigger)
         {
-            _selected = true;
+            Selected = true;
             if (trigger) OnSelected?.Invoke(ID);
-            _background.FadeColour(ColourInfo.GradientVertical(OsuRequestColour.Gray7, OsuRequestColour.Invisible), 200, Easing.OutCubic);
+            Background.FadeColour(SelectedColour, 200, Easing.OutCubic);
         }
 
         public void Deselect()
         {
-            _selected = false;
-            _background.FadeColour(OsuRequestColour.Invisible, 200, Easing.InCubic);
+            Selected = false;
+            Background.FadeColour(OsuRequestColour.Invisible, 200, Easing.InCubic);
         }
     }
 }

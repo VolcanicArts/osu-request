@@ -41,6 +41,11 @@ namespace osu_request.Drawables
             {
                 var toolbarItem = new ToolbarItem
                 {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                    RelativeSizeAxes = Axes.Y,
+                    AutoSizeAxes = Axes.X,
+                    Height = 1.0f,
                     ID = i,
                     Name = ItemNames[i].Replace("_", " ")
                 };
