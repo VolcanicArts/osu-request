@@ -52,6 +52,11 @@ namespace osu_request.Drawables
         protected override bool OnClick(ClickEvent e)
         {
             OnButtonClicked?.Invoke();
+            if (IsHovered)
+            {
+                this.MoveToY(-1.5f, 100, Easing.InCubic);
+                TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 100, Easing.InCubic);
+            }
             return true;
         }
 
@@ -60,13 +65,6 @@ namespace osu_request.Drawables
             this.MoveToY(0, 100, Easing.OutCubic);
             TweenEdgeEffectTo(OsuRequestEdgeEffects.NoShadow, 100, Easing.OutCubic);
             return true;
-        }
-
-        protected override void OnMouseUp(MouseUpEvent e)
-        {
-            this.MoveToY(-1.5f, 100, Easing.InCubic);
-            TweenEdgeEffectTo(OsuRequestEdgeEffects.BasicShadow, 100, Easing.InCubic);
-            base.OnMouseUp(e);
         }
 
         protected override bool OnHover(HoverEvent e)
