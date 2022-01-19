@@ -41,7 +41,6 @@ public class WebSocketClient : WebSocketClientBase
     {
         var authMessage = new AuthMessage
         {
-            Op = OutgoingOpCode.AUTH,
             Data = new AuthData
             {
                 Username = osuRequestConfig.Get<string>(OsuRequestSetting.Username),
