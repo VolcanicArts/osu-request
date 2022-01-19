@@ -23,9 +23,6 @@ namespace osu_request.Drawables
         [Resolved]
         private OsuRequestConfig OsuRequestConfig { get; set; }
 
-        [Resolved]
-        private NotificationContainer NotificationContainer { get; set; }
-
         [BackgroundDependencyLoader]
         private void Load(GameHost host)
         {
