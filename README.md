@@ -9,4 +9,4 @@ Get the latest release from the releases tab on the right, then run the executab
 This guide is subject to change as the application evolves... Please check back with every release in case anything major changes
 
 ## Licence
-This app is licenced under the [MIT licence](https://opensource.org/licenses/MIT). Please see [the licence file](LICENSE) for more information.
+This app is licenced under the [GNU General Public License V3](https://www.gnu.org/licenses/gpl-3.0.en.html). Please see [the licence file](LICENSE) for more information.
