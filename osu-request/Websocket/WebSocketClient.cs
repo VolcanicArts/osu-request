@@ -10,6 +10,7 @@ namespace osu_request.Websocket;
 public class WebSocketClient : WebSocketClientBase
 {
     public Action OnFailedConnection;
+    public Action OnDisconnect;
     public Action OnLoggedIn;
     public Action OnInvalidUsername;
     public Action OnInvalidCode;
@@ -49,6 +50,11 @@ public class WebSocketClient : WebSocketClientBase
                 HandleUserUnBan(message);
                 break;
         }
+    }
+
+    protected override void OnDisconnected()
+    {
+        OnDisconnect?.Invoke();
     }
 
     public void SendAuth(OsuRequestConfig osuRequestConfig)
