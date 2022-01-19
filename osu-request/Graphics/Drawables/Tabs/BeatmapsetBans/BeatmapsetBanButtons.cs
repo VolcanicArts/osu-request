@@ -24,8 +24,6 @@ namespace osu_request.Drawables
             Masking = true;
             CornerRadius = 10;
 
-            SpriteButton _unban;
-
             Children = new Drawable[]
             {
                 new Box
@@ -41,19 +39,18 @@ namespace osu_request.Drawables
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     Padding = new MarginPadding(5),
-                    Child = _unban = new SpriteButton
+                    Child = new SpriteButton
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         CornerRadius = 5,
                         BackgroundColour = OsuRequestColour.BlueDark,
-                        Texture = textureStore.Get("undo")
+                        Texture = textureStore.Get("undo"),
+                        OnButtonClicked = () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString())
                     }
                 }
             };
-
-            _unban.OnButtonClicked += () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString());
         }
     }
 }

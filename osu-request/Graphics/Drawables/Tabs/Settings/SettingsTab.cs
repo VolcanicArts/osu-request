@@ -26,9 +26,6 @@ namespace osu_request.Drawables
         [BackgroundDependencyLoader]
         private void Load(GameHost host)
         {
-            TextButton _saveButton;
-            TextButton _loginWithTwitch;
-
             Children = new Drawable[]
             {
                 new Container
@@ -72,7 +69,7 @@ namespace osu_request.Drawables
                     Padding = new MarginPadding(50),
                     Children = new Drawable[]
                     {
-                        _loginWithTwitch = new TextButton
+                        new TextButton
                         {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
@@ -80,9 +77,10 @@ namespace osu_request.Drawables
                             Size = new Vector2(0.2f, 0.4f),
                             Text = "Login with Twitch",
                             FontSize = 25,
-                            CornerRadius = 5
+                            CornerRadius = 5,
+                            OnButtonClicked = () => host.OpenUrlExternally(twitchLoginUrl)
                         },
-                        _saveButton = new TextButton
+                        new TextButton
                         {
                             Anchor = Anchor.BottomCentre,
                             Origin = Anchor.BottomCentre,
@@ -90,14 +88,12 @@ namespace osu_request.Drawables
                             Size = new Vector2(0.2f, 0.4f),
                             Text = "Save and Connect",
                             FontSize = 25,
-                            CornerRadius = 5
+                            CornerRadius = 5,
+                            OnButtonClicked = SaveButtonClicked
                         }
                     }
                 }
             };
-
-            _loginWithTwitch.OnButtonClicked += () => host.OpenUrlExternally(twitchLoginUrl);
-            _saveButton.OnButtonClicked += SaveButtonClicked;
         }
 
         private void SaveButtonClicked()

@@ -32,8 +32,6 @@ namespace osu_request.Drawables.Users
             Masking = true;
             CornerRadius = 5;
 
-            SpriteButton _unban;
-
             Children = new Drawable[]
             {
                 new Box
@@ -62,7 +60,7 @@ namespace osu_request.Drawables.Users
                     RelativeSizeAxes = Axes.Both,
                     Size = new Vector2(0.1f, 1.0f),
                     Padding = new MarginPadding(5),
-                    Child = _unban = new SpriteButton
+                    Child = new SpriteButton
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
@@ -71,12 +69,11 @@ namespace osu_request.Drawables.Users
                         Scale = new Vector2(0.5f),
                         CornerRadius = 5,
                         BackgroundColour = OsuRequestColour.BlueDark,
-                        Texture = textureStore.Get("undo")
+                        Texture = textureStore.Get("undo"),
+                        OnButtonClicked = () => webSocketClient.UnBanUser(User.Id)
                     }
                 }
             };
-
-            _unban.OnButtonClicked += () => webSocketClient.UnBanUser(User.Id);
         }
 
         protected internal void DisposeGracefully()

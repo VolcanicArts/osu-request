@@ -44,8 +44,6 @@ namespace osu_request.Drawables
             Masking = true;
             CornerRadius = 10;
 
-            SpriteButton remove;
-
             Children = new Drawable[]
             {
                 new Box
@@ -68,14 +66,15 @@ namespace osu_request.Drawables
                         Top = 5,
                         Bottom = 5
                     },
-                    Child = remove = new SpriteButton
+                    Child = new SpriteButton
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         CornerRadius = 10,
                         BackgroundColour = OsuRequestColour.GreenDark,
-                        Texture = textureStore.Get("check")
+                        Texture = textureStore.Get("check"),
+                        OnButtonClicked = DisposeGracefully
                     }
                 },
                 new Container
@@ -129,8 +128,6 @@ namespace osu_request.Drawables
                     }
                 }
             };
-
-            remove.OnButtonClicked += DisposeGracefully;
         }
 
         public void DisposeGracefully()

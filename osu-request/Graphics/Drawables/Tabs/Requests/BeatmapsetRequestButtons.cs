@@ -32,11 +32,6 @@ namespace osu_request.Drawables
             Masking = true;
             CornerRadius = 10;
 
-            SpriteButton _openExternally;
-            SpriteButton _openDirect;
-            SpriteButton _ban;
-            SpriteButton _banUser;
-
             Children = new Drawable[]
             {
                 new Box
@@ -61,14 +56,15 @@ namespace osu_request.Drawables
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
-                            Child = _openExternally = new SpriteButton
+                            Child = new SpriteButton
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
                                 CornerRadius = 5,
                                 BackgroundColour = OsuRequestColour.BlueDark,
-                                Texture = textureStore.Get("open-externally")
+                                Texture = textureStore.Get("open-externally"),
+                                OnButtonClicked = () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{RequestArgs.Beatmapset.Id}")
                             }
                         },
                         new Container
@@ -78,14 +74,15 @@ namespace osu_request.Drawables
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
-                            Child = _openDirect = new SpriteButton
+                            Child = new SpriteButton
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
                                 CornerRadius = 5,
                                 BackgroundColour = OsuRequestColour.BlueDark,
-                                Texture = textureStore.Get("download")
+                                Texture = textureStore.Get("download"),
+                                OnButtonClicked = () => host.OpenUrlExternally($"osu://b/{RequestArgs.Beatmapset.Id}")
                             }
                         },
                         new Container
@@ -95,14 +92,15 @@ namespace osu_request.Drawables
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
-                            Child = _ban = new SpriteButton
+                            Child = new SpriteButton
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
                                 CornerRadius = 5,
                                 BackgroundColour = OsuRequestColour.RedDark,
-                                Texture = textureStore.Get("ban")
+                                Texture = textureStore.Get("ban"),
+                                OnButtonClicked = () => webSocketClient.BanBeatmapset(RequestArgs.Beatmapset.Id.ToString())
                             }
                         },
                         new Container
@@ -112,24 +110,20 @@ namespace osu_request.Drawables
                             RelativeSizeAxes = Axes.Both,
                             Size = new Vector2(0.5f),
                             Padding = new MarginPadding(2),
-                            Child = _banUser = new SpriteButton
+                            Child = new SpriteButton
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
                                 CornerRadius = 5,
                                 BackgroundColour = OsuRequestColour.RedDark,
-                                Texture = textureStore.Get("ban-user")
+                                Texture = textureStore.Get("ban-user"),
+                                OnButtonClicked = () => webSocketClient.BanUser(RequestArgs.Requester.Login)
                             }
                         }
                     }
                 }
             };
-
-            _openExternally.OnButtonClicked += () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{RequestArgs.Beatmapset.Id}");
-            _openDirect.OnButtonClicked += () => host.OpenUrlExternally($"osu://b/{RequestArgs.Beatmapset.Id}");
-            _ban.OnButtonClicked += () => webSocketClient.BanBeatmapset(RequestArgs.Beatmapset.Id.ToString());
-            _banUser.OnButtonClicked += () => webSocketClient.BanUser(RequestArgs.Requester.Login);
         }
     }
 }
