@@ -9,8 +9,8 @@ using osu_request.Structures;
 using osu_request.Websocket;
 using osu_request.Websocket.Structures;
 using osuTK;
-using TwitchLib.Client.Models;
 using volcanicarts.osu.NET.Structures;
+using User = TwitchLib.Api.Helix.Models.Users.GetUsers.User;
 
 namespace osu_request.Drawables
 {
@@ -45,9 +45,9 @@ namespace osu_request.Drawables
             _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapset.Id.ToString()).ForEach(entry => entry.DisposeGracefully());
         }
 
-        private void OnUserBan(UserBanArgs userBanArgs)
+        private void OnUserBan(User user)
         {
-            _fillFlowContainer.Where(entry => entry.Username == userBanArgs.User.Login).ForEach(entry => entry.DisposeGracefully());
+            _fillFlowContainer.Where(entry => entry.Username == user.Login).ForEach(entry => entry.DisposeGracefully());
         }
 
         [BackgroundDependencyLoader]
@@ -55,7 +55,7 @@ namespace osu_request.Drawables
         {
             webSocketClient.OnNewRequest += (requestArgs) => Scheduler.Add(() => NewRequest(requestArgs));
             webSocketClient.OnBeatmapsetBan += (beatmapset) => Scheduler.Add(() => OnBeatmapsetBan(beatmapset));
-            webSocketClient.OnUserBan += (userBanArgs) => Scheduler.Add(() => OnUserBan(userBanArgs));
+            webSocketClient.OnUserBan += (user) => Scheduler.Add(() => OnUserBan(user));
             
             Children = new Drawable[]
             {

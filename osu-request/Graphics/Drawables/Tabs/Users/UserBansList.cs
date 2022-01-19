@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu_request.Websocket;
 using osu_request.Websocket.Structures;
 using osuTK;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
 namespace osu_request.Drawables.Users
 {
@@ -16,7 +17,7 @@ namespace osu_request.Drawables.Users
         [BackgroundDependencyLoader]
         private void Load(WebSocketClient webSocketClient)
         {
-            webSocketClient.OnUserBan += (userBanArgs) => Scheduler.Add(() => OnUserBan(userBanArgs));
+            webSocketClient.OnUserBan += (user) => Scheduler.Add(() => OnUserBan(user));
             webSocketClient.OnUserUnBan += (userUnBanArgs) => Scheduler.Add(() => OnUserUnBan(userUnBanArgs));
             InitChildren();
         }
@@ -26,9 +27,9 @@ namespace osu_request.Drawables.Users
             _fillFlowContainer.Where(entry => entry.User.Id == userUnBanArgs.UserId).ForEach(entry => entry.DisposeGracefully());
         }
 
-        private void OnUserBan(UserBanArgs userBanArgs)
+        private void OnUserBan(User user)
         {
-            _fillFlowContainer.Add(new UserBanEntry(userBanArgs.User)
+            _fillFlowContainer.Add(new UserBanEntry(user)
             {
                 Anchor = Anchor.TopLeft,
                 Origin = Anchor.TopLeft,

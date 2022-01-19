@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using osu_request.Config;
 using osu_request.Websocket.Structures;
 using volcanicarts.osu.NET.Structures;
+using User = TwitchLib.Api.Helix.Models.Users.GetUsers.User;
 
 namespace osu_request.Websocket;
 
@@ -10,7 +11,7 @@ public class WebSocketClient : WebSocketClientBase
 {
     public Action<RequestArgs> OnNewRequest;
     public Action<Beatmapset> OnBeatmapsetBan;
-    public Action<UserBanArgs> OnUserBan;
+    public Action<User> OnUserBan;
     public Action<string> OnBeatmapsetUnBan;
     public Action<UserUnBanArgs> OnUserUnBan;
 
@@ -65,7 +66,7 @@ public class WebSocketClient : WebSocketClientBase
     private void HandleUserBan(WebSocketMessage message)
     {
         var userBanMessage = JsonConvert.DeserializeObject<UserBanMessage>(message.RawMessage);
-        OnUserBan?.Invoke(userBanMessage.Data);
+        OnUserBan?.Invoke(userBanMessage.Data.User);
     }
 
     private void HandleBeatmapsetUnBan(WebSocketMessage message)
