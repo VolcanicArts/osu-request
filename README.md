@@ -8,5 +8,10 @@ Get the latest release from the releases tab on the right, then run the executab
 
 This guide is subject to change as the application evolves... Please check back with every release in case anything major changes
 
+## Bugs/Features
+If there's a bug with osu!request or you'd like to suggest a new feature, head to the [Issues Page](https://github.com/VolcanicArts/osu-request/issues) and create a new issue. You can then select the template you require.
+
+If your issue isn't a bug report or a feature request, feel free to create a blank issue
+
 ## Licence
 This app is licenced under the [GNU General Public License V3](https://www.gnu.org/licenses/gpl-3.0.en.html). Please see [the licence file](LICENSE) for more information.
