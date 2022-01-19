@@ -43,7 +43,6 @@ public class WebSocketClientBase : WsClient
     public override void OnWsDisconnected()
     {
         Logger.Log($"{log_prefix} WebSocketClient disconnected a session with Id {Id}");
-        OnDisconnected();
     }
 
     public override void OnWsReceived(byte[] buffer, long offset, long size)
@@ -61,6 +60,4 @@ public class WebSocketClientBase : WsClient
     }
 
     protected virtual void OnMessage(WebSocketMessage message) { }
-
-    protected virtual void OnDisconnected() { }
 }

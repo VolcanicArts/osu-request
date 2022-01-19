@@ -11,6 +11,7 @@ public class WebSocketClient : WebSocketClientBase
 {
     public Action OnFailedConnection;
     public Action OnDisconnect;
+    public Action OnConnect;
     public Action OnLoggedIn;
     public Action OnInvalidUsername;
     public Action OnInvalidCode;
@@ -54,7 +55,14 @@ public class WebSocketClient : WebSocketClientBase
 
     protected override void OnDisconnected()
     {
+        base.OnDisconnected();
         OnDisconnect?.Invoke();
+    }
+
+    protected override void OnConnected()
+    {
+        base.OnConnected();
+        OnConnect?.Invoke();
     }
 
     public void SendAuth(OsuRequestConfig osuRequestConfig)
