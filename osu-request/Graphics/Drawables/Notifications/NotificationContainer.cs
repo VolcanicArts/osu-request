@@ -79,7 +79,8 @@ namespace osu_request.Drawables.Notifications
             Title.AddText(title, t => t.Font = OsuRequestFonts.Regular.With(size: 30));
             Message.AddText(message, t => t.Font = OsuRequestFonts.Regular.With(size: 20));
 
-            Content.MoveToY(150.0f, 300, Easing.OutCubic)
+            Content.Delay(500)
+                .MoveToY(150.0f, 300, Easing.OutCubic)
                 .Delay(3000)
                 .MoveToY(0.0f, 300, Easing.InCubic);
         }
