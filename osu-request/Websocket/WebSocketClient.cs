@@ -53,6 +53,9 @@ public class WebSocketClient : WebSocketClientBase
             case IncomingOpCode.ALLBEATMAPSETBANS:
                 HandleAllBeatmapsetBans(message);
                 break;
+            case IncomingOpCode.ALLUSERBANS:
+                HandleAllUserBans(message);
+                break;
         }
     }
 
@@ -117,6 +120,15 @@ public class WebSocketClient : WebSocketClientBase
         foreach (var beatmapset in allBeatmapsetBansMessage.Data.Beatmapsets)
         {
             OnBeatmapsetBan?.Invoke(beatmapset);
+        }
+    }
+    
+    private void HandleAllUserBans(WebSocketMessage message)
+    {
+        var allUserBansMessage = JsonConvert.DeserializeObject<AllUserBansMessage>(message.RawMessage);
+        foreach (var user in allUserBansMessage.Data.Users)
+        {
+            OnUserBan?.Invoke(user);
         }
     }
 
