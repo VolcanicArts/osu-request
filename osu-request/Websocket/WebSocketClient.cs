@@ -67,12 +67,6 @@ public class WebSocketClient : WebSocketClientBase
 
     public void SendAuth(OsuRequestConfig osuRequestConfig)
     {
-        if (!IsConnected)
-        {
-            OnFailedConnection?.Invoke();
-            return;
-        }
-        
         var authMessage = new AuthMessage
         {
             Data = new AuthData
