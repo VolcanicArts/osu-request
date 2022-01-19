@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 using osu_request.Config;
 using osu_request.Websocket.Structures;
+using volcanicarts.osu.NET.Structures;
 
 namespace osu_request.Websocket;
 
 public class WebSocketClient : WebSocketClientBase
 {
     public Action<RequestArgs> OnNewRequest;
-    public Action<BeatmapsetBanArgs> OnBeatmapsetBan;
+    public Action<Beatmapset> OnBeatmapsetBan;
     public Action<UserBanArgs> OnUserBan;
     public Action<BeatmapsetUnBanArgs> OnBeatmapsetUnBan;
     public Action<UserUnBanArgs> OnUserUnBan;
@@ -59,7 +60,7 @@ public class WebSocketClient : WebSocketClientBase
     private void HandleBeatmapsetBan(WebSocketMessage message)
     {
         var beatmapsetBanMessage = JsonConvert.DeserializeObject<BeatmapsetBanMessage>(message.RawMessage);
-        OnBeatmapsetBan?.Invoke(beatmapsetBanMessage.Data);
+        OnBeatmapsetBan?.Invoke(beatmapsetBanMessage.Data.Beatmapset);
     }
 
     private void HandleUserBan(WebSocketMessage message)
