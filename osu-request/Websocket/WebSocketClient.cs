@@ -134,6 +134,7 @@ public class WebSocketClient : WebSocketClientBase
 
     public void BanBeatmapset(string beatmapsetId)
     {
+        if (string.IsNullOrEmpty(beatmapsetId)) return;
         var banBeatmapsetMessage = new BanBeatmapsetMessage
         {
             Data = new BanBeatmapsetData
@@ -146,6 +147,7 @@ public class WebSocketClient : WebSocketClientBase
 
     public void BanUser(string username)
     {
+        if (string.IsNullOrEmpty(username)) return;
         var banUserMessage = new BanUserMessage
         {
             Data = new BanUserData
@@ -158,6 +160,7 @@ public class WebSocketClient : WebSocketClientBase
 
     public void UnBanBeatmapset(string beatmapsetId)
     {
+        if (string.IsNullOrEmpty(beatmapsetId)) return;
         var unBanBeatmapsetMessage = new UnBanBeatmapsetMessage
         {
             Data = new UnBanBeatmapsetData
@@ -170,6 +173,7 @@ public class WebSocketClient : WebSocketClientBase
 
     public void UnBanUser(string userId)
     {
+        if (string.IsNullOrEmpty(userId)) return;
         var unBanUserMessage = new UnBanUserMessage
         {
             Data = new UnBanUserData
