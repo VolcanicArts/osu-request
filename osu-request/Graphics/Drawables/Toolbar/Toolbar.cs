@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -10,8 +9,7 @@ namespace osu_request.Drawables
 {
     public class Toolbar : Container
     {
-        private readonly List<ToolbarItem> _items = new();
-        private FillFlowContainer _fillFlowContainer;
+        private FillFlowContainer<ToolbarItem> Items;
         public Action<int> NewSelectionEvent;
 
         [BackgroundDependencyLoader]
@@ -26,7 +24,7 @@ namespace osu_request.Drawables
                     RelativeSizeAxes = Axes.Both,
                     Colour = OsuRequestColour.Gray3
                 },
-                _fillFlowContainer = new FillFlowContainer
+                Items = new FillFlowContainer<ToolbarItem>
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
@@ -50,15 +48,14 @@ namespace osu_request.Drawables
                     Name = ItemNames[i].Replace("_", " ")
                 };
                 toolbarItem.OnSelected += e => NewSelectionEvent?.Invoke(e);
-                _fillFlowContainer.Add(toolbarItem);
-                _items.Add(toolbarItem);
+                Items.Add(toolbarItem);
             }
         }
 
         public void Select(int id)
         {
-            foreach (var item in _items) item.Deselect();
-            _items[id].Select(false);
+            foreach (var item in Items) item.Deselect();
+            Items[id].Select(false);
         }
     }
 }
