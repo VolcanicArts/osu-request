@@ -78,13 +78,6 @@ public class WebSocketClient : WebSocketClientBase
         SendText(JsonConvert.SerializeObject(authMessage));
     }
 
-    public void ResendAuth(OsuRequestConfig osuRequestConfig)
-    {
-        DisconnectAsync();
-        ConnectAsync();
-        SendAuth(osuRequestConfig);
-    }
-
     private void HandleNewRequest(WebSocketMessage message)
     {
         var requestArgsMessage = JsonConvert.DeserializeObject<RequestArgsMessage>(message.RawMessage);
