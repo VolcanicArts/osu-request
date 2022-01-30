@@ -4,7 +4,7 @@ using System.Text;
 using NetCoreServer;
 using Newtonsoft.Json;
 using osu.Framework.Logging;
-using osu_request.Websocket.Structures;
+using osu_request_server;
 
 namespace osu_request.Websocket;
 
@@ -47,9 +47,8 @@ public class WebSocketClientBase : WsClient
     {
         var message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
         Logger.Log($"{log_prefix} Incoming: {message}");
-        var webSocketMessage = JsonConvert.DeserializeObject<WebSocketMessage>(message);
-        webSocketMessage.RawMessage = message;
-        OnMessage(webSocketMessage);
+        var webSocketMessage = JsonConvert.DeserializeObject<IncomingMessageBase>(message);
+        OnMessage(webSocketMessage, message);
     }
 
     protected override void OnError(SocketError error)
@@ -57,5 +56,5 @@ public class WebSocketClientBase : WsClient
         Logger.Log($"{log_prefix} WebSocketClient caught an error with code {error}");
     }
 
-    protected virtual void OnMessage(WebSocketMessage message) { }
+    protected virtual void OnMessage(IncomingMessageBase message, string rawMessage) { }
 }

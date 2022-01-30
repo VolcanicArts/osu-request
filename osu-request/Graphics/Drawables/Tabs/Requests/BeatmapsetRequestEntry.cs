@@ -5,7 +5,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu_request.Structures;
-using osu_request.Websocket.Structures;
 using osuTK;
 
 namespace osu_request.Drawables;
@@ -13,19 +12,19 @@ namespace osu_request.Drawables;
 public class BeatmapsetRequestEntry : Container
 {
     public readonly string BeatmapsetId;
-    private readonly RequestArgs RequestArgs;
+    private readonly RequestedBeatmapset RequestedBeatmapset;
     public readonly string Username;
     private readonly WorkingBeatmapset WorkingBeatmapset;
 
     [Cached]
     private BindableBool ShouldDispose = new();
 
-    public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, RequestArgs requestArgs)
+    public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, RequestedBeatmapset requestedBeatmapset)
     {
-        RequestArgs = requestArgs;
+        RequestedBeatmapset = requestedBeatmapset;
         WorkingBeatmapset = workingBeatmapset;
-        BeatmapsetId = RequestArgs.Beatmapset.Id.ToString();
-        Username = RequestArgs.Requester.Login;
+        BeatmapsetId = RequestedBeatmapset.Beatmapset.Id.ToString();
+        Username = RequestedBeatmapset.Requester.Login;
 
         ShouldDispose.BindValueChanged(_ => DisposeGracefully());
     }
@@ -97,7 +96,7 @@ public class BeatmapsetRequestEntry : Container
                             Top = 5,
                             Bottom = 5
                         },
-                        Child = new BeatmapsetRequestCard(WorkingBeatmapset, RequestArgs)
+                        Child = new BeatmapsetRequestCard(WorkingBeatmapset, RequestedBeatmapset)
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -117,7 +116,7 @@ public class BeatmapsetRequestEntry : Container
                             Top = 5,
                             Bottom = 5
                         },
-                        Child = new BeatmapsetRequestButtons(RequestArgs)
+                        Child = new BeatmapsetRequestButtons(RequestedBeatmapset)
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,

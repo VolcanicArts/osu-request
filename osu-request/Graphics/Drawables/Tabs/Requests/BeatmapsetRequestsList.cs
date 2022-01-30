@@ -7,7 +7,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu_request.Structures;
 using osu_request.Websocket;
-using osu_request.Websocket.Structures;
 using osuTK;
 using volcanicarts.osu.NET.Structures;
 using User = TwitchLib.Api.Helix.Models.Users.GetUsers.User;
@@ -24,12 +23,12 @@ public class BeatmapsetRequestsList : Container
     [Resolved]
     private TextureStore TextureStore { get; set; }
 
-    private void NewRequest(RequestArgs requestArgs)
+    private void NewRequest(RequestedBeatmapset requestedBeatmapset)
     {
-        var previewMp3 = AudioManager.GetTrackStore().Get(requestArgs.Beatmapset.PreviewUrl);
-        var backgroundTexture = TextureStore.Get(requestArgs.Beatmapset.Covers.CardAt2X);
-        var workingBeatmapset = new WorkingBeatmapset(requestArgs.Beatmapset, backgroundTexture, previewMp3);
-        var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset, requestArgs)
+        var previewMp3 = AudioManager.GetTrackStore().Get(requestedBeatmapset.Beatmapset.PreviewUrl);
+        var backgroundTexture = TextureStore.Get(requestedBeatmapset.Beatmapset.Covers.CardAt2X);
+        var workingBeatmapset = new WorkingBeatmapset(requestedBeatmapset.Beatmapset, backgroundTexture, previewMp3);
+        var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset, requestedBeatmapset)
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
@@ -53,7 +52,7 @@ public class BeatmapsetRequestsList : Container
     [BackgroundDependencyLoader]
     private void Load(WebSocketClient webSocketClient)
     {
-        webSocketClient.OnNewRequest += requestArgs => Scheduler.Add(() => NewRequest(requestArgs));
+        webSocketClient.OnNewRequest += requestedBeatmapset => Scheduler.Add(() => NewRequest(requestedBeatmapset));
         webSocketClient.OnBeatmapsetBan += beatmapset => Scheduler.Add(() => OnBeatmapsetBan(beatmapset));
         webSocketClient.OnUserBan += user => Scheduler.Add(() => OnUserBan(user));
 

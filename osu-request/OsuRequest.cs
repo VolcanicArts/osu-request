@@ -43,8 +43,6 @@ public class OsuRequest : OsuRequestBase
     {
         WebSocketClient.OnConnect += () => NotificationContainer.Notify("Server connected!", "The server connect has been established");
         WebSocketClient.OnDisconnect += () => NotificationContainer.Notify("Server Disconnected", "The server has been disconnected");
-        WebSocketClient.OnFailedConnection += () =>
-            NotificationContainer.Notify("Failed Connection", "Could not connect to the server. Please try again later");
         WebSocketClient.OnLoggedIn += () => NotificationContainer.Notify("Logged In!", "Connection was successful. Requests incoming!");
         WebSocketClient.OnInvalidUsername += () =>
         {

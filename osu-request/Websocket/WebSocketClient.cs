@@ -1,7 +1,9 @@
 using System;
 using Newtonsoft.Json;
+using osu.Framework.Logging;
 using osu_request.Config;
-using osu_request.Websocket.Structures;
+using osu_request.Structures;
+using osu_request_server;
 using volcanicarts.osu.NET.Structures;
 using User = TwitchLib.Api.Helix.Models.Users.GetUsers.User;
 
@@ -13,17 +15,16 @@ public class WebSocketClient : WebSocketClientBase
     public Action<string> OnBeatmapsetUnBan;
     public Action OnConnect;
     public Action OnDisconnect;
-    public Action OnFailedConnection;
     public Action OnInvalidCode;
     public Action OnInvalidUsername;
     public Action OnLoggedIn;
-    public Action<RequestArgs> OnNewRequest;
+    public Action<RequestedBeatmapset> OnNewRequest;
     public Action<User> OnUserBan;
     public Action<string> OnUserUnBan;
 
-    protected override void OnMessage(WebSocketMessage message)
+    protected override void OnMessage(IncomingMessageBase message, string rawMessage)
     {
-        base.OnMessage(message);
+        base.OnMessage(message, rawMessage);
         switch (message.Op)
         {
             case IncomingOpCode.AUTH_INVALID_USERNAME:
@@ -36,25 +37,25 @@ public class WebSocketClient : WebSocketClientBase
                 OnLoggedIn?.Invoke();
                 break;
             case IncomingOpCode.AUTH_ALL_BEATMAPSET_BANS:
-                HandleAllBeatmapsetBans(message);
+                HandleAllBeatmapsetBans(JsonConvert.DeserializeObject<AuthAllBeatmapsetBansMessage>(rawMessage));
                 break;
             case IncomingOpCode.AUTH_ALL_USER_BANS:
-                HandleAllUserBans(message);
+                HandleAllUserBans(JsonConvert.DeserializeObject<AuthAllUserBansMessage>(rawMessage));
                 break;
             case IncomingOpCode.BEATMAPSET_REQUEST:
-                HandleNewRequest(message);
+                HandleNewRequest(JsonConvert.DeserializeObject<BeatmapsetRequestMessage>(rawMessage));
                 break;
             case IncomingOpCode.BEATMAPSET_BAN:
-                HandleBeatmapsetBan(message);
+                HandleBeatmapsetBan(JsonConvert.DeserializeObject<BeatmapsetBanMessage>(rawMessage));
                 break;
             case IncomingOpCode.BEATMAPSET_UNBAN:
-                HandleBeatmapsetUnBan(message);
+                HandleBeatmapsetUnBan(JsonConvert.DeserializeObject<BeatmapsetUnBanMessage>(rawMessage));
                 break;
             case IncomingOpCode.USER_BAN:
-                HandleUserBan(message);
+                HandleUserBan(JsonConvert.DeserializeObject<UserBanMessage>(rawMessage));
                 break;
             case IncomingOpCode.USER_UNBAN:
-                HandleUserUnBan(message);
+                HandleUserUnBan(JsonConvert.DeserializeObject<UserUnBanMessage>(rawMessage));
                 break;
             case IncomingOpCode.SOCKET_CONNECTED:
                 // ignore
@@ -78,68 +79,56 @@ public class WebSocketClient : WebSocketClientBase
 
     public void SendAuth(OsuRequestConfig osuRequestConfig)
     {
-        var authMessage = new AuthMessage
+        var authMessage = new RequestAuthMessage
         {
-            Data = new AuthData
-            {
-                Username = osuRequestConfig.Get<string>(OsuRequestSetting.Username),
-                Passcode = osuRequestConfig.Get<string>(OsuRequestSetting.Passcode)
-            }
+            Username = osuRequestConfig.Get<string>(OsuRequestSetting.Username),
+            Code = osuRequestConfig.Get<string>(OsuRequestSetting.Passcode)
         };
         SendText(JsonConvert.SerializeObject(authMessage));
     }
 
-    private void HandleNewRequest(WebSocketMessage message)
+    private void HandleNewRequest(BeatmapsetRequestMessage message)
     {
-        var requestArgsMessage = JsonConvert.DeserializeObject<RequestArgsMessage>(message.RawMessage);
-        OnNewRequest?.Invoke(requestArgsMessage.Data);
+        Logger.Log(message.Beatmapset.Title);
+        OnNewRequest?.Invoke(new RequestedBeatmapset(message.Beatmapset, message.Requester));
     }
 
-    private void HandleBeatmapsetBan(WebSocketMessage message)
+    private void HandleBeatmapsetBan(BeatmapsetBanMessage message)
     {
-        var beatmapsetBanMessage = JsonConvert.DeserializeObject<BeatmapsetBanMessage>(message.RawMessage);
-        OnBeatmapsetBan?.Invoke(beatmapsetBanMessage.Data.Beatmapset);
+        OnBeatmapsetBan?.Invoke(message.Beatmapset);
     }
 
-    private void HandleUserBan(WebSocketMessage message)
+    private void HandleUserBan(UserBanMessage message)
     {
-        var userBanMessage = JsonConvert.DeserializeObject<UserBanMessage>(message.RawMessage);
-        OnUserBan?.Invoke(userBanMessage.Data.User);
+        OnUserBan?.Invoke(message.User);
     }
 
-    private void HandleBeatmapsetUnBan(WebSocketMessage message)
+    private void HandleBeatmapsetUnBan(BeatmapsetUnBanMessage message)
     {
-        var beatmapsetUnBanMessage = JsonConvert.DeserializeObject<BeatmapsetUnBanMessage>(message.RawMessage);
-        OnBeatmapsetUnBan?.Invoke(beatmapsetUnBanMessage.Data.BeatmapsetId);
+        OnBeatmapsetUnBan?.Invoke(message.BeatmapsetId);
     }
 
-    private void HandleUserUnBan(WebSocketMessage message)
+    private void HandleUserUnBan(UserUnBanMessage message)
     {
-        var userUnBanMessage = JsonConvert.DeserializeObject<UserUnBanMessage>(message.RawMessage);
-        OnUserUnBan?.Invoke(userUnBanMessage.Data.UserId);
+        OnUserUnBan?.Invoke(message.UserId);
     }
 
-    private void HandleAllBeatmapsetBans(WebSocketMessage message)
+    private void HandleAllBeatmapsetBans(AuthAllBeatmapsetBansMessage message)
     {
-        var allBeatmapsetBansMessage = JsonConvert.DeserializeObject<AllBeatmapsetBansMessage>(message.RawMessage);
-        foreach (var beatmapset in allBeatmapsetBansMessage.Data.Beatmapsets) OnBeatmapsetBan?.Invoke(beatmapset);
+        foreach (var beatmapset in message.Beatmapsets) OnBeatmapsetBan?.Invoke(beatmapset);
     }
 
-    private void HandleAllUserBans(WebSocketMessage message)
+    private void HandleAllUserBans(AuthAllUserBansMessage message)
     {
-        var allUserBansMessage = JsonConvert.DeserializeObject<AllUserBansMessage>(message.RawMessage);
-        foreach (var user in allUserBansMessage.Data.Users) OnUserBan?.Invoke(user);
+        foreach (var user in message.Users) OnUserBan?.Invoke(user);
     }
 
     public void BanBeatmapset(string beatmapsetId)
     {
         if (string.IsNullOrEmpty(beatmapsetId)) return;
-        var banBeatmapsetMessage = new BanBeatmapsetMessage
+        var banBeatmapsetMessage = new RequestBeatmapsetBanMessage
         {
-            Data = new BanBeatmapsetData
-            {
-                BeatmapsetId = beatmapsetId
-            }
+            BeatmapsetId = beatmapsetId
         };
         SendText(JsonConvert.SerializeObject(banBeatmapsetMessage));
     }
@@ -147,12 +136,9 @@ public class WebSocketClient : WebSocketClientBase
     public void BanUser(string username)
     {
         if (string.IsNullOrEmpty(username)) return;
-        var banUserMessage = new BanUserMessage
+        var banUserMessage = new RequestUserBanMessage
         {
-            Data = new BanUserData
-            {
-                Username = username
-            }
+            Username = username
         };
         SendText(JsonConvert.SerializeObject(banUserMessage));
     }
@@ -160,12 +146,9 @@ public class WebSocketClient : WebSocketClientBase
     public void UnBanBeatmapset(string beatmapsetId)
     {
         if (string.IsNullOrEmpty(beatmapsetId)) return;
-        var unBanBeatmapsetMessage = new UnBanBeatmapsetMessage
+        var unBanBeatmapsetMessage = new RequestBeatmapsetUnBanMessage
         {
-            Data = new UnBanBeatmapsetData
-            {
-                BeatmapsetId = beatmapsetId
-            }
+            BeatmapsetId = beatmapsetId
         };
         SendText(JsonConvert.SerializeObject(unBanBeatmapsetMessage));
     }
@@ -173,12 +156,9 @@ public class WebSocketClient : WebSocketClientBase
     public void UnBanUser(string userId)
     {
         if (string.IsNullOrEmpty(userId)) return;
-        var unBanUserMessage = new UnBanUserMessage
+        var unBanUserMessage = new RequestUserUnBanMessage
         {
-            Data = new UnBanUserData
-            {
-                UserId = userId
-            }
+            UserId = userId
         };
         SendText(JsonConvert.SerializeObject(unBanUserMessage));
     }
