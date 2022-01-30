@@ -8,7 +8,7 @@ public class UnBanUserMessage
     public UnBanUserData Data;
 
     [JsonProperty("op")]
-    public OutgoingOpCode Op { get; } = OutgoingOpCode.UNBANUSER;
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.REQUEST_USER_UNBAN;
 }
 
 public class UnBanUserData

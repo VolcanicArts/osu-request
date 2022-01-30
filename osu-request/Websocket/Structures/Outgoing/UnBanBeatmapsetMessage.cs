@@ -8,7 +8,7 @@ public class UnBanBeatmapsetMessage
     public UnBanBeatmapsetData Data;
 
     [JsonProperty("op")]
-    public OutgoingOpCode Op { get; } = OutgoingOpCode.UNBANBEATMAPSET;
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.REQUEST_BEATMAPSET_UNBAN;
 }
 
 public class UnBanBeatmapsetData

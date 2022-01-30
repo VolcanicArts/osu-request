@@ -26,36 +26,41 @@ public class WebSocketClient : WebSocketClientBase
         base.OnMessage(message);
         switch (message.Op)
         {
-            case IncomingOpCode.LOGGEDIN:
-                OnLoggedIn?.Invoke();
-                break;
             case IncomingOpCode.AUTH_INVALID_USERNAME:
                 OnInvalidUsername?.Invoke();
                 break;
             case IncomingOpCode.AUTH_INVALID_CODE:
                 OnInvalidCode?.Invoke();
                 break;
-            case IncomingOpCode.REQUEST:
-                HandleNewRequest(message);
+            case IncomingOpCode.AUTH_LOGGED_IN:
+                OnLoggedIn?.Invoke();
                 break;
-            case IncomingOpCode.BEATMAPSETBAN:
-                HandleBeatmapsetBan(message);
-                break;
-            case IncomingOpCode.USERBAN:
-                HandleUserBan(message);
-                break;
-            case IncomingOpCode.BEATMAPSETUNBAN:
-                HandleBeatmapsetUnBan(message);
-                break;
-            case IncomingOpCode.USERUNBAN:
-                HandleUserUnBan(message);
-                break;
-            case IncomingOpCode.ALLBEATMAPSETBANS:
+            case IncomingOpCode.AUTH_ALL_BEATMAPSET_BANS:
                 HandleAllBeatmapsetBans(message);
                 break;
-            case IncomingOpCode.ALLUSERBANS:
+            case IncomingOpCode.AUTH_ALL_USER_BANS:
                 HandleAllUserBans(message);
                 break;
+            case IncomingOpCode.BEATMAPSET_REQUEST:
+                HandleNewRequest(message);
+                break;
+            case IncomingOpCode.BEATMAPSET_BAN:
+                HandleBeatmapsetBan(message);
+                break;
+            case IncomingOpCode.BEATMAPSET_UNBAN:
+                HandleBeatmapsetUnBan(message);
+                break;
+            case IncomingOpCode.USER_BAN:
+                HandleUserBan(message);
+                break;
+            case IncomingOpCode.USER_UNBAN:
+                HandleUserUnBan(message);
+                break;
+            case IncomingOpCode.SOCKET_CONNECTED:
+                // ignore
+                break;
+            default:
+                throw new ArgumentOutOfRangeException($"Unexpected OpCode: {message.Op}");
         }
     }
 

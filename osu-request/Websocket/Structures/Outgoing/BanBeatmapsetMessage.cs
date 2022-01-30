@@ -8,7 +8,7 @@ public class BanBeatmapsetMessage
     public BanBeatmapsetData Data;
 
     [JsonProperty("op")]
-    public OutgoingOpCode Op { get; } = OutgoingOpCode.BANBEATMAPSET;
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.REQUEST_BEATMAPSET_BAN;
 }
 
 public class BanBeatmapsetData

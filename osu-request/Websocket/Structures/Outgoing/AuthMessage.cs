@@ -8,7 +8,7 @@ public class AuthMessage
     public AuthData Data;
 
     [JsonProperty("op")]
-    public OutgoingOpCode Op { get; } = OutgoingOpCode.AUTH;
+    public OutgoingOpCode Op { get; } = OutgoingOpCode.REQUEST_AUTH;
 }
 
 public class AuthData
