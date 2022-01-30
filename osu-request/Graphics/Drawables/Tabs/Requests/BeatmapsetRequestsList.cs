@@ -27,8 +27,8 @@ public class BeatmapsetRequestsList : Container
     {
         var previewMp3 = AudioManager.GetTrackStore().Get(requestedBeatmapset.Beatmapset.PreviewUrl);
         var backgroundTexture = TextureStore.Get(requestedBeatmapset.Beatmapset.Covers.CardAt2X);
-        var workingBeatmapset = new WorkingBeatmapset(requestedBeatmapset.Beatmapset, backgroundTexture, previewMp3);
-        var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset, requestedBeatmapset)
+        var workingBeatmapset = new WorkingRequestedBeatmapset(requestedBeatmapset, backgroundTexture, previewMp3);
+        var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset)
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,

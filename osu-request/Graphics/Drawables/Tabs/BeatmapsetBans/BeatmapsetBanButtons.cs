@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -10,12 +11,8 @@ namespace osu_request.Drawables;
 
 public class BeatmapsetBanButtons : Container
 {
-    private readonly WorkingBeatmapset WorkingBeatmapset;
-
-    public BeatmapsetBanButtons(WorkingBeatmapset workingBeatmapset)
-    {
-        WorkingBeatmapset = workingBeatmapset;
-    }
+    [Resolved]
+    private Bindable<WorkingBeatmapset> WorkingBeatmapset { get; set; }
 
     [BackgroundDependencyLoader]
     private void Load(TextureStore textureStore, WebSocketClient webSocketClient)
@@ -46,7 +43,7 @@ public class BeatmapsetBanButtons : Container
                     CornerRadius = 5,
                     BackgroundColour = OsuRequestColour.BlueDark,
                     Texture = textureStore.Get("undo"),
-                    OnButtonClicked = () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Beatmapset.Id.ToString())
+                    OnButtonClicked = () => webSocketClient.UnBanBeatmapset(WorkingBeatmapset.Value.Beatmapset.Id.ToString())
                 }
             }
         };

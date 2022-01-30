@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -10,13 +11,15 @@ namespace osu_request.Drawables.Bans;
 public class BeatmapsetBanEntry : Container
 {
     public readonly string BeatmapsetId;
-    private readonly WorkingBeatmapset WorkingBeatmapset;
 
     public BeatmapsetBanEntry(WorkingBeatmapset workingBeatmapset)
     {
+        WorkingBeatmapset.Value = workingBeatmapset;
         BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
-        WorkingBeatmapset = workingBeatmapset;
     }
+
+    [Cached]
+    private Bindable<WorkingBeatmapset> WorkingBeatmapset { get; set; } = new();
 
     protected override void LoadComplete()
     {
@@ -53,7 +56,7 @@ public class BeatmapsetBanEntry : Container
                     Top = 5,
                     Bottom = 5
                 },
-                Child = new BeatmapsetCard(WorkingBeatmapset)
+                Child = new BeatmapsetCard<WorkingBeatmapset>
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -73,7 +76,7 @@ public class BeatmapsetBanEntry : Container
                     Top = 5,
                     Bottom = 5
                 },
-                Child = new BeatmapsetBanButtons(WorkingBeatmapset)
+                Child = new BeatmapsetBanButtons
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,

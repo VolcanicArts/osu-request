@@ -12,22 +12,22 @@ namespace osu_request.Drawables;
 public class BeatmapsetRequestEntry : Container
 {
     public readonly string BeatmapsetId;
-    private readonly RequestedBeatmapset RequestedBeatmapset;
     public readonly string Username;
-    private readonly WorkingBeatmapset WorkingBeatmapset;
 
     [Cached]
     private BindableBool ShouldDispose = new();
 
-    public BeatmapsetRequestEntry(WorkingBeatmapset workingBeatmapset, RequestedBeatmapset requestedBeatmapset)
+    public BeatmapsetRequestEntry(WorkingRequestedBeatmapset workingBeatmapset)
     {
-        RequestedBeatmapset = requestedBeatmapset;
-        WorkingBeatmapset = workingBeatmapset;
-        BeatmapsetId = RequestedBeatmapset.Beatmapset.Id.ToString();
-        Username = RequestedBeatmapset.Requester.Login;
+        WorkingBeatmapset.Value = workingBeatmapset;
+        BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
+        Username = workingBeatmapset.Requester.Login;
 
         ShouldDispose.BindValueChanged(_ => DisposeGracefully());
     }
+
+    [Cached]
+    private Bindable<WorkingRequestedBeatmapset> WorkingBeatmapset { get; set; } = new();
 
     protected override void LoadComplete()
     {
@@ -96,7 +96,7 @@ public class BeatmapsetRequestEntry : Container
                             Top = 5,
                             Bottom = 5
                         },
-                        Child = new BeatmapsetRequestCard(WorkingBeatmapset, RequestedBeatmapset)
+                        Child = new BeatmapsetRequestCard
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -116,7 +116,7 @@ public class BeatmapsetRequestEntry : Container
                             Top = 5,
                             Bottom = 5
                         },
-                        Child = new BeatmapsetRequestButtons(RequestedBeatmapset)
+                        Child = new BeatmapsetRequestButtons
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,

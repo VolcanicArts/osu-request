@@ -13,12 +13,8 @@ namespace osu_request.Drawables;
 
 public class BeatmapsetRequestButtons : Container
 {
-    private readonly RequestedBeatmapset RequestedBeatmapset;
-
-    public BeatmapsetRequestButtons(RequestedBeatmapset requestedBeatmapset)
-    {
-        RequestedBeatmapset = requestedBeatmapset;
-    }
+    [Resolved]
+    private Bindable<WorkingRequestedBeatmapset> WorkingBeatmapset { get; set; }
 
     [Resolved]
     private BindableBool ShouldDispose { get; set; }
@@ -61,7 +57,7 @@ public class BeatmapsetRequestButtons : Container
                             CornerRadius = 5,
                             BackgroundColour = OsuRequestColour.BlueDark,
                             Texture = textureStore.Get("open-externally"),
-                            OnButtonClicked = () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{RequestedBeatmapset.Beatmapset.Id}")
+                            OnButtonClicked = () => host.OpenUrlExternally($"https://osu.ppy.sh/beatmapsets/{WorkingBeatmapset.Value.Beatmapset.Id}")
                         }
                     },
                     new Container
@@ -79,7 +75,7 @@ public class BeatmapsetRequestButtons : Container
                             CornerRadius = 5,
                             BackgroundColour = OsuRequestColour.BlueDark,
                             Texture = textureStore.Get("download"),
-                            OnButtonClicked = () => host.OpenUrlExternally($"osu://b/{RequestedBeatmapset.Beatmapset.Id}")
+                            OnButtonClicked = () => host.OpenUrlExternally($"osu://b/{WorkingBeatmapset.Value.Beatmapset.Id}")
                         }
                     },
                     new Container
@@ -97,7 +93,7 @@ public class BeatmapsetRequestButtons : Container
                             CornerRadius = 5,
                             BackgroundColour = OsuRequestColour.RedDark,
                             Texture = textureStore.Get("ban"),
-                            OnButtonClicked = () => webSocketClient.BanBeatmapset(RequestedBeatmapset.Beatmapset.Id.ToString())
+                            OnButtonClicked = () => webSocketClient.BanBeatmapset(WorkingBeatmapset.Value.Beatmapset.Id.ToString())
                         }
                     },
                     new Container
@@ -115,7 +111,7 @@ public class BeatmapsetRequestButtons : Container
                             CornerRadius = 5,
                             BackgroundColour = OsuRequestColour.RedDark,
                             Texture = textureStore.Get("ban-user"),
-                            OnButtonClicked = () => webSocketClient.BanUser(RequestedBeatmapset.Requester.Login)
+                            OnButtonClicked = () => webSocketClient.BanUser(WorkingBeatmapset.Value.Requester.Login)
                         }
                     }
                 }

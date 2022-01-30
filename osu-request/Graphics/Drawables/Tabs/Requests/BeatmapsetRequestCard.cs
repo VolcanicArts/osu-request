@@ -1,18 +1,15 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu_request.Structures;
 
 namespace osu_request.Drawables;
 
-public class BeatmapsetRequestCard : BeatmapsetCard
+public class BeatmapsetRequestCard : BeatmapsetCard<WorkingRequestedBeatmapset>
 {
-    private readonly RequestedBeatmapset RequestedBeatmapset;
-
-    public BeatmapsetRequestCard(WorkingBeatmapset workingBeatmapset, RequestedBeatmapset requestedBeatmapset) : base(workingBeatmapset)
-    {
-        RequestedBeatmapset = requestedBeatmapset;
-    }
+    [Resolved]
+    private Bindable<WorkingRequestedBeatmapset> WorkingBeatmapset { get; set; }
 
     [BackgroundDependencyLoader]
     private void Load()
@@ -24,7 +21,7 @@ public class BeatmapsetRequestCard : BeatmapsetCard
             TextAnchor = Anchor.BottomLeft,
             RelativeSizeAxes = Axes.Both,
             Padding = new MarginPadding(5),
-            Text = $"Requested by {RequestedBeatmapset.Requester.DisplayName}"
+            Text = $"Requested by {WorkingBeatmapset.Value.Requester.DisplayName}"
         });
     }
 }

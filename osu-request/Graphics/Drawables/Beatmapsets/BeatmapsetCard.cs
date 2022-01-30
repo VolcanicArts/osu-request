@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
@@ -6,18 +7,12 @@ using osu_request.Structures;
 
 namespace osu_request.Drawables;
 
-public class BeatmapsetCard : Container
+public class BeatmapsetCard<T> : Container where T : WorkingBeatmapset
 {
-    public readonly string BeatmapsetId;
-    private readonly WorkingBeatmapset WorkingBeatmapset;
-
     private double hoverTime = double.MaxValue;
 
-    public BeatmapsetCard(WorkingBeatmapset workingBeatmapset)
-    {
-        BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
-        WorkingBeatmapset = workingBeatmapset;
-    }
+    [Resolved]
+    private Bindable<T> WorkingBeatmapset { get; set; }
 
     [BackgroundDependencyLoader]
     private void Load()
@@ -30,7 +25,7 @@ public class BeatmapsetCard : Container
 
         Children = new Drawable[]
         {
-            new BeatmapsetCover(WorkingBeatmapset.Cover)
+            new BeatmapsetCover(WorkingBeatmapset.Value.Cover)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -45,8 +40,8 @@ public class BeatmapsetCard : Container
             }
         };
 
-        TopText.AddText($"{WorkingBeatmapset.Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
-        TopText.AddText($"Mapped by {WorkingBeatmapset.Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
+        TopText.AddText($"{WorkingBeatmapset.Value.Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.Regular.With(size: 30));
+        TopText.AddText($"Mapped by {WorkingBeatmapset.Value.Beatmapset.Creator}", t => t.Font = OsuRequestFonts.Regular.With(size: 25));
     }
 
     protected override void Update()
@@ -54,7 +49,7 @@ public class BeatmapsetCard : Container
         base.Update();
         if (!IsHovered || !(Time.Current - hoverTime > 250.0d)) return;
         hoverTime = double.MaxValue;
-        WorkingBeatmapset.Preview.Restart();
+        WorkingBeatmapset.Value.Preview.Restart();
     }
 
     protected override bool OnHover(HoverEvent e)
@@ -67,14 +62,14 @@ public class BeatmapsetCard : Container
 
     protected override void OnHoverLost(HoverLostEvent e)
     {
-        WorkingBeatmapset.Preview.Stop();
+        WorkingBeatmapset.Value.Preview.Stop();
         this.MoveToY(0.0f, 100, Easing.InCubic);
         TweenEdgeEffectTo(OsuRequestEdgeEffects.NoShadow, 100, Easing.InCubic);
     }
 
     protected override void Dispose(bool isDisposing)
     {
-        WorkingBeatmapset.Preview.Dispose();
+        WorkingBeatmapset.Value.Preview.Dispose();
         base.Dispose(isDisposing);
     }
 }
