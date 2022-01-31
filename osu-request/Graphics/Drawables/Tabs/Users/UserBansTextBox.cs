@@ -69,7 +69,11 @@ public class UserBansTextBox : Container
                                 Text = "Ban",
                                 FontSize = 40,
                                 CornerRadius = 10,
-                                OnButtonClicked = () => webSocketClient.BanUser(TextBox.Text)
+                                OnButtonClicked = () =>
+                                {
+                                    webSocketClient.BanUser(TextBox.Text);
+                                    TextBox.Text = string.Empty;
+                                }
                             }
                         }
                     }

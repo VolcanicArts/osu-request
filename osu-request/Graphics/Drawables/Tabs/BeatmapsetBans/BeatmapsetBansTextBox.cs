@@ -69,7 +69,11 @@ public class BeatmapsetBansTextBox : Container
                                 Text = "Ban",
                                 FontSize = 40,
                                 CornerRadius = 10,
-                                OnButtonClicked = () => webSocketClient.BanBeatmapset(TextBox.Text)
+                                OnButtonClicked = () =>
+                                {
+                                    webSocketClient.BanBeatmapset(TextBox.Text);
+                                    TextBox.Text = string.Empty;
+                                }
                             }
                         }
                     }
