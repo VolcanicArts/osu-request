@@ -21,12 +21,28 @@ public class WebSocketClient : WebSocketClientBase
     public Action<RequestedBeatmapset> OnNewRequest;
     public Action<User> OnUserBan;
     public Action<string> OnUserUnBan;
+    public Action OnSocketUnauthenticated;
+    public Action OnServerError;
+    public Action OnBeatmapsetNonExistent;
+    public Action OnUserNonexistent;
 
     protected override void OnMessage(IncomingMessageBase message, string rawMessage)
     {
         base.OnMessage(message, rawMessage);
         switch (message.Op)
         {
+            case IncomingOpCode.SOCKET_UNAUTHENTICATED:
+                OnSocketUnauthenticated?.Invoke();
+                break;
+            case IncomingOpCode.SERVER_ERROR:
+                OnServerError?.Invoke();
+                break;
+            case IncomingOpCode.SERVER_BEATMAPSET_NONEXISTENT:
+                OnBeatmapsetNonExistent?.Invoke();
+                break;
+            case IncomingOpCode.SERVER_USER_NONEXISTENT:
+                OnUserNonexistent?.Invoke();
+                break;
             case IncomingOpCode.AUTH_INVALID_USERNAME:
                 OnInvalidUsername?.Invoke();
                 break;
