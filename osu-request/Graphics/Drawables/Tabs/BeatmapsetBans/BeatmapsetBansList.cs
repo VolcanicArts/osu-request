@@ -38,7 +38,7 @@ public class BeatmapsetBansList : Container
             Scale = new Vector2(0.49f)
         };
 
-        Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetBan));
+        _fillFlowContainer.Add(beatmapsetBan);
     }
 
     [BackgroundDependencyLoader]
