@@ -25,7 +25,7 @@ public class BeatmapsetBansList : Container
 
     private void OnBeatmapsetBan(Beatmapset beatmapset)
     {
-        var previewMp3 = AudioManager.GetTrackStore().Get(beatmapset.PreviewUrl);
+        var previewMp3 = AudioManager.GetTrackStore().Get("https:" + beatmapset.PreviewUrl);
         var backgroundTexture = TextureStore.Get(beatmapset.Covers.CardAt2X);
         if (previewMp3 == null || backgroundTexture == null) return;
 

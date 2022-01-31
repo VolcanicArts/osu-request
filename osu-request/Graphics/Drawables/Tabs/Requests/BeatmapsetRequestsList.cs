@@ -25,7 +25,7 @@ public class BeatmapsetRequestsList : Container
 
     private void NewRequest(RequestedBeatmapset requestedBeatmapset)
     {
-        var previewMp3 = AudioManager.GetTrackStore().Get(requestedBeatmapset.Beatmapset.PreviewUrl);
+        var previewMp3 = AudioManager.GetTrackStore().Get("https:" + requestedBeatmapset.Beatmapset.PreviewUrl);
         var backgroundTexture = TextureStore.Get(requestedBeatmapset.Beatmapset.Covers.CardAt2X);
         var workingBeatmapset = new WorkingRequestedBeatmapset(requestedBeatmapset, backgroundTexture, previewMp3);
         var beatmapsetContainer = new BeatmapsetRequestEntry(workingBeatmapset)
