@@ -16,6 +16,7 @@ public class UserBansList : Container
     [BackgroundDependencyLoader]
     private void Load(WebSocketClient webSocketClient)
     {
+        webSocketClient.OnLoggedIn += () => Scheduler.Add(() => _fillFlowContainer.Clear());
         webSocketClient.OnUserBan += user => Scheduler.Add(() => OnUserBan(user));
         webSocketClient.OnUserUnBan += userId => Scheduler.Add(() => OnUserUnBan(userId));
         InitChildren();
