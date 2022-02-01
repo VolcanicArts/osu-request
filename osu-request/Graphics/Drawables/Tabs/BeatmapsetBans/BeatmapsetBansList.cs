@@ -45,7 +45,7 @@ public class BeatmapsetBansList : Container
     private void Load(GameHost host, WebSocketClient webSocketClient)
     {
         host.Window.Resized += () => UpdateSizing(host.Window);
-        webSocketClient.OnLoggedIn += () => Scheduler.Add(() => _fillFlowContainer.Clear());
+        webSocketClient.OnConnect += () => Scheduler.Add(() => _fillFlowContainer.Clear());
         webSocketClient.OnBeatmapsetBan += beatmapset => Scheduler.Add(() => OnBeatmapsetBan(beatmapset));
         webSocketClient.OnBeatmapsetUnBan += beatmapsetId => Scheduler.Add(() => OnBeatmapsetUnBan(beatmapsetId));
         InitChildren();

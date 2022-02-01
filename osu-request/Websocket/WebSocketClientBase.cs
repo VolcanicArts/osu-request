@@ -4,6 +4,7 @@ using System.Text;
 using NetCoreServer;
 using Newtonsoft.Json;
 using osu.Framework.Logging;
+using osu_request.Config;
 using osu_request_server;
 
 namespace osu_request.Websocket;
@@ -11,7 +12,12 @@ namespace osu_request.Websocket;
 public class WebSocketClientBase : WsClient
 {
     private const string log_prefix = "[WebSocket]";
-    protected WebSocketClientBase() : base("127.0.0.1", 8080) { }
+    private readonly OsuRequestConfig OsuRequestConfig;
+
+    protected WebSocketClientBase(OsuRequestConfig osuRequestConfig) : base("127.0.0.1", 8080)
+    {
+        OsuRequestConfig = osuRequestConfig;
+    }
 
     public override void OnWsConnecting(HttpRequest request)
     {
@@ -23,6 +29,8 @@ public class WebSocketClientBase : WsClient
         request.SetHeader("Sec-WebSocket-Key", Convert.ToBase64String(WsNonce));
         request.SetHeader("Sec-WebSocket-Protocol", "chat, superchat");
         request.SetHeader("Sec-WebSocket-Version", "13");
+        request.SetHeader("Auth-Username", OsuRequestConfig.Get<string>(OsuRequestSetting.Username));
+        request.SetHeader("Auth-Code", OsuRequestConfig.Get<string>(OsuRequestSetting.Passcode));
         request.SetBody();
     }
 
@@ -51,7 +59,7 @@ public class WebSocketClientBase : WsClient
         OnMessage(webSocketMessage, message);
     }
 
-    protected override void OnError(SocketError error)
+    public override void OnWsError(SocketError error)
     {
         Logger.Log($"{log_prefix} WebSocketClient caught an error with code {error}");
     }

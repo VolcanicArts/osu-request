@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using NetCoreServer;
 using Newtonsoft.Json;
 using osu.Framework.Logging;
 using osu_request.Config;
@@ -11,29 +13,25 @@ namespace osu_request.Websocket;
 
 public class WebSocketClient : WebSocketClientBase
 {
+    public Action OnAuthenticationFail;
     public Action<Beatmapset> OnBeatmapsetBan;
+    public Action OnBeatmapsetNonExistent;
     public Action<string> OnBeatmapsetUnBan;
     public Action OnConnect;
     public Action OnDisconnect;
-    public Action OnInvalidCode;
-    public Action OnInvalidUsername;
-    public Action OnLoggedIn;
     public Action<RequestedBeatmapset> OnNewRequest;
-    public Action<User> OnUserBan;
-    public Action<string> OnUserUnBan;
-    public Action OnSocketUnauthenticated;
     public Action OnServerError;
-    public Action OnBeatmapsetNonExistent;
+    public Action<User> OnUserBan;
     public Action OnUserNonexistent;
+    public Action<string> OnUserUnBan;
+
+    public WebSocketClient(OsuRequestConfig osuRequestConfig) : base(osuRequestConfig) { }
 
     protected override void OnMessage(IncomingMessageBase message, string rawMessage)
     {
         base.OnMessage(message, rawMessage);
         switch (message.Op)
         {
-            case IncomingOpCode.SOCKET_UNAUTHENTICATED:
-                OnSocketUnauthenticated?.Invoke();
-                break;
             case IncomingOpCode.SERVER_ERROR:
                 OnServerError?.Invoke();
                 break;
@@ -42,15 +40,6 @@ public class WebSocketClient : WebSocketClientBase
                 break;
             case IncomingOpCode.SERVER_USER_NONEXISTENT:
                 OnUserNonexistent?.Invoke();
-                break;
-            case IncomingOpCode.AUTH_INVALID_USERNAME:
-                OnInvalidUsername?.Invoke();
-                break;
-            case IncomingOpCode.AUTH_INVALID_CODE:
-                OnInvalidCode?.Invoke();
-                break;
-            case IncomingOpCode.AUTH_LOGGED_IN:
-                OnLoggedIn?.Invoke();
                 break;
             case IncomingOpCode.AUTH_ALL_BEATMAPSET_BANS:
                 HandleAllBeatmapsetBans(JsonConvert.DeserializeObject<AuthAllBeatmapsetBansMessage>(rawMessage));
@@ -73,34 +62,27 @@ public class WebSocketClient : WebSocketClientBase
             case IncomingOpCode.USER_UNBAN:
                 HandleUserUnBan(JsonConvert.DeserializeObject<UserUnBanMessage>(rawMessage));
                 break;
-            case IncomingOpCode.SOCKET_CONNECTED:
-                // ignore
-                break;
             default:
                 throw new ArgumentOutOfRangeException($"Unexpected OpCode: {message.Op}");
         }
     }
 
-    protected override void OnDisconnected()
+    protected override void OnReceivedResponse(HttpResponse response)
     {
-        base.OnDisconnected();
+        base.OnReceivedResponse(response);
+        if (response.Status == (int)HttpStatusCode.Unauthorized) OnAuthenticationFail?.Invoke();
+    }
+
+    public override void OnWsDisconnected()
+    {
+        base.OnWsDisconnected();
         OnDisconnect?.Invoke();
     }
 
-    protected override void OnConnected()
+    public override void OnWsConnected(HttpResponse response)
     {
         base.OnConnected();
         OnConnect?.Invoke();
-    }
-
-    public void SendAuth(OsuRequestConfig osuRequestConfig)
-    {
-        var authMessage = new RequestAuthMessage
-        {
-            Username = osuRequestConfig.Get<string>(OsuRequestSetting.Username),
-            Code = osuRequestConfig.Get<string>(OsuRequestSetting.Passcode)
-        };
-        SendText(JsonConvert.SerializeObject(authMessage));
     }
 
     private void HandleNewRequest(BeatmapsetRequestMessage message)
