@@ -160,4 +160,16 @@ public class WebSocketClient : WebSocketClientBase
         };
         SendText(JsonConvert.SerializeObject(unBanUserMessage));
     }
+
+    public void ConnectOrReconnect()
+    {
+        if (IsConnected)
+        {
+            ReconnectAsync();
+        }
+        else
+        {
+            ConnectAsync();
+        }
+    }
 }
