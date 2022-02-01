@@ -81,7 +81,7 @@ public class WebSocketClient : WebSocketClientBase
 
     public override void OnWsConnected(HttpResponse response)
     {
-        base.OnConnected();
+        base.OnWsConnected(response);
         OnConnect?.Invoke();
     }
 
