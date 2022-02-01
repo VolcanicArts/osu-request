@@ -45,7 +45,11 @@ public class OsuRequest : OsuRequestBase
         WebSocketClient.OnServerError += () => NotificationContainer.Notify("Server Error", "Critical server error occured. Please report this");
         WebSocketClient.OnBeatmapsetNonExistent += () => NotificationContainer.Notify("Error", "That beatmapset is nonexistent");
         WebSocketClient.OnUserNonexistent += () => NotificationContainer.Notify("Error", "That user is nonexistent");
-        WebSocketClient.OnConnect += () => NotificationContainer.Notify("Server connected!", "The server connect has been established");
+        WebSocketClient.OnConnect += () =>
+        {
+            NotificationContainer.Notify("Server connected!", "The server connect has been established");
+            WebSocketClient.SendAuth(OsuRequestConfig);
+        };
         WebSocketClient.OnDisconnect += () => NotificationContainer.Notify("Server Disconnected", "The server has been disconnected");
         WebSocketClient.OnLoggedIn += () => NotificationContainer.Notify("Logged In!", "Connection was successful. Requests incoming!");
         WebSocketClient.OnInvalidUsername += () =>
@@ -59,7 +63,6 @@ public class OsuRequest : OsuRequestBase
             TabsContainer.Select(Tabs.Settings);
         };
         WebSocketClient.ConnectAsync();
-        WebSocketClient.SendAuth(OsuRequestConfig);
     }
 
     private void CreateConfigsAndManagers(Storage storage)
