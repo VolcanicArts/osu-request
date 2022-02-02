@@ -2,6 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu_request.Websocket;
 using osuTK;
@@ -31,6 +32,8 @@ public class UserBanEntry : Container
         Masking = true;
         CornerRadius = 5;
 
+        var userProfileImage = textureStore.Get(User.ProfileImageUrl);
+
         Children = new Drawable[]
         {
             new Box
@@ -40,17 +43,50 @@ public class UserBanEntry : Container
                 RelativeSizeAxes = Axes.Both,
                 Colour = OsuRequestColour.Gray4
             },
-            new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 20))
+            new FillFlowContainer
             {
                 Anchor = Anchor.CentreLeft,
                 Origin = Anchor.CentreLeft,
-                TextAnchor = Anchor.CentreLeft,
                 RelativeSizeAxes = Axes.Both,
-                Padding = new MarginPadding
+                Direction = FillDirection.Horizontal,
+                Spacing = new Vector2(2.5f, 0),
+                Children = new Drawable[]
                 {
-                    Left = 5
-                },
-                Text = User.Login
+                    new Container
+                    {
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
+                        Size = new Vector2(25),
+                        Margin = new MarginPadding
+                        {
+                            Left = 2.5f
+                        },
+                        Child = new CircularContainer
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Masking = true,
+                            Child = new Sprite
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                FillMode = FillMode.Fit,
+                                FillAspectRatio = userProfileImage.Width / (float)userProfileImage.Height,
+                                Texture = userProfileImage
+                            }
+                        }
+                    },
+                    new TextFlowContainer(t => t.Font = OsuRequestFonts.Regular.With(size: 20))
+                    {
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
+                        TextAnchor = Anchor.CentreLeft,
+                        RelativeSizeAxes = Axes.Both,
+                        Text = $"{User.DisplayName} ({User.Login})"
+                    }
+                }
             },
             new Container
             {
