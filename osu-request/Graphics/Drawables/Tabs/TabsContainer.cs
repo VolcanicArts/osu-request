@@ -10,8 +10,8 @@ namespace osu_request.Drawables;
 
 public class TabsContainer : Container
 {
-    private GenericTab[] _tabs;
-    private Toolbar _toolbar;
+    private GenericTab[] Tabs;
+    private Toolbar Toolbar;
     private int CurrentTabId;
 
     [BackgroundDependencyLoader]
@@ -28,12 +28,13 @@ public class TabsContainer : Container
                 ColourDark = OsuRequestColour.Gray4,
                 TriangleScale = 4
             },
-            _toolbar = new Toolbar
+            Toolbar = new Toolbar
             {
                 Anchor = Anchor.TopCentre,
                 Origin = Anchor.TopCentre,
                 RelativeSizeAxes = Axes.X,
-                Size = new Vector2(1.0f, 60.0f)
+                Size = new Vector2(1.0f, 60.0f),
+                NewSelectionEvent = id => Select((Tabs)id)
             },
             new Container
             {
@@ -44,7 +45,7 @@ public class TabsContainer : Container
                 {
                     Top = 60
                 },
-                Children = _tabs = new GenericTab[]
+                Children = Tabs = new GenericTab[]
                 {
                     new RequestsTab
                     {
@@ -65,8 +66,6 @@ public class TabsContainer : Container
                 }
             }
         };
-
-        _toolbar.NewSelectionEvent += id => Select((Tabs)id);
     }
 
     public void Select(Tabs tab)
@@ -77,7 +76,7 @@ public class TabsContainer : Container
     private void select(Tabs tab)
     {
         var id = Convert.ToInt32(tab);
-        _toolbar.Select(id);
+        Toolbar.Select(id);
         AnimateTabs(id);
         CurrentTabId = id;
     }
@@ -85,18 +84,9 @@ public class TabsContainer : Container
     private void AnimateTabs(int id)
     {
         if (id == CurrentTabId) return;
-        var currentTab = _tabs[CurrentTabId];
-        var newTab = _tabs[id];
 
-        if (id > CurrentTabId)
-        {
-            newTab.MoveToX(1.0f).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
-            currentTab.MoveToX(-1.0f, 200, Easing.InOutQuart);
-        }
-        else
-        {
-            newTab.MoveToX(-1.0f).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
-            currentTab.MoveToX(1.0f, 200, Easing.InOutQuart);
-        }
+        var newPosition = id > CurrentTabId ? 1 : -1;
+        Tabs[id].MoveToX(newPosition).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
+        Tabs[CurrentTabId].MoveToX(-newPosition, 200, Easing.InOutQuart);
     }
 }
