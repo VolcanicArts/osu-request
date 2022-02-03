@@ -17,7 +17,7 @@ public class TabsContainer : Container
     [BackgroundDependencyLoader]
     private void Load()
     {
-        Children = new Drawable[]
+        InternalChildren = new Drawable[]
         {
             new TrianglesBackground
             {
