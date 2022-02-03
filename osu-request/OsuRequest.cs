@@ -20,8 +20,15 @@ public class OsuRequest : OsuRequestBase
         RelativeSizeAxes = Axes.Both
     };
 
+    [Cached]
+    private readonly TabsContainer TabsContainer = new()
+    {
+        Anchor = Anchor.Centre,
+        Origin = Anchor.Centre,
+        RelativeSizeAxes = Axes.Both
+    };
+
     private OsuRequestConfig OsuRequestConfig;
-    private TabsContainer TabsContainer;
     private WebSocketClient WebSocketClient;
 
     [BackgroundDependencyLoader]
@@ -43,10 +50,12 @@ public class OsuRequest : OsuRequestBase
     {
         WebSocketClient.OnServerError += () =>
             NotificationContainer.Notify("Server Error", "Critical server error occured. Please report this", OsuRequestColour.Red);
-        WebSocketClient.OnBeatmapsetNonExistent +=
-            () => NotificationContainer.Notify("Error", "That beatmapset is nonexistent", OsuRequestColour.Red);
-        WebSocketClient.OnUserNonexistent += () => NotificationContainer.Notify("Error", "That user is nonexistent", OsuRequestColour.Red);
-        WebSocketClient.OnConnect += () => NotificationContainer.Notify("Server connected!", "Authentication has succeeded", OsuRequestColour.Green);
+        WebSocketClient.OnBeatmapsetNonExistent += () =>
+            NotificationContainer.Notify("Error", "That beatmapset is nonexistent", OsuRequestColour.Red);
+        WebSocketClient.OnUserNonexistent += () =>
+            NotificationContainer.Notify("Error", "That user is nonexistent", OsuRequestColour.Red);
+        WebSocketClient.OnConnect += () =>
+            NotificationContainer.Notify("Server connected!", "Authentication has succeeded", OsuRequestColour.Green);
         WebSocketClient.OnDisconnect += () =>
             NotificationContainer.Notify("Server Disconnected", "The server has been disconnected", OsuRequestColour.Red);
         WebSocketClient.OnAuthenticationFail += () =>
@@ -76,12 +85,7 @@ public class OsuRequest : OsuRequestBase
             TargetDrawSize = new Vector2(InitialWindowSize.Width, InitialWindowSize.Height),
             Children = new Drawable[]
             {
-                TabsContainer = new TabsContainer
-                {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.Both
-                },
+                TabsContainer,
                 NotificationContainer
             }
         };
