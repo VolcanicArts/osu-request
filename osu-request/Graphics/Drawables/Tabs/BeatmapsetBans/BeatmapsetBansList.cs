@@ -33,8 +33,7 @@ public class BeatmapsetBansList : Container
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
-            RelativeSizeAxes = Axes.X,
-            Size = new Vector2(1.0f, 120.0f),
+            Size = new Vector2(875.0f, 120.0f),
             Scale = new Vector2(0.49f)
         };
 
