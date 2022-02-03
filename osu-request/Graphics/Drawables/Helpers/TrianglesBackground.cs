@@ -16,24 +16,25 @@ public class TrianglesBackground : Container
     [BackgroundDependencyLoader]
     private void Load()
     {
-        var backgroundColour = new Box
+        InternalChildren = new Drawable[]
         {
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            RelativeSizeAxes = Axes.Both,
-            Colour = ColourDark
+            new Box
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Colour = ColourDark
+            },
+            new Triangles
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                ColourLight = ColourLight,
+                ColourDark = ColourDark,
+                Velocity = Velocity,
+                TriangleScale = TriangleScale
+            }
         };
-        var triangles = new Triangles
-        {
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            RelativeSizeAxes = Axes.Both,
-            ColourLight = ColourLight,
-            ColourDark = ColourDark,
-            Velocity = Velocity,
-            TriangleScale = TriangleScale
-        };
-        AddInternal(backgroundColour);
-        AddInternal(triangles);
     }
 }
