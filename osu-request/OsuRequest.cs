@@ -41,15 +41,18 @@ public class OsuRequest : OsuRequestBase
 
     private void StartWebsocket()
     {
-        WebSocketClient.OnServerError += () => NotificationContainer.Notify("Server Error", "Critical server error occured. Please report this");
-        WebSocketClient.OnBeatmapsetNonExistent += () => NotificationContainer.Notify("Error", "That beatmapset is nonexistent");
-        WebSocketClient.OnUserNonexistent += () => NotificationContainer.Notify("Error", "That user is nonexistent");
-        WebSocketClient.OnConnect += () => NotificationContainer.Notify("Server connected!", "Authentication has succeeded");
-        WebSocketClient.OnDisconnect += () => NotificationContainer.Notify("Server Disconnected", "The server has been disconnected");
+        WebSocketClient.OnServerError += () =>
+            NotificationContainer.Notify("Server Error", "Critical server error occured. Please report this", OsuRequestColour.Red);
+        WebSocketClient.OnBeatmapsetNonExistent +=
+            () => NotificationContainer.Notify("Error", "That beatmapset is nonexistent", OsuRequestColour.Red);
+        WebSocketClient.OnUserNonexistent += () => NotificationContainer.Notify("Error", "That user is nonexistent", OsuRequestColour.Red);
+        WebSocketClient.OnConnect += () => NotificationContainer.Notify("Server connected!", "Authentication has succeeded", OsuRequestColour.Green);
+        WebSocketClient.OnDisconnect += () =>
+            NotificationContainer.Notify("Server Disconnected", "The server has been disconnected", OsuRequestColour.Red);
         WebSocketClient.OnAuthenticationFail += () =>
         {
             TabsContainer.Select(Tabs.Settings);
-            NotificationContainer.Notify("Invalid Credentials", "Please enter valid credentials");
+            NotificationContainer.Notify("Invalid Credentials", "Please enter valid credentials", OsuRequestColour.Red);
         };
         WebSocketClient.ConnectAsync();
     }
