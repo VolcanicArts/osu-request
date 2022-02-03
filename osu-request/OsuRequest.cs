@@ -63,6 +63,10 @@ public class OsuRequest : OsuRequestBase
             TabsContainer.Select(Tabs.Settings);
             NotificationContainer.Notify("Invalid Credentials", "Please enter valid credentials", OsuRequestColour.Red);
         };
+        WebSocketClient.OnNewRequest += _ =>
+        {
+            NotificationContainer.Notify("New Request!", "A new beatmapset has been requested", OsuRequestColour.Blue);
+        };
         WebSocketClient.ConnectAsync();
     }
 
