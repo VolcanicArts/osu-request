@@ -1,5 +1,7 @@
 ﻿using osu.Framework.Extensions.Color4Extensions;
 using osuTK.Graphics;
+// ReSharper disable StringLiteralTypo
+// ReSharper disable UnusedMember.Global
 
 namespace osu_request;
 

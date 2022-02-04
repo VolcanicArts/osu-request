@@ -16,9 +16,6 @@ public class BeatmapsetRequestButtons : Container
     [Resolved]
     private Bindable<WorkingRequestedBeatmapset> WorkingBeatmapset { get; set; }
 
-    [Resolved]
-    private BindableBool ShouldDispose { get; set; }
-
     [BackgroundDependencyLoader]
     private void Load(TextureStore textureStore, GameHost host, WebSocketClient webSocketClient)
     {

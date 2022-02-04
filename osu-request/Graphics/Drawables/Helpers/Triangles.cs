@@ -12,11 +12,12 @@ using osu.Framework.Lists;
 using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
+// ReSharper disable UnusedMember.Global
 
 namespace osu_request.Drawables;
 
 // Taken and modified from https://github.com/ppy/osu/blob/master/osu.Game/Graphics/Backgrounds/Triangles.cs
-public class Triangles : Drawable
+public sealed class Triangles : Drawable
 {
     private const float triangle_size = 100;
     private const float base_velocity = 50;
@@ -33,13 +34,6 @@ public class Triangles : Drawable
     private Color4 colourDark = Color4.Black;
 
     private Color4 colourLight = Color4.White;
-
-    /// <summary>
-    ///     Whether we should drop-off alpha values of triangles more quickly to improve
-    ///     the visual appearance of fading. This defaults to on as it is generally more
-    ///     aesthetically pleasing, but should be turned off in buffered containers.
-    /// </summary>
-    public bool HideAlphaDiscrepancies = true;
 
     private IShader shader;
 
@@ -94,12 +88,12 @@ public class Triangles : Drawable
     /// <summary>
     ///     Whether we should create new triangles as others expire.
     /// </summary>
-    protected virtual bool CreateNewTriangles => true;
+    private static bool CreateNewTriangles => true;
 
     /// <summary>
     ///     The amount of triangles we want compared to the default distribution.
     /// </summary>
-    protected virtual float SpawnRatio => 1;
+    private static float SpawnRatio => 1;
 
     public float TriangleScale
     {
@@ -118,7 +112,7 @@ public class Triangles : Drawable
         }
     }
 
-    protected int AimCount { get; private set; }
+    private int AimCount { get; set; }
 
     [BackgroundDependencyLoader]
     private void load(ShaderManager shaders)
@@ -141,10 +135,7 @@ public class Triangles : Drawable
         if (CreateNewTriangles)
             addTriangles(false);
 
-        var adjustedAlpha = HideAlphaDiscrepancies
-            // Cubically scale alpha to make it drop off more sharply.
-            ? MathF.Pow(DrawColourInfo.Colour.AverageColour.Linear.A, 3)
-            : 1;
+        var adjustedAlpha = MathF.Pow(DrawColourInfo.Colour.AverageColour.Linear.A, 3);
 
         var elapsedSeconds = (float)Time.Elapsed / 1000;
         // Since position is relative, the velocity needs to scale inversely with DrawHeight.
@@ -210,7 +201,7 @@ public class Triangles : Drawable
     ///     Creates a triangle particle with a random scale.
     /// </summary>
     /// <returns>The triangle particle.</returns>
-    protected virtual TriangleParticle CreateTriangle()
+    private TriangleParticle CreateTriangle()
     {
         const float std_dev = 0.16f;
         const float mean = 0.5f;
@@ -227,7 +218,7 @@ public class Triangles : Drawable
     ///     Creates a shade of colour for the triangles.
     /// </summary>
     /// <returns>The colour.</returns>
-    protected virtual Color4 CreateTriangleShade(float shade)
+    private Color4 CreateTriangleShade(float shade)
     {
         return Interpolation.ValueAt(shade, colourDark, colourLight, 0, 1);
     }
@@ -262,7 +253,7 @@ public class Triangles : Drawable
 
         private QuadBatch<TexturedVertex2D> vertexBatch;
 
-        public TrianglesDrawNode(Triangles source)
+        public TrianglesDrawNode(IDrawable source)
             : base(source) { }
 
         private new Triangles Source => (Triangles)base.Source;
@@ -326,7 +317,7 @@ public class Triangles : Drawable
         }
     }
 
-    protected struct TriangleParticle : IComparable<TriangleParticle>
+    private struct TriangleParticle : IComparable<TriangleParticle>
     {
         /// <summary>
         ///     The position of the top vertex of the triangle.

@@ -4,5 +4,5 @@ namespace osu_request;
 
 public static class OsuRequestFonts
 {
-    public static FontUsage Regular = new("Roboto", weight: "Regular");
+    public static readonly FontUsage Regular = new("Roboto", weight: "Regular");
 }

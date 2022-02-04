@@ -1,4 +1,5 @@
-﻿namespace osu_request.Drawables;
+﻿// ReSharper disable UnusedMember.Global
+namespace osu_request.Drawables;
 
 public enum Tabs
 {

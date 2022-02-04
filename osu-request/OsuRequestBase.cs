@@ -43,7 +43,7 @@ public class OsuRequestBase : Game, IKeyBindingHandler<FrameworkAction>
         SetupDefaultFrameworkConfig(frameworkConfig);
     }
 
-    private void SetWindowAttributes(GameHost host)
+    private static void SetWindowAttributes(GameHost host)
     {
         host.Window.Title = WindowTitle;
     }
@@ -53,7 +53,7 @@ public class OsuRequestBase : Game, IKeyBindingHandler<FrameworkAction>
         Resources.AddStore(new DllResourceStore(OsuRequestResources.ResourceAssembly));
     }
 
-    private void SetupDefaultFrameworkConfig(FrameworkConfigManager frameworkConfig)
+    private static void SetupDefaultFrameworkConfig(FrameworkConfigManager frameworkConfig)
     {
         frameworkConfig.GetBindable<ExecutionMode>(FrameworkSetting.ExecutionMode).Value = ExecutionMode.MultiThreaded;
         frameworkConfig.GetBindable<Size>(FrameworkSetting.WindowedSize).Value = InitialWindowSize;

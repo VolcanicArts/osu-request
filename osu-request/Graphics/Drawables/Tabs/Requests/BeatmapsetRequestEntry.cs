@@ -14,16 +14,11 @@ public class BeatmapsetRequestEntry : Container
     public readonly string BeatmapsetId;
     public readonly string Username;
 
-    [Cached]
-    private BindableBool ShouldDispose = new();
-
     public BeatmapsetRequestEntry(WorkingRequestedBeatmapset workingBeatmapset)
     {
         WorkingBeatmapset.Value = workingBeatmapset;
         BeatmapsetId = workingBeatmapset.Beatmapset.Id.ToString();
         Username = workingBeatmapset.Requester.Login;
-
-        ShouldDispose.BindValueChanged(_ => DisposeGracefully());
     }
 
     [Cached]

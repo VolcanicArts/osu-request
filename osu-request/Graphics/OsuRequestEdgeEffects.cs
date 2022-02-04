@@ -23,7 +23,7 @@ public static class OsuRequestEdgeEffects
         Offset = new Vector2(0.0f, 1.5f)
     };
 
-    public static EdgeEffectParameters DispersedShadow = new()
+    public static readonly EdgeEffectParameters DispersedShadow = new()
     {
         Colour = Color4.Black.Opacity(0.25f),
         Radius = 20,

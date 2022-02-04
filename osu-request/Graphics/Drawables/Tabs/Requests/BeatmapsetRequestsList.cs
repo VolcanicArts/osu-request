@@ -38,7 +38,7 @@ public class BeatmapsetRequestsList : Container
         Scheduler.AddOnce(() => _fillFlowContainer.Add(beatmapsetContainer));
     }
 
-    private void OnBeatmapsetBan(Beatmapset beatmapset)
+    private void OnBeatmapsetBan(BeatmapsetCompact beatmapset)
     {
         _fillFlowContainer.Where(entry => entry.BeatmapsetId == beatmapset.Id.ToString()).ForEach(entry => entry.DisposeGracefully());
     }
