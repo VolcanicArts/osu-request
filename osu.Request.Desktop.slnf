@@ -1,0 +1,11 @@
+﻿{
+  "solution": {
+    "path": "osu.Request.sln",
+    "projects": [
+      "osu.Request.Desktop\\osu.Request.Desktop.csproj",
+      "osu.Request.Game\\osu.Request.Game.csproj",
+      "osu.Request.Game.Tests\\osu.Request.Game.Tests.csproj",
+      "osu.Request.Resources\\osu.Request.Resources.csproj"
+    ]
+  }
+}
