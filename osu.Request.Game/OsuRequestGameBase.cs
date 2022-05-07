@@ -1,3 +1,6 @@
+// Copyright (c) VolcanicArts. Licensed under the GPL-3.0 License.
+// See the LICENSE file in the repository root for full license text.
+
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -7,7 +10,7 @@ using osuTK;
 
 namespace osu.Request.Game
 {
-    public class OsuRequestGameBase : osu.Framework.Game
+    public class OsuRequestGameBase : Framework.Game
     {
         protected override Container<Drawable> Content { get; }
 

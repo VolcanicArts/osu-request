@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) VolcanicArts. Licensed under the GPL-3.0 License.
+// See the LICENSE file in the repository root for full license text.
+
+using System;
 using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -253,7 +256,9 @@ public sealed class Triangles : Drawable
         private QuadBatch<TexturedVertex2D> vertexBatch;
 
         public TrianglesDrawNode(IDrawable source)
-            : base(source) { }
+            : base(source)
+        {
+        }
 
         private new Triangles Source => (Triangles)base.Source;
 
