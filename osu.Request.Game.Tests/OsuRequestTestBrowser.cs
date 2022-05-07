@@ -13,7 +13,7 @@ namespace osu.Request.Game.Tests
 
             AddRange(new Drawable[]
             {
-                new TestBrowser("osu.Request"),
+                new TestBrowser("osu!request"),
                 new CursorContainer()
             });
         }
