@@ -16,13 +16,15 @@ namespace osu.Request.Game.Graphics.Tabs.Requests;
 
 public sealed class RequestEntry : Container
 {
+    private const int padding = 3;
+
     public WorkingBeatmapset SourceBeatmapset { get; init; }
 
     private DependencyContainer? requestDependencies;
 
     public RequestEntry()
     {
-        Size = new Vector2(1000, 100);
+        Size = new Vector2(800, 100);
         Masking = true;
         CornerRadius = 10;
     }
@@ -46,67 +48,83 @@ public sealed class RequestEntry : Container
                 RelativeSizeAxes = Axes.Both,
                 Colour = OsuRequestColour.Gray4
             },
-            new GridContainer
+            new Container
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
-                ColumnDimensions = new[]
+                Padding = new MarginPadding(padding),
+                Child = new GridContainer
                 {
-                    new Dimension(GridSizeMode.Absolute, 50),
-                    new Dimension(GridSizeMode.Distributed),
-                    new Dimension(GridSizeMode.Absolute, 100)
-                },
-                Content = new[]
-                {
-                    new Drawable[]
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    ColumnDimensions = new[]
                     {
-                        new Container
+                        new Dimension(GridSizeMode.Absolute, 50),
+                        new Dimension(GridSizeMode.Distributed),
+                        new Dimension(GridSizeMode.Absolute, 100)
+                    },
+                    Content = new[]
+                    {
+                        new Drawable[]
                         {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Padding = new MarginPadding(3),
-                            Child = new IconButton
+                            new Container
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                Masking = true,
-                                CornerRadius = 10,
-                                Colour = OsuRequestColour.Green,
-                                Icon = FontAwesome.Solid.Check
-                            }
-                        },
-                        new Container
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Padding = new MarginPadding(3),
-                            Child = new BeatmapsetCard
+                                Padding = new MarginPadding
+                                {
+                                    Right = padding / 2f
+                                },
+                                Child = new IconButton
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    Masking = true,
+                                    CornerRadius = 10,
+                                    Colour = OsuRequestColour.Green,
+                                    Icon = FontAwesome.Solid.Check
+                                }
+                            },
+                            new Container
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                CornerRadius = 10
-                            }
-                        },
-                        new Container
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Padding = new MarginPadding(3),
-                            Child = new RequestEntryActions()
+                                Padding = new MarginPadding
+                                {
+                                    Horizontal = padding / 2f
+                                },
+                                Child = new BeatmapsetCard
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    CornerRadius = 10
+                                }
+                            },
+                            new Container
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,
                                 RelativeSizeAxes = Axes.Both,
-                                Masking = true,
-                                CornerRadius = 10
-                            }
-                        },
+                                Padding = new MarginPadding
+                                {
+                                    Left = padding / 2f
+                                },
+                                Child = new RequestEntryActions()
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    RelativeSizeAxes = Axes.Both,
+                                    Masking = true,
+                                    CornerRadius = 10
+                                }
+                            },
+                        }
                     }
                 }
             }
