@@ -5,7 +5,9 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Request.Game.Beatmaps;
+using osu.Request.Game.Graphics.UI;
 using osuTK;
 using osuTK.Graphics;
 
@@ -18,6 +20,8 @@ public sealed class RequestEntry : Container
     public RequestEntry()
     {
         Size = new Vector2(1000, 100);
+        Masking = true;
+        CornerRadius = 10;
     }
 
     [BackgroundDependencyLoader]
@@ -36,6 +40,7 @@ public sealed class RequestEntry : Container
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
                 ColumnDimensions = new[]
                 {
                     new Dimension(GridSizeMode.Absolute, 50),
@@ -46,12 +51,22 @@ public sealed class RequestEntry : Container
                 {
                     new Drawable[]
                     {
-                        new Box
+                        new Container
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.Red
+                            Padding = new MarginPadding(3),
+                            Child = new IconButton
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                Masking = true,
+                                CornerRadius = 10,
+                                Colour = OsuRequestColour.Green,
+                                Icon = FontAwesome.Solid.Check
+                            }
                         },
                         new Box
                         {
