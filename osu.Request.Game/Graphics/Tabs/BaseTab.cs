@@ -4,12 +4,11 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Request.Game.Graphics.Tabs.Requests;
-using osuTK;
+using osu.Framework.Graphics.Shapes;
 
 namespace osu.Request.Game.Graphics.Tabs;
 
-public class TabsContainer : Container
+public class BaseTab : Container
 {
     [BackgroundDependencyLoader]
     private void load()
@@ -17,14 +16,17 @@ public class TabsContainer : Container
         Anchor = Anchor.Centre;
         Origin = Anchor.Centre;
         RelativeSizeAxes = Axes.Both;
-        Padding = new MarginPadding(40);
+        RelativePositionAxes = Axes.Both;
+        Masking = true;
+        CornerRadius = 20;
+        EdgeEffect = OsuRequestEdgeEffects.BASIC_SHADOW;
 
-        Children = new BaseTab[]
+        InternalChild = new Box
         {
-            new RequestsTab
-            {
-                Position = new Vector2(0.0f, 0.0f)
-            }
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            RelativeSizeAxes = Axes.Both,
+            Colour = OsuRequestColour.Gray2
         };
     }
 }
