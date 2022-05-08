@@ -18,8 +18,6 @@ public sealed class TabsManager : Container
 
     public BindableInt CurrentTabId { get; } = new();
 
-    private TabsContainer tabsContainer;
-
     public TabsManager()
     {
         Anchor = Anchor.Centre;
@@ -30,6 +28,9 @@ public sealed class TabsManager : Container
     [BackgroundDependencyLoader]
     private void load()
     {
+        ToolbarContainer toolbarContainer;
+        TabsContainer tabsContainer;
+
         Children = new Drawable[]
         {
             new TrianglesBackground
@@ -52,7 +53,7 @@ public sealed class TabsManager : Container
                 {
                     new Drawable[]
                     {
-                        new ToolbarContainer
+                        toolbarContainer = new ToolbarContainer
                         {
                             Depth = float.MinValue
                         }
@@ -66,6 +67,8 @@ public sealed class TabsManager : Container
         };
 
         Select(default_tab);
+        CurrentTabId.BindValueChanged(e => toolbarContainer.SelectItem(e.NewValue), true);
+        CurrentTabId.BindValueChanged(e => tabsContainer.AnimateTo(e.OldValue, e.NewValue), true);
     }
 
     public void Select(OsuRequestTab tab)
@@ -81,16 +84,6 @@ public sealed class TabsManager : Container
 
     private void select(int id)
     {
-        animateTabs(id);
         CurrentTabId.Value = id;
-    }
-
-    private void animateTabs(int id)
-    {
-        if (id == CurrentTabId.Value) return;
-
-        var newPosition = id > CurrentTabId.Value ? 1 : -1;
-        tabsContainer.Children[id].MoveToX(newPosition).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
-        tabsContainer.Children[CurrentTabId.Value].MoveToX(-newPosition, 200, Easing.InOutQuart);
     }
 }

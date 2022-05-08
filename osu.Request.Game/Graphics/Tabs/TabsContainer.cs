@@ -31,4 +31,13 @@ public class TabsContainer : Container
             }
         };
     }
+
+    public void AnimateTo(int oldId, int newId)
+    {
+        if (newId == oldId) return;
+
+        var newPosition = newId > oldId ? 1 : -1;
+        Children[newId].MoveToX(newPosition).Then().MoveToX(0.0f, 200, Easing.InOutQuart);
+        Children[oldId].MoveToX(-newPosition, 200, Easing.InOutQuart);
+    }
 }

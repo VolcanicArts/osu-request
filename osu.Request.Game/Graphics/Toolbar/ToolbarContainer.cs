@@ -56,4 +56,13 @@ public class ToolbarContainer : Container
             });
         }
     }
+
+    public void SelectItem(int id)
+    {
+        foreach (var item in Items)
+        {
+            item.DeSelect();
+            if (item.ID == id) item.Select();
+        }
+    }
 }
