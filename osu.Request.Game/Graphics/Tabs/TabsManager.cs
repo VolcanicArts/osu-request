@@ -11,7 +11,7 @@ namespace osu.Request.Game.Graphics.Tabs;
 
 public sealed class TabsManager : Container
 {
-    private const int toolbar_height = 90;
+    private const int toolbar_height = 60;
 
     public TabsManager()
     {
