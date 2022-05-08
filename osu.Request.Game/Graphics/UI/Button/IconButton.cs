@@ -6,7 +6,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 
-namespace osu.Request.Game.Graphics.UI;
+namespace osu.Request.Game.Graphics.UI.Button;
 
 public class IconButton : OsuRequestButton
 {

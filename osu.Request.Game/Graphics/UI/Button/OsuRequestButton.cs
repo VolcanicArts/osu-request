@@ -4,14 +4,13 @@
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Request.Game.Graphics.Triangles;
 using osuTK.Graphics;
 
-namespace osu.Request.Game.Graphics.UI;
+namespace osu.Request.Game.Graphics.UI.Button;
 
-public class OsuRequestButton : Button
+public class OsuRequestButton : Framework.Graphics.UserInterface.Button
 {
     public new Color4 Colour { get; init; }
 

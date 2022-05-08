@@ -5,6 +5,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
+using osu.Framework.Platform;
+using osu.Request.Game.Configuration;
 using osu.Request.Resources;
 using osuTK;
 
@@ -14,6 +16,10 @@ namespace osu.Request.Game
     {
         protected override Container<Drawable> Content { get; }
 
+        protected new DependencyContainer Dependencies;
+
+        private OsuRequestConfig OsuRequestConfig;
+
         protected OsuRequestGameBase()
         {
             base.Content.Add(Content = new DrawSizePreservingFillContainer
@@ -22,9 +28,16 @@ namespace osu.Request.Game
             });
         }
 
-        [BackgroundDependencyLoader]
-        private void load()
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
         {
+            return Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+        }
+
+        [BackgroundDependencyLoader]
+        private void load(Storage storage)
+        {
+            OsuRequestConfig = new OsuRequestConfig(storage);
+            Dependencies.CacheAs(OsuRequestConfig);
             Resources.AddStore(new DllResourceStore(typeof(OsuRequestResources).Assembly));
         }
     }
