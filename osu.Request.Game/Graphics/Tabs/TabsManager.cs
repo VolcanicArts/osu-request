@@ -53,10 +53,7 @@ public sealed class TabsManager : Container
                 {
                     new Drawable[]
                     {
-                        toolbarContainer = new ToolbarContainer
-                        {
-                            Depth = float.MinValue
-                        }
+                        toolbarContainer = new ToolbarContainer()
                     },
                     new Drawable[]
                     {
