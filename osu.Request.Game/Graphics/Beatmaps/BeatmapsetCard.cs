@@ -42,8 +42,8 @@ public class BeatmapsetCard : Container
             }
         };
 
-        topText.AddText($"{WorkingBeatmapset.Title}\n", t => t.Font = OsuRequestFonts.REGULAR.With(size: 30));
-        topText.AddText($"Mapped by {WorkingBeatmapset.Creator}", t => t.Font = OsuRequestFonts.REGULAR.With(size: 25));
+        topText.AddText($"{WorkingBeatmapset.Beatmapset.Title}\n", t => t.Font = OsuRequestFonts.REGULAR.With(size: 30));
+        topText.AddText($"Mapped by {WorkingBeatmapset.Beatmapset.Creator}", t => t.Font = OsuRequestFonts.REGULAR.With(size: 25));
     }
 
     protected override void Update()
