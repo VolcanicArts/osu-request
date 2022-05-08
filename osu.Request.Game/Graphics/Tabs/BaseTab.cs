@@ -5,6 +5,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs;
 
@@ -17,6 +18,7 @@ public class BaseTab : Container
         Origin = Anchor.Centre;
         RelativeSizeAxes = Axes.Both;
         RelativePositionAxes = Axes.Both;
+        Size = new Vector2(0.9f);
         Masking = true;
         CornerRadius = 20;
         EdgeEffect = OsuRequestEdgeEffects.BASIC_SHADOW;

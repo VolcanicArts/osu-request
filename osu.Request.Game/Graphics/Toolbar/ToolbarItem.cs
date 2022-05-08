@@ -6,16 +6,21 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.UserInterface;
+using osu.Request.Game.Graphics.Tabs;
 using osuTK;
 using osuTK.Graphics;
 
 namespace osu.Request.Game.Graphics.Toolbar;
 
-public class ToolbarItem : Container
+public class ToolbarItem : Button
 {
-    private const int toolbar_item_width = 200;
+    [Resolved]
+    private TabsManager TabsManager { get; set; }
 
     public int ID { get; init; }
+
+    private const int toolbar_item_width = 200;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -49,5 +54,7 @@ public class ToolbarItem : Container
                 Text = Name
             }
         };
+
+        Action = () => TabsManager.Select(ID);
     }
 }
