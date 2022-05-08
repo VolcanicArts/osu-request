@@ -11,7 +11,6 @@ using osu.Request.Game.Beatmaps;
 using osu.Request.Game.Graphics.Beatmaps;
 using osu.Request.Game.Graphics.UI;
 using osuTK;
-using osuTK.Graphics;
 
 namespace osu.Request.Game.Graphics.Tabs.Requests;
 
@@ -93,13 +92,21 @@ public sealed class RequestEntry : Container
                                 CornerRadius = 10
                             }
                         },
-                        new Box
+                        new Container
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.Aqua
-                        }
+                            Padding = new MarginPadding(3),
+                            Child = new RequestEntryActions()
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                Masking = true,
+                                CornerRadius = 10
+                            }
+                        },
                     }
                 }
             }

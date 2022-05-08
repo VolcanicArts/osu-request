@@ -12,6 +12,9 @@ public class WorkingBeatmapset : Beatmapset
     public Texture CoverTexture { get; init; }
     public Track PreviewAudio { get; init; }
 
+    public string ExternalUrl => $"https://osu.ppy.sh/beatmapsets/{Id}";
+    public string DirectUrl => $"osu://b/{Id}";
+
     public void Dispose()
     {
         CoverTexture.Dispose();
