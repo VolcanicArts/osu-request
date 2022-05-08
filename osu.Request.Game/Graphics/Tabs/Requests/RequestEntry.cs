@@ -1,12 +1,14 @@
 ﻿// Copyright (c) VolcanicArts. Licensed under the GPL-3.0 License.
 // See the LICENSE file in the repository root for full license text.
 
+#nullable enable
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Request.Game.Beatmaps;
+using osu.Request.Game.Graphics.Beatmaps;
 using osu.Request.Game.Graphics.UI;
 using osuTK;
 using osuTK.Graphics;
@@ -17,6 +19,8 @@ public sealed class RequestEntry : Container
 {
     public RequestedBeatmapset SourceBeatmapset { get; init; }
 
+    private DependencyContainer? requestDependencies;
+
     public RequestEntry()
     {
         Size = new Vector2(1000, 100);
@@ -24,9 +28,16 @@ public sealed class RequestEntry : Container
         CornerRadius = 10;
     }
 
+    protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
+    {
+        return requestDependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+    }
+
     [BackgroundDependencyLoader]
     private void load()
     {
+        requestDependencies?.CacheAs(SourceBeatmapset);
+
         Children = new Drawable[]
         {
             new Box
@@ -68,12 +79,19 @@ public sealed class RequestEntry : Container
                                 Icon = FontAwesome.Solid.Check
                             }
                         },
-                        new Box
+                        new Container
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
-                            Colour = Color4.Blue
+                            Padding = new MarginPadding(3),
+                            Child = new BeatmapsetCard
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.Both,
+                                CornerRadius = 10
+                            }
                         },
                         new Box
                         {
