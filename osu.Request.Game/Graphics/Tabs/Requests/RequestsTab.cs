@@ -4,11 +4,15 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Request.Game.Beatmaps;
+using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs.Requests;
 
 public class RequestsTab : BaseTab
 {
+    private FillFlowContainer<RequestEntry> entryFlow;
+
     [BackgroundDependencyLoader]
     private void load()
     {
@@ -18,9 +22,34 @@ public class RequestsTab : BaseTab
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both,
             Padding = new MarginPadding(10),
-            Children = new Drawable[]
+            Child = new BasicScrollContainer
             {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                ClampExtension = 20,
+                ScrollbarVisible = false,
+                Child = entryFlow = new FillFlowContainer<RequestEntry>
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.X,
+                    AutoSizeAxes = Axes.Y,
+                    Direction = FillDirection.Vertical,
+                    Spacing = new Vector2(10),
+                    Padding = new MarginPadding(10)
+                }
             }
+        });
+    }
+
+    public void AddRequest(RequestedBeatmapset beatmapset)
+    {
+        entryFlow.Add(new RequestEntry
+        {
+            Anchor = Anchor.TopCentre,
+            Origin = Anchor.TopCentre,
+            SourceBeatmapset = beatmapset
         });
     }
 }
