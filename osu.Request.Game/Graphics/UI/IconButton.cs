@@ -27,7 +27,8 @@ public class IconButton : OsuRequestButton
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
-                Icon = Icon
+                Icon = Icon,
+                Shadow = true
             }
         });
     }
