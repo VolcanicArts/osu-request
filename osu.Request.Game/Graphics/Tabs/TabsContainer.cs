@@ -1,11 +1,14 @@
 ﻿// Copyright (c) VolcanicArts. Licensed under the GPL-3.0 License.
 // See the LICENSE file in the repository root for full license text.
 
+using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Request.Game.Graphics.Tabs.BeatmapsetBans;
 using osu.Request.Game.Graphics.Tabs.Requests;
+using osu.Request.Game.Graphics.Tabs.Settings;
+using osu.Request.Game.Graphics.Tabs.UserBans;
 using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs;
@@ -23,11 +26,19 @@ public class TabsContainer : Container
         {
             new RequestsTab
             {
-                Position = new Vector2(0.0f, 0.0f)
+                Position = new Vector2(Convert.ToInt32(OsuRequestTab.Requests), 0.0f)
             },
             new BeatmapsetBansTab
             {
-                Position = new Vector2(1.0f, 0.0f)
+                Position = new Vector2(Convert.ToInt32(OsuRequestTab.BeatmapsetBans), 0.0f)
+            },
+            new UserBansTab
+            {
+                Position = new Vector2(Convert.ToInt32(OsuRequestTab.UserBans), 0.0f)
+            },
+            new SettingsTab
+            {
+                Position = new Vector2(Convert.ToInt32(OsuRequestTab.Settings), 0.0f)
             }
         };
     }

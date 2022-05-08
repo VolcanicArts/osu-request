@@ -6,5 +6,7 @@ namespace osu.Request.Game.Graphics.Tabs;
 public enum OsuRequestTab
 {
     Requests = 0,
-    BeatmapsetBans = 1
+    BeatmapsetBans = 1,
+    UserBans = 2,
+    Settings = 3
 }
