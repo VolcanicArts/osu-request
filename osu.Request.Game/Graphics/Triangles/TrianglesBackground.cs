@@ -22,6 +22,7 @@ public class TrianglesBackground : Container
         Anchor = Anchor.Centre;
         Origin = Anchor.Centre;
         RelativeSizeAxes = Axes.Both;
+        Masking = true;
 
         InternalChildren = new Drawable[]
         {
