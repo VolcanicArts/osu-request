@@ -32,7 +32,7 @@ public class TestRequestsTab : OsuRequestTestScene
         var texture = textureStore.Get("https://assets.ppy.sh/beatmaps/236292/covers/cover.jpg?1631509201");
         var preview = audioManager.GetTrackStore().Get("https://b.ppy.sh/preview/236292.mp3");
 
-        AddStep("add request", () => requestsTab.AddRequest(new RequestedBeatmapset
+        AddStep("add request", () => requestsTab.AddRequest(new WorkingBeatmapset
         {
             Title = "Tornado (Original Mix)",
             Creator = "VolcanicArts",

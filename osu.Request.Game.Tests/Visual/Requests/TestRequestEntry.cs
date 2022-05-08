@@ -29,7 +29,7 @@ public class TestRequestEntry : OsuRequestTestScene
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
-            SourceBeatmapset = new RequestedBeatmapset
+            SourceBeatmapset = new WorkingBeatmapset
             {
                 Title = "Tornado (Original Mix)",
                 Creator = "VolcanicArts",

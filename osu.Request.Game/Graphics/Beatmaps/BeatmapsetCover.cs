@@ -16,7 +16,7 @@ namespace osu.Request.Game.Graphics.Beatmaps;
 public class BeatmapsetCover : Container
 {
     [Resolved]
-    private RequestedBeatmapset RequestedBeatmapset { get; set; }
+    private WorkingBeatmapset WorkingBeatmapset { get; set; }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -29,8 +29,8 @@ public class BeatmapsetCover : Container
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
                 FillMode = FillMode.Fill,
-                FillAspectRatio = RequestedBeatmapset.CoverTexture.Width / (float)RequestedBeatmapset.CoverTexture.Height,
-                Texture = RequestedBeatmapset.CoverTexture
+                FillAspectRatio = WorkingBeatmapset.CoverTexture.Width / (float)WorkingBeatmapset.CoverTexture.Height,
+                Texture = WorkingBeatmapset.CoverTexture
             },
             new Box
             {

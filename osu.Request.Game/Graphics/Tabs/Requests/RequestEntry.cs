@@ -17,7 +17,7 @@ namespace osu.Request.Game.Graphics.Tabs.Requests;
 
 public sealed class RequestEntry : Container
 {
-    public RequestedBeatmapset SourceBeatmapset { get; init; }
+    public WorkingBeatmapset SourceBeatmapset { get; init; }
 
     private DependencyContainer? requestDependencies;
 

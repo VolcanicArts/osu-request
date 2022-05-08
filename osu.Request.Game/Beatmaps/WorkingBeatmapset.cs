@@ -7,7 +7,7 @@ using volcanicarts.osu.NET.Structures;
 
 namespace osu.Request.Game.Beatmaps;
 
-public class RequestedBeatmapset : Beatmapset
+public class WorkingBeatmapset : Beatmapset
 {
     public Texture CoverTexture { get; init; }
     public Track PreviewAudio { get; init; }

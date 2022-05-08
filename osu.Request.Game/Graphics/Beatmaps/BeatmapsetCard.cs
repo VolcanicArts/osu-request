@@ -15,7 +15,7 @@ public class BeatmapsetCard : Container
     private const double hover_duration = 250.0d;
 
     [Resolved]
-    private RequestedBeatmapset RequestedBeatmapset { get; set; }
+    private WorkingBeatmapset WorkingBeatmapset { get; set; }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -42,8 +42,8 @@ public class BeatmapsetCard : Container
             }
         };
 
-        topText.AddText($"{RequestedBeatmapset.Title}\n", t => t.Font = OsuRequestFonts.REGULAR.With(size: 30));
-        topText.AddText($"Mapped by {RequestedBeatmapset.Creator}", t => t.Font = OsuRequestFonts.REGULAR.With(size: 25));
+        topText.AddText($"{WorkingBeatmapset.Title}\n", t => t.Font = OsuRequestFonts.REGULAR.With(size: 30));
+        topText.AddText($"Mapped by {WorkingBeatmapset.Creator}", t => t.Font = OsuRequestFonts.REGULAR.With(size: 25));
     }
 
     protected override void Update()
@@ -52,7 +52,7 @@ public class BeatmapsetCard : Container
         if (!IsHovered || !(Time.Current - hoverTime > hover_duration)) return;
 
         hoverTime = double.MaxValue;
-        RequestedBeatmapset.PreviewAudio.Restart();
+        WorkingBeatmapset.PreviewAudio.Restart();
     }
 
     protected override bool OnHover(HoverEvent e)
@@ -65,14 +65,14 @@ public class BeatmapsetCard : Container
 
     protected override void OnHoverLost(HoverLostEvent e)
     {
-        RequestedBeatmapset.PreviewAudio.Stop();
+        WorkingBeatmapset.PreviewAudio.Stop();
         this.MoveToY(0.0f, 100, Easing.InCubic);
         TweenEdgeEffectTo(OsuRequestEdgeEffects.NO_SHADOW, 100, Easing.InCubic);
     }
 
     protected override void Dispose(bool isDisposing)
     {
-        RequestedBeatmapset.Dispose();
+        WorkingBeatmapset.Dispose();
         base.Dispose(isDisposing);
     }
 }

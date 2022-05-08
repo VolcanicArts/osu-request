@@ -43,7 +43,7 @@ public class RequestsTab : BaseTab
         });
     }
 
-    public void AddRequest(RequestedBeatmapset beatmapset)
+    public void AddRequest(WorkingBeatmapset beatmapset)
     {
         entryFlow.Add(new RequestEntry
         {
