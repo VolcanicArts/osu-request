@@ -9,7 +9,6 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Request.Game.Beatmaps;
 using osu.Request.Game.Graphics.Beatmaps;
-using osu.Request.Game.Graphics.UI;
 using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs.Requests;
@@ -61,7 +60,7 @@ public sealed class RequestEntry : Container
                     RelativeSizeAxes = Axes.Both,
                     ColumnDimensions = new[]
                     {
-                        new Dimension(GridSizeMode.Absolute, 50),
+                        new Dimension(GridSizeMode.Absolute, 40),
                         new Dimension(GridSizeMode.Distributed),
                         new Dimension(GridSizeMode.Absolute, 100)
                     },
@@ -69,24 +68,18 @@ public sealed class RequestEntry : Container
                     {
                         new Drawable[]
                         {
-                            new Container
+                            new RequestEntryAction
                             {
-                                Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                RelativeSizeAxes = Axes.Both,
                                 Padding = new MarginPadding
                                 {
                                     Right = padding / 2f
                                 },
-                                Child = new IconButton
+                                CornerRadius = 10,
+                                Colour = OsuRequestColour.Green,
+                                Icon = FontAwesome.Solid.Check,
+                                Action = () =>
                                 {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    RelativeSizeAxes = Axes.Both,
-                                    Masking = true,
-                                    CornerRadius = 10,
-                                    Colour = OsuRequestColour.Green,
-                                    Icon = FontAwesome.Solid.Check
+                                    // TODO Implement removal of self
                                 }
                             },
                             new Container
@@ -115,7 +108,7 @@ public sealed class RequestEntry : Container
                                 {
                                     Left = padding / 2f
                                 },
-                                Child = new RequestEntryActions()
+                                Child = new RequestEntryActionsGrid()
                                 {
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.Centre,
