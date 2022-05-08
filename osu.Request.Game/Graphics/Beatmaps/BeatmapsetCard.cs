@@ -69,10 +69,4 @@ public class BeatmapsetCard : Container
         this.MoveToY(0.0f, 100, Easing.InCubic);
         TweenEdgeEffectTo(OsuRequestEdgeEffects.NO_SHADOW, 100, Easing.InCubic);
     }
-
-    protected override void Dispose(bool isDisposing)
-    {
-        WorkingBeatmapset.Dispose();
-        base.Dispose(isDisposing);
-    }
 }

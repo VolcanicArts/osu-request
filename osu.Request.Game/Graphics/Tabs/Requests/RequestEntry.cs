@@ -77,10 +77,7 @@ public sealed class RequestEntry : Container
                                 CornerRadius = 10,
                                 Colour = OsuRequestColour.Green,
                                 Icon = FontAwesome.Solid.Check,
-                                Action = () =>
-                                {
-                                    // TODO Implement removal of self
-                                }
+                                Action = DisposeGracefully
                             },
                             new Container
                             {
@@ -122,5 +119,10 @@ public sealed class RequestEntry : Container
                 }
             }
         };
+    }
+
+    public void DisposeGracefully()
+    {
+        this.FadeOutFromOne(500, Easing.OutQuad).Finally(t => t.RemoveAndDisposeImmediately());
     }
 }
