@@ -62,7 +62,7 @@ public sealed class RequestEntry : Container
                     {
                         new Dimension(GridSizeMode.Absolute, 40),
                         new Dimension(GridSizeMode.Distributed),
-                        new Dimension(GridSizeMode.Absolute, 100)
+                        new Dimension(GridSizeMode.Absolute, 100 - (padding * 2))
                     },
                     Content = new[]
                     {
