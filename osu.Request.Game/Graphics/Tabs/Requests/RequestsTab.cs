@@ -6,6 +6,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Request.Game.Beatmaps;
 using osuTK;
@@ -25,31 +26,45 @@ public class RequestsTab : BaseTab
     [BackgroundDependencyLoader]
     private void load()
     {
-        Add(new Container
+        Masking = true;
+        CornerRadius = 20;
+        EdgeEffect = OsuRequestEdgeEffects.BASIC_SHADOW;
+
+        Children = new Drawable[]
         {
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            RelativeSizeAxes = Axes.Both,
-            Padding = new MarginPadding(10),
-            Child = new BasicScrollContainer
+            new Box
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
-                ClampExtension = 20,
-                ScrollbarVisible = false,
-                Child = entryFlow = new FillFlowContainer<RequestEntry>
+                Colour = OsuRequestColour.Gray2
+            },
+            new Container
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Padding = new MarginPadding(10),
+                Child = new BasicScrollContainer
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeSizeAxes = Axes.X,
-                    AutoSizeAxes = Axes.Y,
-                    Direction = FillDirection.Vertical,
-                    Spacing = new Vector2(10),
-                    Padding = new MarginPadding(10)
+                    RelativeSizeAxes = Axes.Both,
+                    ClampExtension = 20,
+                    ScrollbarVisible = false,
+                    Child = entryFlow = new FillFlowContainer<RequestEntry>
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.X,
+                        AutoSizeAxes = Axes.Y,
+                        Direction = FillDirection.Vertical,
+                        Spacing = new Vector2(10),
+                        Padding = new MarginPadding(10)
+                    }
                 }
             }
-        });
+        };
     }
 
     public void AddRequest(WorkingBeatmapset beatmapset)
