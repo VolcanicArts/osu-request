@@ -4,13 +4,21 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Logging;
 using osu.Request.Game.Configuration;
+using osu.Request.Game.Graphics.UI.Button;
 using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs.Settings;
 
 public class SettingsTab : BaseTab
 {
+    private SettingContainer UsernameSetting;
+    private MaskedSettingContainer PasscodeSetting;
+
+    [Resolved]
+    private OsuRequestConfig OsuRequestConfig { get; set; }
+
     [BackgroundDependencyLoader]
     private void load()
     {
@@ -29,6 +37,7 @@ public class SettingsTab : BaseTab
                 {
                     new Dimension(GridSizeMode.Absolute, 50),
                     new Dimension(),
+                    new Dimension(GridSizeMode.Absolute, 300)
                 },
                 Content = new[]
                 {
@@ -59,7 +68,7 @@ public class SettingsTab : BaseTab
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.Centre,
                                     Size = new Vector2(800, 100),
-                                    Child = new SettingContainer
+                                    Child = UsernameSetting = new SettingContainer
                                     {
                                         Anchor = Anchor.Centre,
                                         Origin = Anchor.Centre,
@@ -73,7 +82,7 @@ public class SettingsTab : BaseTab
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.Centre,
                                     Size = new Vector2(800, 100),
-                                    Child = new MaskedSettingContainer
+                                    Child = PasscodeSetting = new MaskedSettingContainer
                                     {
                                         Anchor = Anchor.Centre,
                                         Origin = Anchor.Centre,
@@ -84,9 +93,28 @@ public class SettingsTab : BaseTab
                                 }
                             }
                         }
+                    },
+                    new Drawable[]
+                    {
+                        new TextButton
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            Size = new Vector2(200, 50),
+                            Colour = OsuRequestColour.Blue,
+                            Text = "Save Settings",
+                            Action = saveSettings
+                        }
                     }
                 }
             }
         };
+    }
+
+    private void saveSettings()
+    {
+        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = UsernameSetting.SettingValue;
+        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = PasscodeSetting.SettingValue;
+        OsuRequestConfig.Save();
     }
 }

@@ -6,7 +6,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using osu.Request.Game.Graphics.UI;
 using osu.Request.Game.Graphics.UI.Button;
 using osuTK.Graphics;
 

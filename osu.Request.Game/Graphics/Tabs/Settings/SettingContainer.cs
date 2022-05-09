@@ -13,6 +13,10 @@ namespace osu.Request.Game.Graphics.Tabs.Settings;
 
 public class SettingContainer : Container
 {
+    private OsuRequestTextBox SettingText;
+
+    public string SettingValue => SettingText.Text;
+
     public string Title { get; init; }
     public OsuRequestSetting Setting { get; init; }
 
@@ -54,7 +58,7 @@ public class SettingContainer : Container
                         Origin = Anchor.BottomCentre,
                         RelativeSizeAxes = Axes.Both,
                         Size = new Vector2(1.0f, 0.5f),
-                        Child = CreateTextBox(osuRequestConfig.Get<string>(Setting))
+                        Child = SettingText = CreateTextBox(osuRequestConfig.Get<string>(Setting))
                     }
                 }
             }
