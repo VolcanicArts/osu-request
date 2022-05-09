@@ -24,8 +24,6 @@ public sealed class RequestEntry : Container
     public RequestEntry()
     {
         Size = new Vector2(800, 100);
-        Masking = true;
-        CornerRadius = 10;
     }
 
     protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
@@ -40,12 +38,22 @@ public sealed class RequestEntry : Container
 
         Children = new Drawable[]
         {
-            new Box
+            new Container
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
-                Colour = OsuRequestColour.Gray4
+                Width = 1.02f,
+                Masking = true,
+                CornerRadius = 10,
+                Shear = new Vector2(0.2f, 0.0f),
+                Child = new Box
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = OsuRequestColour.Gray4,
+                }
             },
             new Container
             {
@@ -53,6 +61,8 @@ public sealed class RequestEntry : Container
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both,
                 Padding = new MarginPadding(padding),
+                Masking = true,
+                CornerRadius = 10,
                 Child = new GridContainer
                 {
                     Anchor = Anchor.Centre,
