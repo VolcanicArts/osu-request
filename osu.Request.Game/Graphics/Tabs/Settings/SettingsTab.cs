@@ -6,14 +6,14 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Request.Game.Configuration;
 using osu.Request.Game.Graphics.UI.Button;
+using osu.Request.Game.Graphics.UI.Text;
 using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs.Settings;
 
 public class SettingsTab : BaseTab
 {
-    private SettingContainer UsernameSetting;
-    private MaskedSettingContainer PasscodeSetting;
+    private CredentialsContainer credentials;
 
     [Resolved]
     private OsuRequestConfig OsuRequestConfig { get; set; }
@@ -42,7 +42,7 @@ public class SettingsTab : BaseTab
                 {
                     new Drawable[]
                     {
-                        new TextFlowContainer(t => t.Font = OsuRequestFonts.REGULAR.With(size: 100))
+                        new OsuRequestTextFlowContainer(t => t.Font = OsuRequestFonts.REGULAR.With(size: 100))
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -53,44 +53,11 @@ public class SettingsTab : BaseTab
                     },
                     new Drawable[]
                     {
-                        new FillFlowContainer
+                        credentials = new CredentialsContainer
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Direction = FillDirection.Vertical,
-                            Spacing = new Vector2(0.0f, 10.0f),
-                            Children = new Drawable[]
-                            {
-                                new Container
-                                {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    Size = new Vector2(800, 100),
-                                    Child = UsernameSetting = new SettingContainer
-                                    {
-                                        Anchor = Anchor.Centre,
-                                        Origin = Anchor.Centre,
-                                        RelativeSizeAxes = Axes.Both,
-                                        Title = "Username",
-                                        Setting = OsuRequestSetting.Username
-                                    }
-                                },
-                                new Container
-                                {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    Size = new Vector2(800, 100),
-                                    Child = PasscodeSetting = new MaskedSettingContainer
-                                    {
-                                        Anchor = Anchor.Centre,
-                                        Origin = Anchor.Centre,
-                                        RelativeSizeAxes = Axes.Both,
-                                        Title = "Passcode",
-                                        Setting = OsuRequestSetting.Passcode
-                                    }
-                                }
-                            }
+                            AutoSizeAxes = Axes.Both
                         }
                     },
                     new Drawable[]
@@ -112,8 +79,8 @@ public class SettingsTab : BaseTab
 
     private void saveSettings()
     {
-        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = UsernameSetting.SettingValue;
-        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = PasscodeSetting.SettingValue;
+        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = credentials.Username;
+        OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = credentials.Passcode;
         OsuRequestConfig.Save();
     }
 }

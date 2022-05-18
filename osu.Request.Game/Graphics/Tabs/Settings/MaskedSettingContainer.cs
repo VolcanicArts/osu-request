@@ -16,7 +16,8 @@ public class MaskedSettingContainer : SettingContainer
             Origin = Anchor.TopCentre,
             RelativeSizeAxes = Axes.Both,
             Text = text,
-            CornerRadius = 5
+            CornerRadius = 5,
+            PlaceholderText = Placeholder
         };
     }
 }
