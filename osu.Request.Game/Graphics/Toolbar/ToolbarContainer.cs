@@ -1,8 +1,6 @@
 ﻿// Copyright (c) VolcanicArts. Licensed under the GPL-3.0 License.
 // See the LICENSE file in the repository root for full license text.
 
-using System;
-using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -45,14 +43,11 @@ public class ToolbarContainer : Container
 
     private void populateItems()
     {
-        var itemNames = Enum.GetValues<OsuRequestTab>().Select(v => v.ToString()).ToList();
-
-        for (var i = 0; i < itemNames.Count; i++)
+        foreach (var tab in OsuRequestTab.TabList)
         {
             Items.Add(new ToolbarItem
             {
-                ID = i,
-                Name = itemNames[i]
+                Tab = tab
             });
         }
     }
@@ -62,7 +57,7 @@ public class ToolbarContainer : Container
         foreach (var item in Items)
         {
             item.DeSelect();
-            if (item.ID == id) item.Select();
+            if (item.Tab.Id == id) item.Select();
         }
     }
 }

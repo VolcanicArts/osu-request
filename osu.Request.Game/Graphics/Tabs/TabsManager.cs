@@ -1,7 +1,6 @@
 ﻿// Copyright (c) VolcanicArts. Licensed under the GPL-3.0 License.
 // See the LICENSE file in the repository root for full license text.
 
-using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -14,7 +13,6 @@ namespace osu.Request.Game.Graphics.Tabs;
 public sealed class TabsManager : Container
 {
     private const int toolbar_height = 60;
-    private const OsuRequestTab default_tab = OsuRequestTab.Requests;
 
     public BindableInt CurrentTabId { get; } = new();
 
@@ -63,15 +61,9 @@ public sealed class TabsManager : Container
             }
         };
 
-        Select(default_tab);
+        Select(0);
         CurrentTabId.BindValueChanged(e => toolbarContainer.SelectItem(e.NewValue), true);
         CurrentTabId.BindValueChanged(e => tabsContainer.AnimateTo(e.OldValue, e.NewValue), true);
-    }
-
-    public void Select(OsuRequestTab tab)
-    {
-        var id = Convert.ToInt32(tab);
-        Select(id);
     }
 
     public void Select(int id)

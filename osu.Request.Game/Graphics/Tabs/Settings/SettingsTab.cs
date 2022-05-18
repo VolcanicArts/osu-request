@@ -4,7 +4,6 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Logging;
 using osu.Request.Game.Configuration;
 using osu.Request.Game.Graphics.UI.Button;
 using osuTK;
