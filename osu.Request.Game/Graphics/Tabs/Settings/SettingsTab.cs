@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Request.Game.Configuration;
 using osu.Request.Game.Graphics.UI.Button;
 using osu.Request.Game.Graphics.UI.Text;
+using osu.Request.Game.Remote;
 using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs.Settings;
@@ -17,6 +18,9 @@ public class SettingsTab : BaseTab
 
     [Resolved]
     private OsuRequestConfig OsuRequestConfig { get; set; }
+
+    [Resolved]
+    private WebSocketClient WebSocketClient { get; set; }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -82,5 +86,6 @@ public class SettingsTab : BaseTab
         OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Username).Value = credentials.Username;
         OsuRequestConfig.GetBindable<string>(OsuRequestSetting.Passcode).Value = credentials.Passcode;
         OsuRequestConfig.Save();
+        WebSocketClient.ConnectOrReconnect();
     }
 }

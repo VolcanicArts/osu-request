@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osu.Request.Game.Configuration;
+using osu.Request.Game.Remote;
 using osu.Request.Resources;
 using osuTK;
 
@@ -19,6 +20,7 @@ namespace osu.Request.Game
         protected new DependencyContainer Dependencies;
 
         private OsuRequestConfig OsuRequestConfig;
+        private WebSocketClient WebSocketClient;
 
         protected OsuRequestGameBase()
         {
@@ -38,7 +40,17 @@ namespace osu.Request.Game
         {
             OsuRequestConfig = new OsuRequestConfig(storage);
             Dependencies.CacheAs(OsuRequestConfig);
+
+            WebSocketClient = new WebSocketClient(OsuRequestConfig);
+            Dependencies.CacheAs(WebSocketClient);
+
             Resources.AddStore(new DllResourceStore(typeof(OsuRequestResources).Assembly));
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            WebSocketClient.ConnectOrReconnect();
         }
     }
 }

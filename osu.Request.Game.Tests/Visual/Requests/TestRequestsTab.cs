@@ -23,13 +23,16 @@ public class TestRequestsTab : OsuRequestTestScene
     {
         AddStep("add request", () =>
         {
-            requestsTab.AddRequest(new WorkingBeatmapset
+            requestsTab.AddRequest(new RequestedBeatmapset
             {
-                Beatmapset = new Beatmapset
+                WorkingBeatmapset = new WorkingBeatmapset
                 {
-                    Title = "Tornado (Original Mix)",
-                    Creator = "VolcanicArts",
-                    PreviewUrl = "//b.ppy.sh/preview/236292.mp3"
+                    Beatmapset = new Beatmapset
+                    {
+                        Title = "Tornado (Original Mix)",
+                        Creator = "VolcanicArts",
+                        PreviewUrl = "//b.ppy.sh/preview/236292.mp3"
+                    }
                 }
             });
         });

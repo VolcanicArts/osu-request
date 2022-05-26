@@ -67,15 +67,15 @@ public class RequestsTab : BaseTab
         };
     }
 
-    public void AddRequest(WorkingBeatmapset beatmapset)
+    public void AddRequest(RequestedBeatmapset beatmapset)
     {
         Task.Run(() =>
         {
             // TODO Fix osu.NET side to allow for manual setting of covers for testing
             var texture = textureStore.Get("https://assets.ppy.sh/beatmaps/236292/covers/cover.jpg?1631509201");
-            var preview = audioManager.GetTrackStore().Get($"https:{beatmapset.Beatmapset.PreviewUrl}");
-            beatmapset.CoverTexture = texture;
-            beatmapset.PreviewAudio = preview;
+            var preview = audioManager.GetTrackStore().Get($"https:{beatmapset.WorkingBeatmapset.Beatmapset.PreviewUrl}");
+            beatmapset.WorkingBeatmapset.CoverTexture = texture;
+            beatmapset.WorkingBeatmapset.PreviewAudio = preview;
 
             Scheduler.Add(() =>
             {

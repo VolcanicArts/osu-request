@@ -17,7 +17,7 @@ public sealed class RequestEntry : Container
 {
     private const int padding = 3;
 
-    public WorkingBeatmapset SourceBeatmapset { get; init; }
+    public RequestedBeatmapset SourceBeatmapset { get; init; }
 
     private DependencyContainer? requestDependencies;
 
@@ -34,7 +34,7 @@ public sealed class RequestEntry : Container
     [BackgroundDependencyLoader]
     private void load()
     {
-        requestDependencies?.CacheAs(SourceBeatmapset);
+        requestDependencies?.CacheAs(SourceBeatmapset.WorkingBeatmapset);
 
         Children = new Drawable[]
         {
