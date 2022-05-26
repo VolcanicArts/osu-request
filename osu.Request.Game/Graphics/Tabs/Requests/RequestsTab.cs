@@ -9,6 +9,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Request.Game.Beatmaps;
+using osu.Request.Game.Remote;
 using osuTK;
 
 namespace osu.Request.Game.Graphics.Tabs.Requests;
@@ -24,8 +25,10 @@ public class RequestsTab : BaseTab
     private FillFlowContainer<RequestEntry> entryFlow;
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(WebSocketClient webSocketClient)
     {
+        webSocketClient.OnNewRequest += AddRequest;
+
         Masking = true;
         CornerRadius = 20;
         EdgeEffect = OsuRequestEdgeEffects.BASIC_SHADOW;
@@ -72,7 +75,7 @@ public class RequestsTab : BaseTab
         Task.Run(() =>
         {
             // TODO Fix osu.NET side to allow for manual setting of covers for testing
-            var texture = textureStore.Get("https://assets.ppy.sh/beatmaps/236292/covers/cover.jpg?1631509201");
+            var texture = textureStore.Get(beatmapset.WorkingBeatmapset.Beatmapset.Covers.CoverAt2X);
             var preview = audioManager.GetTrackStore().Get($"https:{beatmapset.WorkingBeatmapset.Beatmapset.PreviewUrl}");
             beatmapset.WorkingBeatmapset.CoverTexture = texture;
             beatmapset.WorkingBeatmapset.PreviewAudio = preview;
